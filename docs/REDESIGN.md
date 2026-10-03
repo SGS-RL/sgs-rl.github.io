@@ -146,6 +146,8 @@ Inputs only the owner can give:
       entry in `CLIPS` plus a 960 px MP4, a 384 px MP4 and a poster JPG.
 - [ ] **Font licence**, if the real Neue Haas Grotesk is wanted.
 - [ ] **Merge to `main`** when ready to see the lab pages live.
+- [ ] **CI Node version.** The deploy workflow runs Node 20, now past end
+      of life; bump it to 22 (see Deploying).
 
 ## Unexplored
 
@@ -196,34 +198,134 @@ public/lab/media/                intro, clips, clips-sm, 960 px videos
 scripts/lab/                     review tooling (below)
 ```
 
-## How to run
+## Set up a development environment
+
+Works on macOS and Ubuntu (22.04 or newer).
+
+| Tool                | Version                                  | Needed for                                     |
+| ------------------- | ---------------------------------------- | ---------------------------------------------- |
+| git                 | any                                      | getting the code                               |
+| Node.js and npm     | 20.9 or newer; 22 recommended (`.nvmrc`) | everything                                     |
+| ffmpeg              | any recent build with libvpx             | cutting video, screenshot stand-ins (optional) |
+| Playwright Chromium | 1.56                                     | phone and desktop screenshots (optional)       |
+
+### macOS
 
 ```sh
-npm ci
-npm run dev                # http://localhost:3000/lab/
-npm run lint && npx tsc --noEmit
-npx prettier --check app/lab scripts/lab
-npm run build              # static export into out/
+# Homebrew first, if missing: https://brew.sh
+brew install git ffmpeg
+
+# Node through nvm (or `brew install node@22` and put it on PATH)
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+# open a new terminal, then:
+nvm install 22
 ```
+
+### Ubuntu
+
+```sh
+sudo apt update
+sudo apt install -y git curl ffmpeg
+
+# Ubuntu's own nodejs package is too old for Next.js 16, so use nvm
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+# open a new terminal, then:
+nvm install 22
+```
+
+### Get the code
+
+```sh
+git clone https://github.com/SGS-RL/sgs-rl.github.io.git
+cd sgs-rl.github.io
+git checkout claude/website-redesign-brainstorm-hz3x4c
+nvm use        # Node 22, from .nvmrc
+npm ci         # exact versions from package-lock.json
+```
+
+### Screenshot tooling (optional)
+
+Playwright is not a project dependency, which keeps the deploy lean.
+Install it into `node_modules` without touching `package.json`:
+
+```sh
+npm install --no-save playwright@1.56.1
+npx playwright install chromium               # macOS
+npx playwright install --with-deps chromium   # Ubuntu: also installs system libraries (asks for sudo)
+```
+
+`npm ci` removes it again; re-run the first line afterwards.
+
+## Run the website
+
+### Development server
+
+```sh
+npm run dev
+```
+
+Open http://localhost:3000/ for the current homepage and
+http://localhost:3000/lab/ for the design studies. Pages reload on save.
+
+### Production build
+
+This is exactly what GitHub Pages serves:
+
+```sh
+npm run build                         # static site into out/
+npx http-server out -p 4173 -s -c-1   # http://localhost:4173/lab/site/
+```
+
+Serve `out/` with a server that supports range requests, like
+`http-server` above. `python3 -m http.server` does not, and video seeking
+breaks without them.
 
 `npm run build` downloads Google Fonts. It occasionally fails with
-"next/font/google queries have exactly one entry"; re-running fixes it.
+"next/font/google queries have exactly one entry"; running it again fixes
+it.
 
-To serve the build, use a server that supports range requests;
-`python -m http.server` does not, and video seeking breaks without them:
+### On a phone, over Wi-Fi
+
+Serve the production build as above, find the computer's address, and
+open `http://<address>:4173/lab/site/` on a phone on the same network:
 
 ```sh
-npx http-server out -p 4173 -s -c-1
+ipconfig getifaddr en0   # macOS, Wi-Fi
+hostname -I              # Ubuntu, first address
 ```
+
+On macOS, allow incoming connections if the firewall asks. Prefer this to
+the dev server: Next.js 16 blocks dev-only assets requested from any host
+other than `localhost`, unless that host is listed in `allowedDevOrigins`
+in `next.config.ts`.
+
+### Checks before committing
+
+```sh
+npm run lint
+npx tsc --noEmit
+npx prettier --check app/lab scripts/lab docs
+npm run build
+```
+
+### Deploying
+
+Pushing to `main` runs the "Deploy to GitHub Pages" workflow, which builds
+and publishes `out/` to https://sgs-rl.github.io/ (studies at
+https://sgs-rl.github.io/lab/). No other branch deploys. The workflow runs
+Node 20, which reached end of life in April 2026; moving
+`node-version` to `"22"` in `.github/workflows/deploy.yml` would match
+`.nvmrc`.
 
 ### Screenshots (how designs get reviewed)
 
 The owner reviews from a phone, and nothing deploys until `main`, so each
-round ends with phone and desktop screenshots sent to them.
+round ends with phone and desktop screenshots sent to them. With the
+optional tooling and ffmpeg installed:
 
 ```sh
 npm run build
-scripts/lab/webm-standins.sh        # VP9 copies; headless Chromium has no H.264
+scripts/lab/webm-standins.sh        # VP9 copies; Playwright's Chromium has no H.264
 npx http-server out -p 4173 -s -c-1 &
 node scripts/lab/shoot.mjs previews '[
   {"name":"site-top","size":"m","url":"/lab/site/"},
@@ -233,8 +335,9 @@ node scripts/lab/shoot.mjs previews '[
 ```
 
 `shoot.mjs` documents the job fields at the top. Shots land in `previews/`
-(git-ignored). It uses Playwright's Chromium: in Claude Code's cloud
-environment that is preinstalled; elsewhere install Playwright or set
+(git-ignored). Re-run `webm-standins.sh` after every build, since the
+build wipes `out/`; its transcodes are cached, so later runs are quick. If
+Playwright lives somewhere other than the project's `node_modules`, set
 `PLAYWRIGHT_MODULE` to its entry point.
 
 ## Feedback so far

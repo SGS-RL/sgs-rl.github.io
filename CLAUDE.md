@@ -18,4 +18,7 @@ Working rules for the redesign:
 - Website structure and typography come before video effects.
 
 Checks: `npm run lint`, `npx tsc --noEmit`,
-`npx prettier --check app/lab scripts/lab`, `npm run build`.
+`npx prettier --check app/lab scripts/lab docs`, `npm run build`.
+
+Setup for macOS and Ubuntu, and how to run the site locally and on a
+phone: `docs/REDESIGN.md`, "Set up a development environment".
