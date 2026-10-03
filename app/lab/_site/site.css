@@ -1,0 +1,46 @@
+/* /lab/site: the poster system as a website, after the NOF site.
+   Builds on poster.css (.pz, .pz-grid, .pz-small, .pz-mark, .pz-slot). */
+
+.st {
+  --head-size: clamp(2rem, 9vw, 4rem);
+  --head: calc(var(--head-size) * 1.08 + 2px);
+  --coral: #ff6464;
+  background: #fff;
+}
+
+/* Heading band: white, between rules, pinned under the bar while its
+   section is on screen. */
+.st-head {
+  font-size: var(--head-size);
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+}
+.st-entry {
+  font-size: clamp(1.3rem, 5.4vw, 2.25rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+.st-lead {
+  font-size: clamp(1.3rem, 5.4vw, 3rem);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+}
+.st-slot {
+  font-size: clamp(12px, 2vw, 30px);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+}
+.pz-row {
+  font-size: clamp(15px, 1.45vw, 21px);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+
+.st a.st-link {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+.st a.st-link:hover {
+  text-decoration-thickness: 2px;
+}

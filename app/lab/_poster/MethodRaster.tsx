@@ -39,10 +39,12 @@ export default function MethodRaster({
   raster,
   type,
   ground,
+  heightClass = "h-[118vw] md:h-[46vw]",
 }: {
   raster: string;
   type: string;
   ground: string;
+  heightClass?: string;
 }) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -191,7 +193,7 @@ export default function MethodRaster({
 
   return (
     <div className="relative">
-      <div ref={wrapRef} className="relative h-[118vw] md:h-[46vw]">
+      <div ref={wrapRef} className={`relative ${heightClass}`}>
         <canvas
           ref={canvasRef}
           aria-hidden="true"

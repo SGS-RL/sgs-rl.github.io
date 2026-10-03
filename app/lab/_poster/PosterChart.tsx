@@ -50,16 +50,18 @@ function Panel({
   width,
   type,
   raster,
+  web,
 }: {
   panel: (typeof SCALING.panels)[number];
   width: number;
   type: string;
   raster: string;
+  web: boolean;
 }) {
   const [at, setAt] = useState(last);
   const [active, setActive] = useState(false);
   const desktop = width >= 700;
-  const height = Math.round(width * (desktop ? 0.36 : 0.78));
+  const height = Math.round(width * (desktop ? 0.36 : web ? 0.66 : 0.78));
   const M = {
     top: 10,
     right: desktop ? 96 : 76,
@@ -72,7 +74,7 @@ function Panel({
   const hi = Math.log2(SCALING.envs[last]);
   const x = (e: number) => M.left + ((Math.log2(e) - lo) / (hi - lo)) * pw;
   const y = (v: number) => M.top + (1 - v) * ph;
-  const tick = desktop ? 30 : 19;
+  const tick = desktop ? 30 : web ? 16 : 19;
 
   const series = [...panel.series].sort(
     (a, b) => Number(a.name === "SGS") - Number(b.name === "SGS"),
@@ -103,15 +105,19 @@ function Panel({
   return (
     <figure className="relative">
       <h3
-        className="pz-big pz-overprint text-[18.5vw] md:text-[11.5vw]"
-        style={{ color: type }}
+        className={
+          web
+            ? "st-entry mb-3 border-t pt-1.5"
+            : "pz-big pz-overprint text-[18.5vw] md:text-[11.5vw]"
+        }
+        style={{ color: type, borderColor: type }}
       >
         {panel.name}
       </h3>
       <svg
         width={width}
         height={height}
-        className="pz-overprint relative -mt-[6vw] block touch-pan-y md:-mt-[5vw]"
+        className={`pz-overprint relative block touch-pan-y ${web ? "" : "-mt-[6vw] md:-mt-[5vw]"}`}
         role="img"
         aria-label={`${panel.name}: success rate against parallel environments`}
         onPointerDown={(e) =>
@@ -234,13 +240,18 @@ function Panel({
   );
 }
 
+// "poster": panel names as headlines with the lines running over them.
+// "web": a quieter version, two panels side by side on wide screens.
 export default function PosterChart({
   type,
   raster,
+  variant = "poster",
 }: {
   type: string;
   raster: string;
+  variant?: "poster" | "web";
 }) {
+  const web = variant === "web";
   const ref = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(0);
   useEffect(() => {
@@ -254,7 +265,10 @@ export default function PosterChart({
   }, []);
 
   return (
-    <div ref={ref} className="flex flex-col gap-14 md:gap-20">
+    <div
+      ref={ref}
+      className={`flex flex-col ${web ? "gap-8" : "gap-14 md:gap-20"}`}
+    >
       <p
         className="pz-small flex flex-wrap gap-x-4 gap-y-1"
         style={{ color: type }}
@@ -266,16 +280,25 @@ export default function PosterChart({
           </span>
         ))}
       </p>
-      {width > 0 &&
-        SCALING.panels.map((p) => (
-          <Panel
-            key={p.name}
-            panel={p}
-            width={width}
-            type={type}
-            raster={raster}
-          />
-        ))}
+      <div
+        className={
+          web && width >= 900
+            ? "grid grid-cols-2 gap-x-[var(--g)]"
+            : "flex flex-col gap-14 md:gap-20"
+        }
+      >
+        {width > 0 &&
+          SCALING.panels.map((p) => (
+            <Panel
+              key={p.name}
+              panel={p}
+              width={web && width >= 900 ? Math.floor((width - 16) / 2) : width}
+              type={type}
+              raster={raster}
+              web={web}
+            />
+          ))}
+      </div>
       <details className="pz-small" style={{ color: type }}>
         <summary className="cursor-pointer">Data table</summary>
         {SCALING.panels.map((p) => (
