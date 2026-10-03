@@ -14,6 +14,11 @@ const STUDIES: [string, string, string][] = [
     "Same page, inverted, with the 20 s intro as a plain autoplaying loop instead of scroll-scrubbing.",
   ],
   [
+    "/lab/poster/",
+    "Poster",
+    "A poster series after Neo Neo's NOF identity: one typeface, three inks per section, every video shown as a live halftone raster.",
+  ],
+  [
     "/lab/clips/",
     "Clip layouts",
     "Four ways to show many short task and robot clips: grid, rows, player, wall.",

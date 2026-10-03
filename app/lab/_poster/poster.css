@@ -1,0 +1,117 @@
+/* /lab/poster: a poster series in the manner of Neo Neo's NOF identity.
+   One typeface in one weight, three inks per poster, a coarse raster. */
+
+.pz {
+  --m: 12px;
+  --g: 10px;
+  --bar: 30px;
+  background: #fff;
+  color: #111;
+  font-family:
+    var(--font-swiss-display), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+}
+@media (min-width: 768px) {
+  .pz {
+    --m: 20px;
+    --g: 16px;
+  }
+}
+
+html:has(.pz) {
+  background: #000;
+}
+
+.pz-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  column-gap: var(--g);
+  padding-inline: var(--m);
+}
+@media (min-width: 768px) {
+  html:has(.pz) {
+    background: #000;
+  }
+
+  .pz-grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+}
+
+.pz-poster {
+  isolation: isolate;
+  background: var(--ground);
+  color: var(--type);
+}
+
+.pz-small {
+  font-size: 12px;
+  line-height: 1.22;
+  letter-spacing: 0;
+}
+@media (min-width: 768px) {
+  .pz-small {
+    font-size: 13px;
+  }
+}
+.pz-mid {
+  font-size: clamp(1.35rem, 6.2vw, 3rem);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+}
+.pz-big {
+  line-height: 0.84;
+  letter-spacing: -0.055em;
+}
+.pz-head {
+  font-size: clamp(2.4rem, 11vw, 6rem);
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+.pz-num {
+  font-variant-numeric: tabular-nums;
+}
+.pz-overprint {
+  mix-blend-mode: multiply;
+}
+
+/* Giant wordmark. "SGS" in this face and tracking is 1.69em of ink with
+   a 0.03em side bearing, so the ink spans the measure edge to edge. A cap
+   keeps it from swallowing a landscape screen. */
+.pz-mark {
+  display: block;
+  white-space: nowrap;
+  letter-spacing: -0.065em;
+  line-height: 0.73;
+  font-size: min(calc((100vw - 2 * var(--m)) / 1.69), var(--mark-cap, 100vw));
+  margin-left: -0.03em;
+}
+/* Small text set inside the letters: the slot carries the mark's size so
+   its offsets are in the mark's em. */
+.pz-slot {
+  position: absolute;
+  top: 0;
+  left: var(--m);
+  line-height: 0;
+  font-size: min(calc((100vw - 2 * var(--m)) / 1.69), var(--mark-cap, 100vw));
+}
+.pz-slot > * {
+  display: block;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.pz a.pz-u {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+}
+.pz a.pz-u:hover {
+  text-decoration-thickness: 2px;
+}
+.pz :focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
