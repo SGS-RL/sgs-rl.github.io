@@ -42,3 +42,6 @@ next-env.d.ts
 
 # raw video sources (4K originals); only the compressed web clips are committed
 /public/sgs_*.mp4
+
+# design review screenshots (scripts/lab/shoot.mjs)
+/previews/
