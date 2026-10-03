@@ -1,0 +1,125 @@
+.swiss {
+  --sw-bg: #fafaf7;
+  --sw-fg: #111110;
+  --sw-mute: #6d6d68;
+  --sw-rule: #111110;
+  --sw-hair: #d9d9d3;
+  --sw-panel: #efefea;
+  --sw-accent: #e4321b;
+  --sw-baseline: #8c8c87;
+
+  min-height: 100svh;
+  background: var(--sw-bg);
+  color: var(--sw-fg);
+  font-family:
+    var(--font-swiss-display), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  letter-spacing: -0.005em;
+}
+
+.swiss[data-theme="dark"] {
+  --sw-bg: #0e0e0e;
+  --sw-fg: #f0efea;
+  --sw-mute: #8e8e88;
+  --sw-rule: #f0efea;
+  --sw-hair: #2b2b29;
+  --sw-panel: #1a1a19;
+  --sw-accent: #ffc400;
+  --sw-baseline: #7c7c78;
+  color-scheme: dark;
+}
+
+/* Match the page behind overscroll and rubber-banding. */
+html:has(.swiss) {
+  background: #fafaf7;
+}
+html:has(.swiss[data-theme="dark"]) {
+  background: #0e0e0e;
+}
+
+.swiss ::selection {
+  background: var(--sw-accent);
+  color: var(--sw-bg);
+}
+
+/* Type scale: few sizes, large steps. */
+.sw-display {
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 0.86;
+}
+.sw-h2 {
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+  font-size: clamp(2.25rem, 6vw, 5rem);
+}
+.sw-lead {
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+  font-size: clamp(1.5rem, 3.2vw, 2.6rem);
+}
+.sw-label {
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  letter-spacing: 0;
+}
+.sw-num {
+  font-variant-numeric: tabular-nums;
+}
+
+.sw-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: 1rem;
+  padding-inline: 1rem;
+}
+@media (min-width: 768px) {
+  .sw-grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 1.5rem;
+    padding-inline: 2.5rem;
+  }
+}
+
+.sw-link {
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.25s ease;
+}
+.sw-link:hover,
+.sw-link:focus-visible {
+  background-size: 100% 1px;
+}
+
+.swiss :focus-visible {
+  outline: 2px solid var(--sw-accent);
+  outline-offset: 2px;
+}
+
+.sw-noscrollbar {
+  scrollbar-width: none;
+}
+.sw-noscrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hero: the title size also sets how much height is left for the video. */
+.sw-hero {
+  --title: 19vw;
+}
+@media (min-width: 768px) {
+  .sw-hero {
+    --title: min(8.4vw, 15svh);
+  }
+  .sw-hero-frame {
+    width: min(100%, calc((100svh - 12.5rem - var(--title)) * 16 / 9));
+  }
+}
+.sw-hero-title {
+  font-size: var(--title);
+}

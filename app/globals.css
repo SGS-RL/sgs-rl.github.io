@@ -19,6 +19,16 @@
   --color-robot: var(--robot);
   --font-mono: var(--font-mono-display);
   --font-sans: var(--font-sans-body);
+
+  /* /lab design studies; values are set per theme in app/lab/lab.css */
+  --color-sw-bg: var(--sw-bg);
+  --color-sw-fg: var(--sw-fg);
+  --color-sw-mute: var(--sw-mute);
+  --color-sw-rule: var(--sw-rule);
+  --color-sw-hair: var(--sw-hair);
+  --color-sw-accent: var(--sw-accent);
+  --color-sw-panel: var(--sw-panel);
+  --font-swiss: var(--font-swiss-display);
 }
 
 * {

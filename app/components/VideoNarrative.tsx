@@ -67,8 +67,7 @@ const PX_PER_FULL = 1500;
 const IDLE_MS = 350;
 const EASE = 0.45;
 const END_EPS = 0.9992;
-const EXIT_PX = 120;
-const EXIT_VEL = 70;
+const EXIT_PX = 160;
 const SCRUB_CLAMP = 120;
 const START_DELAY_MS = 250;
 const END_CUE_AT = 0.97;
@@ -262,13 +261,12 @@ export default function VideoNarrative() {
         scrubHintRef.current?.classList.add("is-hidden");
       }
 
+      // Past the end, keep counting downward scroll until it is clearly a
+      // request to move on. Mouse wheels send ~100px per notch, so this must
+      // not filter by event size.
       if (dy > 0 && completedOnce && target >= 0.999) {
-        if (dy <= EXIT_VEL) {
-          overscroll += dy;
-          if (overscroll >= EXIT_PX) return goToNext();
-        } else {
-          overscroll = 0;
-        }
+        overscroll += dy;
+        if (overscroll >= EXIT_PX) return goToNext();
       } else {
         overscroll = 0;
         target = clamp01(target + dy / PX_PER_FULL);
@@ -278,7 +276,18 @@ export default function VideoNarrative() {
       scheduleIdle();
     };
 
+    // The page is scroll-locked while pinned, so the usual keys need a
+    // handler or they do nothing.
+    const onKey = (e: KeyboardEvent) => {
+      if (released || e.metaKey || e.ctrlKey || e.altKey) return;
+      if (["ArrowDown", "PageDown", "End", " "].includes(e.key)) {
+        e.preventDefault();
+        goToNext();
+      }
+    };
+
     window.addEventListener("wheel", onWheel, { passive: true });
+    window.addEventListener("keydown", onKey);
     v.addEventListener("ended", onEnded);
     window.addEventListener("sgs:release", release);
     raf = requestAnimationFrame(frame);
@@ -290,6 +299,7 @@ export default function VideoNarrative() {
       if (idle) clearTimeout(idle);
       if (endHoldTimer) clearTimeout(endHoldTimer);
       window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("keydown", onKey);
       v.removeEventListener("ended", onEnded);
       window.removeEventListener("sgs:release", release);
       html.style.overflow = "";
