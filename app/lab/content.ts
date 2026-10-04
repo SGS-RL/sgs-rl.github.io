@@ -3,7 +3,15 @@
 // the footage and should be confirmed before it goes on the main page.
 
 export const TITLE = "A Balanced Data Diet";
+// Subtitle as the existing studies set it. The paper's full subtitle is
+// FULL_SUBTITLE; /lab/title/ tries ways to set it before any page adopts it.
 export const SUBTITLE = "Mega-Scale RL for Robot Control";
+export const SUBTITLE_PARTS = {
+  pre: "Addressing the",
+  focus: "Exploration Bottleneck",
+  post: "in Mega-Scale RL for Robot Control",
+};
+export const FULL_SUBTITLE = `${SUBTITLE_PARTS.pre} ${SUBTITLE_PARTS.focus} ${SUBTITLE_PARTS.post}`;
 
 // [name, affiliation numbers]; * marks co-first authors.
 export const AUTHORS: [string, string][] = [
@@ -212,7 +220,7 @@ export const CLIPS: Clip[] = [
 ];
 
 export const BIBTEX = `@inproceedings{sgs,
-  title     = {${TITLE}: ${SUBTITLE}},
+  title     = {${TITLE}: ${FULL_SUBTITLE}},
   author    = {${bibAuthors}},
   booktitle = {Conference on Robot Learning (CoRL)},
   year      = {2026}

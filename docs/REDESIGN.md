@@ -3,6 +3,31 @@
 Notes for anyone (person or agent) picking up the redesign of the SGS
 project site. Branch: `claude/website-redesign-brainstorm-hz3x4c`.
 
+## Start here
+
+- **Where things stand (2026-10-04).** Two tracks are being polished in
+  parallel: a _serious_ one (Swiss, light: `/lab/swiss-2/`) and a
+  _playful_ one (NOF poster system: `/lab/site-2/` and `/lab/poster-2/`).
+  The owner picks one later with labmates. Round 2 also produced parts
+  studied on their own pages (reel, wordmark and covers, method, scaling,
+  gallery, full title, method as navigation).
+- **Plan.** (1) The owner is preparing the real clips and will hand them
+  over. (2) Iterate the serious version with them. (3) Then the playful
+  version. (4) The owner decides with labmates. (5) Promote the chosen
+  design to the homepage.
+- **Ground rule.** Never change a study the owner has already seen,
+  unless they ask for a change to that study. Make a new route next to it
+  so versions can be compared (owner, 2026-10-04:
+  "don't modify the ones that were already there, make new ones so I can
+  compare"). The same goes for shared content: a change for one study must
+  not leak into the others (see `SUBTITLE` versus `FULL_SUBTITLE`).
+- **How to look at everything.** `npm run dev`, then open
+  http://localhost:3000/lab/. That index links every study below. To
+  review the way the owner does, take phone, iPad, laptop and ultrawide
+  screenshots (see "Screenshots").
+- **Before writing anything,** read "Feedback so far" at the end: the owner's
+  taste is specific, and most of it is recorded there in their words.
+
 ## Why
 
 The owner's starting brief, in short:
@@ -19,23 +44,33 @@ The owner's starting brief, in short:
 
 ## Status
 
-| What                                     | Where                               | State          |
-| ---------------------------------------- | ----------------------------------- | -------------- |
-| Scroll-past fix for the current homepage | `app/components/VideoNarrative.tsx` | Done, not live |
-| Lab index                                | `/lab/`                             | Done           |
-| Swiss, light (first study)               | `/lab/swiss/`                       | Earlier study  |
-| Swiss, dark (first study)                | `/lab/swiss-dark/`                  | Earlier study  |
-| Clip layout studies                      | `/lab/clips/`                       | Earlier study  |
-| Poster series (NOF style)                | `/lab/poster/`                      | Earlier study  |
-| Website (NOF style)                      | `/lab/site/`                        | Round 1 study  |
-| **Serious page, round 2**                | **`/lab/swiss-2/`**                 | **Latest**     |
-| **Site page, round 2**                   | **`/lab/site-2/`**                  | **Latest**     |
-| **Poster page, round 2**                 | **`/lab/poster-2/`**                | **Latest**     |
-| Highlight reel (`app/lab/_reel/`)        | `/lab/reel/`                        | Round 2 part   |
-| Wordmark and covers (`app/lab/_cover/`)  | `/lab/cover/`                       | Round 2 part   |
-| Method, paper-accurate (`_method/`)      | `/lab/method/`                      | Round 2 part   |
-| Scaling with clips (`_scaling/`)         | `/lab/scaling/`                     | Round 2 part   |
-| Clip gallery and player (`_gallery/`)    | `/lab/gallery/`                     | Round 2 part   |
+Every study is linked from `/lab/` (`app/lab/page.tsx`), grouped the same
+way as below.
+
+| What                                     | Where                | State                        |
+| ---------------------------------------- | -------------------- | ---------------------------- |
+| Scroll-past fix for the current homepage | `VideoNarrative.tsx` | Done, not live               |
+| **Serious page, round 2** (`_swiss2/`)   | **`/lab/swiss-2/`**  | **Latest, serious track**    |
+| **Site page, round 2** (`_site2/`)       | **`/lab/site-2/`**   | **Latest, playful track**    |
+| **Poster page, round 2** (`_poster2/`)   | **`/lab/poster-2/`** | **Latest, playful track**    |
+| Method as navigation (`_nav/`)           | `/lab/method-nav/`   | Part, round 3, see below     |
+| Full title, six settings (`_title/`)     | `/lab/title/`        | Part, round 3, owner to pick |
+| Highlight reel (`_reel/`)                | `/lab/reel/`         | Part, round 2                |
+| Wordmark and covers (`_cover/`)          | `/lab/cover/`        | Part, round 2                |
+| Method, paper-accurate (`_method/`)      | `/lab/method/`       | Part, round 2                |
+| Scaling with clips (`_scaling/`)         | `/lab/scaling/`      | Part, round 2, needs clips   |
+| Clip gallery and player (`_gallery/`)    | `/lab/gallery/`      | Part, round 2, needs clips   |
+| Swiss, light (first study)               | `/lab/swiss/`        | Earlier study, frozen        |
+| Swiss, dark (first study)                | `/lab/swiss-dark/`   | Earlier study, frozen        |
+| Website, NOF style (`_site/`)            | `/lab/site/`         | Round 1, frozen              |
+| Poster series, NOF style (`_poster/`)    | `/lab/poster/`       | Earlier study, keep intact   |
+| Clip layout studies (`_components/`)     | `/lab/clips/`        | Earlier study, frozen        |
+
+"Part" pages show one piece in several variants, so it can be judged on
+its own before it goes into a page. The round 2 pages import some of them
+(`Swiss2Page` uses `MethodSwiss`, `ScaleCompare`, the gallery and the reel).
+The round 3 parts (`/lab/method-nav/`, `/lab/title/`) are not in any page
+yet.
 
 Nothing on this branch is live. GitHub Pages deploys from `main` only
 (`.github/workflows/deploy.yml`). Once merged, the lab pages are at
@@ -46,14 +81,26 @@ direction is chosen and promoted.
 
 ## Design direction
 
-The latest and most developed study is `/lab/site/`; the owner has not
-picked a direction yet. It follows Neo Neo's identity for Nouvel Opéra
-Fribourg (NOF): the posters and, above all, the NOF website.
+There are two tracks, and each has its own system.
+
+**Serious track: Swiss, light.** Styles in `app/lab/lab.css` (`.swiss`,
+`sw-*` classes, colour tokens `--sw-*`), plus `app/lab/_swiss2/swiss2.css`
+for the round 2 page (`.s2`, page width capped at 1840 px for ultrawide).
+Inter Tight in several weights, near-black on paper (`#fafaf7`), one red
+accent (`--sw-accent: #e4321b`), a 4-column phone grid and a 12-column
+desktop grid (`.sw-grid`), hairline rules, numbered sections ("01
+Summary"), fixed text measures after Kunstmuseum Bern. The owner loves the
+title, the summary layout, the type and the guides and rules of the first
+Swiss study.
+
+**Playful track: the NOF poster system.** It follows Neo Neo's identity
+for Nouvel Opéra Fribourg (NOF): the posters and, above all, the NOF website.
 Neo Neo described that system as "one typeface, a three colour palette and
 a raster system", set in Neue Haas Grotesk, with a rough halftone raster
-that lets low-quality images look intentional.
+that lets low-quality images look intentional. Styles in
+`app/lab/_poster/poster.css` (`.pz`) and `app/lab/_site/site.css` (`.st`).
 
-Rules the pages follow:
+Rules the playful pages follow:
 
 - **One typeface, one weight.** Regular weight at every size, tight
   tracking at large sizes. No bold. Hierarchy comes from size and position.
@@ -62,16 +109,26 @@ Rules the pages follow:
 - **Three inks per section.** Ground, type, raster. Bands of flat colour on
   white, as on the NOF site. Yellow and red come from the simulation itself
   (the goal marker and the robot).
-- **Raster images.** Video and stills are drawn as a coarse halftone in one
-  ink. The video is supporting imagery, not the feature.
+- **Raster images, except evidence.** Stills and decorative video are drawn
+  as a coarse halftone in one ink. Clips that show results are shown
+  unaltered (round 2 feedback).
+
+Rules for both tracks:
+
 - **Plain, factual copy.** Captions and labels state what is shown. No
   slogans, no taglines over video.
 - **No big hero numbers.** The owner reads large bold stats as AI slop.
   Results live in the chart and in running text.
 - **Website first.** Navigation, structure and content matter more than
   video effects.
+- **Clarity over design.** On the method in particular: "We must not let
+  the design get in the way of the clarity of the content."
+- **Every screen size.** Phone, iPad portrait and landscape, laptop and
+  ultrawide (`shoot.mjs` sizes `m`, `t`, `tl`, `d`, `w`).
+- **Co-first authors keep their asterisk** wherever names appear, including
+  the poster's one-line author list (`AUTHOR_LINE`).
 
-What `/lab/site/` contains, top to bottom:
+For reference, round 1's `/lab/site/` contains, top to bottom:
 
 - Black bar with section links. The section in view is underlined; on
   phones the links move to a full-screen menu.
@@ -105,9 +162,10 @@ What `/lab/site/` contains, top to bottom:
   scroll-locked. The fix counts all downward scroll past the end and lets
   those keys move on. Reproduced before and after in a headless browser.
 - **20 s intro.** `public/lab/media/intro.mp4` is the 60 s locomotion run
-  at 3× (4 MB, was 26 MB), labelled as 3× wherever it appears. The lab
-  pages scrub it with native sticky scroll, so the page never locks and a
-  fast flick goes straight past.
+  at 3× (4 MB, was 26 MB), labelled as 3× wherever it appears. The first
+  lab pages scrub it with native sticky scroll. Round 2 replaced it with a
+  highlight reel played as a standard video (`HIGHLIGHTS`, `_reel/`): the
+  owner found that readers flick past scroll-scrubbed video.
 - **Font.** Inter Tight stands in for Neue Haas Grotesk; the owner cut
   the font search short, but worth reconsidering in the future. Swapping is one variable
   (`--font-swiss-display`, loaded in `app/lab/layout.tsx`).
@@ -115,43 +173,121 @@ What `/lab/site/` contains, top to bottom:
   and copies the result into each element's canvas
   (`app/lab/_poster/halftone.ts`). Browsers cap live WebGL contexts at
   about 16, which a clip grid would exceed with one context per video.
-  Without WebGL the plain video shows instead.
+  Without WebGL the plain video shows instead. Static covers use a 2D
+  canvas (`_cover/HalftoneStill.tsx`).
 - **Placeholder clips.** 15 clips cut from the existing videos
   (`public/lab/media/clips/`, 960 px; `clips-sm/`, 384 px for grids) so
   layouts can be judged with real footage. The manifest is `CLIPS` in
-  `app/lab/content.ts`.
+  `app/lab/content.ts`. The highlight reel (`public/lab/media/highlights.mp4`)
+  is cut from the same footage. All of it is replaced when the owner's
+  clips arrive.
 - **Chart redrawn natively.** The scaling results are redrawn as SVG
   instead of the animated video, so the type matches. Baselines share one
   ink and differ by dash pattern. There is a hover readout and a data
   table.
-- **Method schematic.** Each dot is a task configuration sized by success
-  rate; ringed dots are the ones sampled. It is labelled a schematic: the
-  sampling weight in `MethodRaster.tsx` is an illustrative curve that
-  peaks at intermediate success, not the paper's function.
+- **Shared content in one file.** `app/lab/content.ts` holds the title,
+  authors, affiliations, venue, links, BibTeX, clips and reel chapters.
+  `TITLE` and `SUBTITLE` ("Mega-Scale RL for Robot Control") are what the
+  existing pages show. The paper's full subtitle is `FULL_SUBTITLE` (parts
+  in `SUBTITLE_PARTS`); only `/lab/title/` uses it, so it can be compared
+  without changing the other pages. `BIBTEX` cites the full title.
+  `AUTHOR_LINE` adds the co-first asterisk to names.
+- **Method facts.** Taken from the explainer by Rosario Scalise (a
+  co-author; see References), not yet checked against the paper text: a fixed set of
+  N task configurations (N = 32,768), a sliding window of the last H = 100
+  outcomes per configuration giving p̂ (unvisited reads 0), the kernel
+  w = (p̂+ε)^(κt)·(1−p̂+ε)^(κ(1−t)), ℓ = log(w+ε), P = softmax(ℓ/T). The paper
+  uses κ = 1, t = 0.5; locomotion κ = 5, t = 0.66; manipulation ε = 1e-4.
+  The paper's T is not confirmed; the figures use T = 2, the explainer's
+  value. Code: `KERNELS` in `app/lab/_method/sgs.ts`.
+- **"Signal ∝ p(1 − p)" is not a paper claim.** It comes from the
+  explainer, as motivation. The owner found it confusing next to the
+  sampling weight, because it read as if SGS weights by p(1 − p), and it
+  was removed from `/lab/method-nav/`. It is still in `/lab/method/`
+  (`MethodSwiss`, part "where learning happens"), which is frozen; drop it
+  there too if that part is reused.
+- **Method schematic (round 1).** In `/lab/poster/` each dot is a task
+  configuration sized by success rate; ringed dots are the ones sampled.
+  It is labelled a schematic: the sampling weight in `MethodRaster.tsx` is
+  an illustrative curve that peaks at intermediate success, not the
+  paper's function. Round 2's `_method/` replaced it with the paper's
+  kernel.
+- **Method as navigation (`/lab/method-nav/`, `app/lab/_nav/`).** The
+  owner asked for the method as the explainer frames it: a navigation task
+  with walls, one start, and goals as the task configurations, instead of
+  abstract dots. A: three parts (the task; how SGS picks; training live).
+  B: one live figure and a link to the explainer. Choices behind it:
+  - Own code and own maze (18 × 10, three rooms, 158 goals). Only the
+    explainer's setup and the paper's sampler carry over.
+  - The learner is a stand-in for PPO, stated on the page: each goal has a
+    success rate σ(z) that starts high near the start and falls with path
+    length; an episode moves its goal's z by rate · |o − p| and its maze
+    neighbours' by a share of that. This keeps a sharp edge between
+    reached and unreached goals, which reads well.
+  - The figures use κ = 10 (`TOY` in `_nav/nav.ts`): on 158 goals the
+    paper's κ = 1 prefers the frontier too gently to see. The page says so.
+  - ε = 1e-6, raised from 1e-8 at the owner's request, so the picking
+    figure shows that goals off the frontier are still sampled (a goal
+    always or never reached is about 22× less likely than one at the
+    target; together they get about half the picks).
+  - No live SGS-versus-uniform race. In a maze this small the outcome
+    depends on the toy's settings, and uniform won in several. The page
+    compares where each sampler's picks go on one snapshot instead. The
+    real comparison is the Results chart.
+  - The robots' motion is scripted, not simulated: the outcome is a coin
+    flip with the goal's success rate; a failing robot slides to a random
+    point 30–95% along its path and jiggles. The owner noticed it looks
+    unnatural. A fix (point-mass motion with noise, outcome unchanged) is
+    proposed but deferred until after the clips.
+- **Full title (`/lab/title/`).** Six ways to fit "A Balanced Data Diet:
+  Addressing the Exploration Bottleneck in Mega-Scale RL for Robot
+  Control" on a first screen, emphasising "Exploration Bottleneck": T1–T3
+  serious (two tiers, one block in two weights, split), T4–T5 poster (four
+  sizes, vertical), T6 Site header. Font sizes are capped by both viewport
+  width and height so each holds from phone to ultrawide.
 
 ## Needs the owner's attention
 
 Inputs only the owner can give:
 
-- [ ] **Pick a direction.** `/lab/site/` is the latest study; say what to
-      keep from `/lab/poster/` and the Swiss studies.
-- [x] **Authors, affiliations, venue (CoRL 2026), BibTeX**: `AUTHORS`,
-      `AFFILIATIONS`, `VENUE`, `BIBTEX` in `app/lab/content.ts`.
+- [ ] **Real clips (in progress: the owner is preparing them).** Where
+      they go:
+  - Clip collection (gallery, clip index, quilt): one entry per clip in
+    `CLIPS` in `app/lab/content.ts`, plus a 960 px MP4 in
+    `public/lab/media/clips/`, a 384 px MP4 in `clips-sm/` and a poster
+    JPG. Encoding commands: top of `app/lab/_scaling/clips.ts` (same
+    settings).
+  - Scaling clips: one ~5 s clip per task × method × scale shown in the
+    results chart, 27 in all, named `{task}-{method}-{scale}.mp4` in
+    `public/lab/media/scaling/`. Convention and list in
+    `app/lab/_scaling/clips.ts`; add each id to `RECORDED` when it lands.
+  - Highlight reel: 15–30 s, 1–5 s per robot, as one MP4 plus its chapter
+    list (`HIGHLIGHTS` in `content.ts`: start time, robot, title, clip).
+- [ ] **Pick a direction**, after both tracks are iterated with the real
+      clips: serious (`/lab/swiss-2/`) or playful (`/lab/site-2/`,
+      `/lab/poster-2/`), with labmates' feedback.
+- [ ] **Pick a full-title setting** from `/lab/title/` (T1–T6), or none.
+- [ ] **Method on the site:** version A or B from `/lab/method-nav/`, the
+      round 2 method, or a link to the explainer.
 - [ ] **Paper and code links** (`LINKS` in `app/lab/content.ts`, still `#`).
-- [ ] **Facts to check** (all in `app/lab/content.ts` unless noted):
-  - Terrain names (`TERRAINS`), guessed from the footage.
-  - Robot names: ANYmal, Franka, "UR arm". Guessed from the footage.
+- [ ] **Facts to check** (in `app/lab/content.ts` unless noted):
+  - The paper's softmax temperature T, N for each task, and κ and t for
+    manipulation (`KERNELS` in `app/lab/_method/sgs.ts`).
+  - Whether the paper says anything like "signal ∝ p(1 − p)" (see
+    Decisions).
+  - Terrain names (`TERRAINS`) and robot names (ANYmal, Franka, "UR arm"),
+    guessed from the footage.
+  - Wording of "keeps improving past one million parallel environments"
+    and "transferred to a physical arm".
   - Scaling values: the labelled endpoints (0.72, 0.60, 0.62, 0.08, 0.00)
     are read off the figure exactly; intermediate points are read by eye.
-    Replace with numbers from the paper.
-  - "Prior work ≈ 64K" and "16×" come from the figure.
-  - The method animation marks `t = 0.66` on its sampling-weight curve,
-    while the old site says configurations solved "about half the time".
-    The lab copy says "intermediate success"; confirm the right phrasing.
+    Replace with numbers from the paper. "Prior work ≈ 64K" and "16×" come
+    from the figure.
+  - The list of facts on `/lab/poster-2/` (the owner may hand-curate it).
   - The summary paragraph and entry descriptions are drafts built from the
     old site's own claims.
-- [ ] **Real clips.** Supply the actual clip collection; each clip needs an
-      entry in `CLIPS` plus a 960 px MP4, a 384 px MP4 and a poster JPG.
+- [x] **Authors, affiliations, venue (CoRL 2026), BibTeX**: `AUTHORS`,
+      `AFFILIATIONS`, `VENUE`, `BIBTEX` in `app/lab/content.ts`.
 - [ ] **Font licence**, if the real Neue Haas Grotesk is wanted.
 - [ ] **Merge to `main`** when ready to see the lab pages live.
 - [ ] **CI Node version.** The deploy workflow runs Node 20, now past end
@@ -159,28 +295,40 @@ Inputs only the owner can give:
 
 ## References
 
-`docs/research/swiss-references.md` covers Neo Neo's projects (NOF,
-Faire, Théâtre Public Montreuil, ON, Act–Art), the NOF website as Neo Neo
-built it (no longer live; studied through the Wayback Machine) and three
-Swiss museum sites, with measured type sizes, colours and techniques. The
-images it cites are local only, under `previews/research/` (git-ignored);
-on a machine without them, rerun the research from the URLs in the doc.
+- **Swiss and NOF references.** `docs/research/swiss-references.md`
+  covers Neo Neo's projects (NOF, Faire, Théâtre Public Montreuil, ON,
+  Act–Art), the NOF website as Neo Neo built it (no longer live; studied
+  through the Wayback Machine) and three Swiss museum sites (Kunsthaus
+  Zürich, Kunstmuseum Basel, Kunstmuseum Bern), with measured type sizes,
+  colours and techniques. The images it cites are local only, under
+  `previews/research/` (git-ignored); on a machine without them, rerun the
+  research from the URLs in the doc.
+- **The method explainer.** Rosario Scalise, "Success Guided Sampling",
+  https://rosarioscalise.com/garage-success-guided-sampling (source:
+  https://github.com/romesco/portfolio, `website/pages/garage-success-guided-sampling.md`).
+  A point robot in a gridworld: one start, every free cell a goal, the
+  paper's kernel, with interactive figures. Rosario is a co-author and the
+  owner works with him daily; the owner cleared using it. His repository's
+  licence asks to be asked before reusing its design or code, so the lab
+  pages take only its content (the setup and the paper's sampler) and
+  reuse none of its code or styling. Keep it that way.
 
 ## Unexplored
 
 - Testing on a real iPhone. Everything was checked in headless Chromium
-  only. Scroll scrubbing and WebGL halftones on iOS Safari are untested on
-  a device.
+  and desktop Chrome only. Scroll behaviour and WebGL halftones on iOS
+  Safari are untested on a device.
+- Physical motion for the navigation toy (see Decisions).
 - Promoting a design to the homepage (replace `app/page.tsx`, retire the
   old components and the 60 s video).
 - Media pipeline for many clips: a script to cut, encode and poster new
   clips; Git LFS or external hosting if the collection grows (lab media
-  already adds about 14 MB to the repo).
+  already adds about 16 MB to the repo).
 - Clip index filters and per-clip metadata beyond robot, domain and speed.
 - Social card (Open Graph image), favicon, page titles for the final site.
 - Accessibility pass: contrast of text on coloured bands, keyboard paths
-  through the clip index, screen-reader labels for the schematic.
-- Dark mode, phone landscape, very short screens.
+  through the clip index, screen-reader labels for the method figures.
+- Dark mode for the round 2 pages, phone landscape, very short screens.
 
 ## Code map
 
@@ -188,26 +336,38 @@ on a machine without them, rerun the research from the URLs in the doc.
 app/
   components/VideoNarrative.tsx  homepage intro (scroll fix only)
   lab/
-    layout.tsx                   lab font, noindex metadata
-    page.tsx                     /lab/ index of studies
-    content.ts                   shared content, placeholders, clip list
-    lab.css                      Swiss study styles
-    _components/                 Swiss studies and /lab/clips layouts
-    _poster/                     NOF poster system
+    layout.tsx                   lab fonts, noindex metadata
+    page.tsx                     /lab/ index of studies (add new ones here)
+    content.ts                   shared content: title, authors, links,
+                                 BibTeX, clips, reel chapters
+    lab.css                      Swiss system (.swiss, sw-*)
+    _components/                 first Swiss studies, /lab/clips layouts
+    _poster/                     NOF poster system (round 1)
       halftone.ts                shared WebGL halftone renderer
       HalftoneVideo.tsx          video or poster drawn as halftone
-      PosterHero.tsx             scroll-scrubbed hero for /lab/poster
-      MethodRaster.tsx           animated method schematic
-      PosterChart.tsx            scaling chart ("poster" and "web" variants)
+      MethodRaster.tsx           method schematic (illustrative)
+      PosterChart.tsx            scaling chart ("poster" and "web")
       ClipQuilt.tsx              mosaic clip grid
       PosterPage.tsx, poster.css, palettes.ts
-    _site/                       /lab/site (latest study)
-      SitePage.tsx               page composition and placeholders
-      SiteNav.tsx                top bar, section tracking, phone menu
-      ClipIndex.tsx              typographic clip index with preview
-      CopyBlock.tsx, site.css
-    swiss/ swiss-dark/ clips/ poster/ site/   route entry points
-public/lab/media/                intro, clips, clips-sm, 960 px videos
+    _site/                       /lab/site (round 1)
+    _swiss2/                     /lab/swiss-2 page, Section, Nav, swiss2.css
+    _site2/                      /lab/site-2 page
+    _poster2/                    /lab/poster-2 page
+    _reel/                       HighlightReel: plain video with chapters
+    _cover/                      Wordmark (v1–v6), Cover (c1–c5),
+                                 HalftoneStill, SiteHeader
+    _method/                     paper method: sgs.ts (simulation and
+                                 kernel), MethodSwiss/Site/Poster, figures
+    _scaling/                    ScaleCompare, PointToClip, ClipMatrix,
+                                 clips.ts (scaling clip list)
+    _gallery/                    ClipGallery, RobotGrid, ClipWall,
+                                 QuiltSeparator, player
+    _title/                      TitleStudy, title.css (/lab/title)
+    _nav/                        method as navigation (/lab/method-nav):
+                                 nav.ts (maze, learner, sampler), draw.ts,
+                                 TaskFigure, SnapshotFigure, TrainFigure
+    <route>/page.tsx             one folder per study route
+public/lab/media/                intro, highlights, clips, clips-sm, covers
 scripts/lab/                     review tooling (below)
 ```
 
@@ -279,6 +439,7 @@ npm run dev
 
 Open http://localhost:3000/ for the current homepage and
 http://localhost:3000/lab/ for the design studies. Pages reload on save.
+If port 3000 is taken, pick another: `npx next dev -p 3100`.
 
 ### Production build
 
@@ -353,6 +514,29 @@ build wipes `out/`; its transcodes are cached, so later runs are quick. If
 Playwright lives somewhere other than the project's `node_modules`, set
 `PLAYWRIGHT_MODULE` to its entry point.
 
+Quicker on a Mac with Google Chrome: shoot the dev server with the system
+browser, which plays H.264, so no build and no WebM copies are needed.
+`playwright-core` can live anywhere (here in a scratch folder):
+
+```sh
+npm install --prefix /tmp/pw playwright-core@1.63.0
+npx next dev -p 3100 &
+PLAYWRIGHT_MODULE=/tmp/pw/node_modules/playwright-core/index.mjs \
+PLAYWRIGHT_CHANNEL=chrome BASE_URL=http://localhost:3100 \
+node scripts/lab/shoot.mjs previews/round '[
+  {"name":"swiss2-m","size":"m","url":"/lab/swiss-2/"},
+  {"name":"swiss2-w","size":"w","url":"/lab/swiss-2/"},
+  {"name":"nav-step2-d","size":"d","url":"/lab/method-nav/","sel":"#step-2"}
+]'
+```
+
+Sizes: `m` phone 390×844, `t` iPad portrait 820×1180, `tl` iPad landscape
+1180×820, `d` laptop 1440×900, `w` ultrawide 2560×1080. Animated figures
+(method, training) only run while on screen, so shoot them with `sel`
+rather than as part of a full-page shot. Useful anchors: `#step-1` to
+`#step-3` and `#b` on `/lab/method-nav/`, `#t1` to `#t6` on `/lab/title/`.
+Look at every shot before sending it.
+
 ## Feedback so far
 
 What the owner has said, to keep later work on course:
@@ -426,3 +610,32 @@ one later with feedback from labmates.
 - Study neoneo.ch (NOF, Faire, Théâtre Public Montreuil, ON catalogue, Act
   Art) and Swiss museum sites (Kunsthaus Zürich, Kunstmuseum Basel,
   Kunstmuseum Bern), the neoneo work above all.
+
+### Round 3 (owner on a laptop, 2026-10-04, after round 2)
+
+- Real authors and affiliations, venue CoRL 2026. Co-first authors always
+  carry their asterisk, "even if you don't mention it, e.g. in the Poster
+  version".
+- Asked whether the full title fits ("A Balanced Data Diet: Addressing the
+  Exploration Bottleneck in Mega-Scale RL for Robot Control", possibly
+  emphasising "exploration" or "Exploration Bottleneck"): "find one or
+  multiple ways to make this work, before we settle down on some options".
+  Built as `/lab/title/`; no pick yet.
+- "Don't modify the ones that were already there, make new ones so I can
+  compare." (The ground rule in "Start here".)
+- Method: look at Rosario's explainer. It is a navigation example, with
+  walls, one start, and goals as what is picked, not random dots. The
+  round 2 method figures are "a bit too crowded" and do not show that it
+  is navigation. "We must not let the design get in the way of the
+  clarity of the content." Undecided between putting the method on the
+  site and linking to the explainer; asked for a Swiss version. Built as
+  `/lab/method-nav/`.
+- On `/lab/method-nav/`: drop the p(1 − p) part (it read as the sampling
+  weight); raise ε so the figure shows that not only the frontier is
+  sampled; say "target success rate" in words instead of "p̂ = t". All
+  done.
+- Noticed that failing robots slide most of the way and then stall in a
+  scripted way. Explained (see Decisions); a physical-motion fix is
+  deferred.
+- Next: the owner hands over all the clips; then iterate the serious
+  version, then the playful one.

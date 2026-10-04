@@ -1,0 +1,234 @@
+/* /lab/title: ways to set the full title. Sizes are capped by both the
+   viewport width and height, so each study holds from phone to ultrawide. */
+
+.tt-intro-title {
+  font-size: clamp(1.5rem, 3.4vw, 3rem);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+}
+.tt-label {
+  height: 30px;
+  background: #000;
+  color: #fff;
+}
+.tt-screen {
+  min-height: calc(100svh - 30px);
+}
+.tt-focus {
+  font-style: normal;
+  color: var(--sw-accent);
+}
+
+/* T1: two tiers. */
+.tt-t1-lead {
+  font-size: 15vw;
+}
+.tt-t1-sub {
+  margin-top: 0.45em;
+  max-width: 26em;
+  font-size: clamp(1.6rem, 3.6vw, 3.6rem);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+}
+
+/* T2: one block, two weights. */
+.tt-t2 {
+  font-size: 11vw;
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+  color: var(--sw-mute);
+}
+.tt-t2 b {
+  font-weight: 600;
+  color: var(--sw-fg);
+}
+
+/* T3: split. */
+.tt-t3-lead {
+  font-size: 17vw;
+}
+.tt-t3-pre {
+  font-size: clamp(1rem, 1.4vw, 1.5rem);
+  font-weight: 500;
+}
+.tt-t3-focus {
+  font-size: 12vw;
+  font-weight: 600;
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  color: var(--sw-accent);
+}
+.tt-t3-post {
+  margin-top: 0.3em;
+  font-size: clamp(1.25rem, 2vw, 2.25rem);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+@media (min-width: 768px) {
+  .tt-t1-lead {
+    font-size: min(8.4vw, 15svh, 11rem);
+  }
+  .tt-t2 {
+    font-size: min(5.6vw, 10svh, 8rem);
+  }
+  .tt-t3-lead {
+    font-size: min(9vw, 17svh, 13rem);
+  }
+  .tt-t3-focus {
+    font-size: min(4.4vw, 8svh, 6rem);
+  }
+}
+
+/* Posters: a fixed first screen with the type pinned over a still raster. */
+.tt-poster {
+  position: relative;
+  overflow: hidden;
+  height: calc(100svh - 30px);
+  min-height: 34rem;
+}
+.tt-pin {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0 var(--m) var(--m);
+}
+.tt-pin > h2 {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  position: relative;
+}
+.tt-ptop {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.25rem 1.5rem;
+  padding-top: 10px;
+}
+.tt-ptop > :first-child {
+  flex: 1 1 18rem;
+  max-width: 40rem;
+}
+
+/* T4: four sizes. */
+.tt-p4 {
+  background: #f3e21d;
+  color: #e8412b;
+}
+.tt-s2 {
+  margin-top: 0.25em;
+  font-size: 12vw;
+  line-height: 0.9;
+  letter-spacing: -0.045em;
+}
+.tt-s3 {
+  margin-top: auto;
+  font-size: clamp(1rem, 2.2vw, 2rem);
+  letter-spacing: -0.02em;
+}
+.tt-s1 {
+  font-size: 16vw;
+  line-height: 0.84;
+  letter-spacing: -0.055em;
+}
+.tt-s3b {
+  margin-top: 0.35em;
+  font-size: clamp(1.4rem, 4.2vw, 4.4rem);
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+@media (min-width: 768px) {
+  .tt-s2 {
+    font-size: min(7.4vw, 12svh, 10rem);
+  }
+  .tt-s1 {
+    font-size: min(15vw, 24svh, 20rem);
+  }
+  .tt-s3b {
+    font-size: min(4.2vw, 6.5svh, 5rem);
+  }
+}
+
+/* T5: vertical, after Don Pasquale. */
+.tt-p5 {
+  background: #f5c5cf;
+  color: #e2231a;
+}
+.tt-p5-raster {
+  left: 0;
+  right: 18%;
+  top: 30%;
+  bottom: 22%;
+}
+.tt-p5-lead {
+  margin-top: 0.2em;
+  font-size: 13vw;
+  line-height: 0.86;
+  letter-spacing: -0.05em;
+}
+.tt-p5-pre {
+  margin-top: 0.6em;
+  font-size: clamp(1rem, 2vw, 1.8rem);
+  letter-spacing: -0.02em;
+}
+.tt-p5-post {
+  margin-top: auto;
+  font-size: clamp(1.3rem, 3.4vw, 3.6rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.tt-p5-vert {
+  position: absolute;
+  top: 0.15em;
+  right: 0;
+  writing-mode: vertical-rl;
+  white-space: nowrap;
+  font-size: calc((100svh - 30px - 5rem) / 11.4);
+  line-height: 0.86;
+  letter-spacing: -0.05em;
+}
+@media (min-width: 768px) {
+  .tt-p5-raster {
+    right: 30%;
+    top: 32%;
+    bottom: 18%;
+  }
+  .tt-p5-lead {
+    font-size: min(9vw, 15svh, 12rem);
+  }
+  .tt-p5-post {
+    font-size: min(3.4vw, 6svh, 3.6rem);
+  }
+}
+/* Landscape: one word per column, so each can be twice the size. */
+@media (min-aspect-ratio: 1/1) {
+  .tt-p5-vert {
+    font-size: calc((100svh - 30px - 4rem) / 5.7);
+  }
+  .tt-p5-vert > span {
+    display: block;
+  }
+}
+
+/* T6: Site header. */
+.tt-p6-title {
+  font-size: clamp(1.45rem, 4.2vw, 3.1rem);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+}
+.tt-coral {
+  color: #ff6464;
+}
+/* Very wide screens: keep the raster box near square so the robot fits. */
+@media (min-aspect-ratio: 2/1) {
+  .tt-p5-raster {
+    left: 24%;
+    right: 50%;
+  }
+}

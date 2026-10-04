@@ -29,6 +29,16 @@ const GROUPS: [string, Study[]][] = [
     "Round 2: parts",
     [
       [
+        "/lab/method-nav/",
+        "Method as navigation",
+        "The method on a maze, after Rosario's explainer: three steps (A), or one live figure with a link out (B).",
+      ],
+      [
+        "/lab/title/",
+        "Full title",
+        "Six ways to set the full title, Exploration Bottleneck emphasised: three serious, three playful.",
+      ],
+      [
         "/lab/reel/",
         "Highlight reel",
         "The short reel as a standard video with chapters by robot.",
