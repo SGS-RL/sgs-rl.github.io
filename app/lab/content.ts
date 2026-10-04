@@ -5,6 +5,43 @@
 export const TITLE = "A Balanced Data Diet";
 export const SUBTITLE = "Mega-Scale RL for Robot Control";
 
+// [name, affiliation numbers]; * marks co-first authors.
+export const AUTHORS: [string, string][] = [
+  ["Octi Zhang", "1*"],
+  ["Mateo Guaman Castro", "2*"],
+  ["Patrick Yin", "2*"],
+  ["Ignacio Dagnigo", "3"],
+  ["Abhishek Gupta", "2"],
+  ["Rosario Scalise", "2"],
+  ["Byron Boots", "2"],
+];
+export const AFFILIATIONS = [
+  "NVIDIA",
+  "University of Washington",
+  "Independent Researcher",
+];
+export const EQUAL = "*Equal contribution";
+// Co-first authors keep their asterisk wherever names appear.
+export const AUTHOR_LINE = AUTHORS.map(
+  ([name, aff]) => name + (aff.includes("*") ? "*" : ""),
+).join(", ");
+// "Mateo Guaman Castro" -> "Guaman Castro, Mateo"; three names per line
+// so the BibTeX fits its box.
+const bibName = (name: string) => {
+  const [first, ...last] = name.split(" ");
+  return `${last.join(" ")}, ${first}`;
+};
+const bibAuthors = AUTHORS.map(([name]) => bibName(name))
+  .reduce<string[][]>((rows, n, i) => {
+    if (i % 3 === 0) rows.push([]);
+    rows[rows.length - 1].push(n);
+    return rows;
+  }, [])
+  .map((row) => row.join(" and "))
+  .join(" and\n" + " ".repeat(15));
+
+export const VENUE = "CoRL 2026";
+
 export const LINKS = {
   paper: "#",
   code: "#",
@@ -173,3 +210,10 @@ export const CLIPS: Clip[] = [
   clip("real-01", "Block insertion", "UR arm", "Manipulation", "Real", "3×"),
   clip("real-02", "Block insertion", "UR arm", "Manipulation", "Real", "3×"),
 ];
+
+export const BIBTEX = `@inproceedings{sgs,
+  title     = {${TITLE}: ${SUBTITLE}},
+  author    = {${bibAuthors}},
+  booktitle = {Conference on Robot Learning (CoRL)},
+  year      = {2026}
+}`;

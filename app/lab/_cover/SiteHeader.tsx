@@ -1,4 +1,11 @@
-import { LINKS, SUBTITLE, TITLE } from "../content";
+import {
+  LINKS,
+  SUBTITLE,
+  TITLE,
+  AFFILIATIONS,
+  AUTHORS,
+  EQUAL,
+} from "../content";
 import Wordmark, { type WordmarkVariant } from "./Wordmark";
 
 // Header cap: the mark is 0.7275em tall, and below it the title block needs
@@ -31,19 +38,21 @@ export function SiteHeader({
         </h1>
         <div className="pz-small col-span-6 flex flex-col gap-3 md:col-span-4 md:pt-1">
           <p>
-            {["1", "1", "1, 2", "2"].map((aff, i) => (
+            {AUTHORS.map(([name, aff], i) => (
               <span key={i} className="inline-block whitespace-nowrap pr-3">
-                Firstname Lastname<sup>{aff}</sup>
+                {name}
+                <sup>{aff}</sup>
               </span>
             ))}
           </p>
           <p className="text-black/60">
-            <span className="pr-3">
-              <sup>1</sup>Affiliation
-            </span>
-            <span className="pr-3">
-              <sup>2</sup>Affiliation
-            </span>
+            {AFFILIATIONS.map((a, i) => (
+              <span key={i} className="inline-block whitespace-nowrap pr-3">
+                <sup>{i + 1}</sup>
+                {a}
+              </span>
+            ))}
+            <span className="inline-block whitespace-nowrap pr-3">{EQUAL}</span>
           </p>
           <p className="flex gap-4">
             <a href={LINKS.paper} className="cv-link">

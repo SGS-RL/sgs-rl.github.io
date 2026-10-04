@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from "react";
-import { LINKS } from "../content";
+import { LINKS, AUTHOR_LINE, VENUE } from "../content";
 import HalftoneStill from "./HalftoneStill";
 import Wordmark from "./Wordmark";
 import "./cover.css";
@@ -17,11 +17,6 @@ export const STILLS = {
   // The robot from the pit frame, cut out onto white.
   cutout: { src: "/lab/media/cover/robot-cutout.jpg", robot: [0.5, 0.5] },
 } as const satisfies Record<string, { src: string; robot: [number, number] }>;
-
-// Placeholders until the paper is public.
-const AUTHORS =
-  "Firstname Lastname, Firstname Lastname, Firstname Lastname, Firstname Lastname";
-const VENUE = "Venue, year";
 
 type Inks = { ground: string; type: string; raster: string };
 
@@ -106,7 +101,7 @@ function CoverClose({ inks }: { inks: Inks }) {
         className="cv-c1-raster cv-c1-raster-l !absolute"
       />
       <div className="cv-c1-top pz-grid pz-small relative">
-        <p className="col-span-4 md:col-span-6">{AUTHORS}</p>
+        <p className="col-span-4 md:col-span-6">{AUTHOR_LINE}</p>
         <p className="hidden md:col-span-3 md:block">{VENUE}</p>
         <p className="col-span-2 text-right md:col-span-3">
           <Links />
@@ -188,7 +183,7 @@ function CoverJournal({ inks }: { inks: Inks }) {
       </h1>
       <div className="cv-c2-foot">
         <p className="cv-c2-meta pz-small">
-          <span>{AUTHORS}</span>
+          <span>{AUTHOR_LINE}</span>
           <Links />
         </p>
         <div className="cv-c2-mark" style={{ color: inks.raster }}>
@@ -219,7 +214,7 @@ function CoverSplit({ inks }: { inks: Inks }) {
         <p className="col-span-3 md:col-span-3">
           Success-Guided Sampling (SGS)
         </p>
-        <p className="hidden md:col-span-6 md:block">{AUTHORS}</p>
+        <p className="hidden md:col-span-6 md:block">{AUTHOR_LINE}</p>
         <p className="col-span-3 text-right md:col-span-3">
           <Links />
         </p>
@@ -280,7 +275,7 @@ function CoverPanels({ inks }: { inks: Inks }) {
       </div>
       <div className="cv-c4-foot">
         <p className="cv-c4-meta pz-small">
-          <span>{AUTHORS}</span>
+          <span>{AUTHOR_LINE}</span>
           <Links />
         </p>
         <div className="cv-c4-mark">
@@ -318,7 +313,7 @@ function CoverObject({ inks }: { inks: Inks }) {
       </div>
       <div className="cv-c5-foot">
         <p className="cv-c5-meta pz-small">
-          <span>{AUTHORS}</span>
+          <span>{AUTHOR_LINE}</span>
           <span>{VENUE}</span>
           <Links />
         </p>

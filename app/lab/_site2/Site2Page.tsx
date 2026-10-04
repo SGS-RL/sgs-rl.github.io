@@ -1,5 +1,14 @@
 import type { CSSProperties, ReactNode } from "react";
-import { CLIPS, LINKS, SUBTITLE, TITLE } from "../content";
+import {
+  CLIPS,
+  LINKS,
+  SUBTITLE,
+  TITLE,
+  AFFILIATIONS,
+  AUTHORS,
+  EQUAL,
+  BIBTEX,
+} from "../content";
 import { ClipGallery } from "../_gallery";
 import MethodSite from "../_method/MethodSite";
 import ScaleCompare from "../_scaling/ScaleCompare";
@@ -11,22 +20,6 @@ import ClipIndex from "./ClipIndex";
 import { FooterMark, HeaderMark } from "./Mark";
 import Stills, { type Still } from "./Stills";
 import "./site2.css";
-
-// Placeholders until the paper is public: names, affiliations and venue
-// are not known to this page yet.
-const AUTHORS = [
-  ["Firstname Lastname", "1"],
-  ["Firstname Lastname", "1"],
-  ["Firstname Lastname", "1, 2"],
-  ["Firstname Lastname", "2"],
-];
-const AFFILIATIONS = ["Affiliation", "Affiliation"];
-const BIBTEX = `@article{sgs,
-  title   = {${TITLE}: ${SUBTITLE}},
-  author  = {...},
-  journal = {...},
-  year    = {...}
-}`;
 
 const count = (cat: string) => CLIPS.filter((c) => c.category === cat).length;
 
@@ -122,11 +115,14 @@ export default function Site2Page() {
               </p>
               <p className="text-black/60">
                 {AFFILIATIONS.map((a, i) => (
-                  <span key={i} className="pr-3">
+                  <span key={i} className="inline-block whitespace-nowrap pr-3">
                     <sup>{i + 1}</sup>
                     {a}
                   </span>
                 ))}
+                <span className="inline-block whitespace-nowrap pr-3">
+                  {EQUAL}
+                </span>
               </p>
               <p className="flex gap-4">
                 <a href={LINKS.paper} className="st-link">

@@ -135,9 +135,9 @@ Inputs only the owner can give:
 
 - [ ] **Pick a direction.** `/lab/site/` is the latest study; say what to
       keep from `/lab/poster/` and the Swiss studies.
-- [ ] **Real content.** Authors, affiliations, venue and BibTeX
-      (placeholders in `app/lab/_site/SitePage.tsx`). Paper and code links
-      (`LINKS` in `app/lab/content.ts`, currently `#`).
+- [x] **Authors, affiliations, venue (CoRL 2026), BibTeX**: `AUTHORS`,
+      `AFFILIATIONS`, `VENUE`, `BIBTEX` in `app/lab/content.ts`.
+- [ ] **Paper and code links** (`LINKS` in `app/lab/content.ts`, still `#`).
 - [ ] **Facts to check** (all in `app/lab/content.ts` unless noted):
   - Terrain names (`TERRAINS`), guessed from the footage.
   - Robot names: ANYmal, Franka, "UR arm". Guessed from the footage.

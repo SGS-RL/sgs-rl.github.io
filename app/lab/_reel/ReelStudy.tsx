@@ -1,18 +1,17 @@
 import type { CSSProperties, ReactNode } from "react";
-import { LINKS, SUBTITLE, TITLE } from "../content";
+import {
+  LINKS,
+  SUBTITLE,
+  TITLE,
+  AFFILIATIONS,
+  AUTHORS,
+  EQUAL,
+  VENUE,
+} from "../content";
 import Section from "../_components/Section";
 import SwissHeader from "../_components/SwissHeader";
 import "../_poster/poster.css";
 import HighlightReel from "./HighlightReel";
-
-// Placeholders until the paper is public (as on /lab/site/).
-const AUTHORS: [string, string][] = [
-  ["Firstname Lastname", "1"],
-  ["Firstname Lastname", "1"],
-  ["Firstname Lastname", "1, 2"],
-  ["Firstname Lastname", "2"],
-];
-const AFFILIATIONS = ["Affiliation", "Affiliation"];
 
 const SUMMARY =
   "Success-Guided Sampling (SGS) allocates parallel simulation across task configurations by the policy’s current success rate. With it, reinforcement learning keeps improving past one million parallel environments, for legged locomotion and contact-rich manipulation.";
@@ -68,12 +67,13 @@ function SwissOpening({ v }: { v: Variant }) {
           </p>
           <p className="sw-label mt-2 text-sw-mute">
             {AFFILIATIONS.map((a, i) => (
-              <span key={i} className="pr-4">
+              <span key={i} className="inline-block whitespace-nowrap pr-4">
                 <sup>{i + 1}</sup>
                 {a}
               </span>
             ))}
-            <span>Venue, year (check)</span>
+            <span className="inline-block whitespace-nowrap pr-4">{EQUAL}</span>
+            <span className="inline-block whitespace-nowrap">{VENUE}</span>
           </p>
         </div>
         <p className="col-span-full flex gap-5 whitespace-nowrap text-base md:col-span-8 md:col-start-5 md:text-lg lg:col-span-3 lg:col-start-auto lg:justify-end">

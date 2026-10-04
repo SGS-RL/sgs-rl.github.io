@@ -3,27 +3,21 @@ import { ClipGallery, ClipWall, RobotGrid } from "../_gallery";
 import MethodSwiss from "../_method/MethodSwiss";
 import HighlightReel from "../_reel/HighlightReel";
 import ScaleCompare from "../_scaling/ScaleCompare";
-import { CLIPS, LINKS, SUBTITLE, TITLE } from "../content";
+import {
+  CLIPS,
+  LINKS,
+  SUBTITLE,
+  TITLE,
+  AFFILIATIONS,
+  AUTHORS,
+  EQUAL,
+  BIBTEX,
+  VENUE,
+} from "../content";
 import CopyBlock from "./CopyBlock";
 import Nav from "./Nav";
 import Section from "./Section";
 import "./swiss2.css";
-
-// Placeholders until the paper is public (as on /lab/site/).
-const AUTHORS: [string, string][] = [
-  ["Firstname Lastname", "1"],
-  ["Firstname Lastname", "1"],
-  ["Firstname Lastname", "1, 2"],
-  ["Firstname Lastname", "2"],
-];
-const AFFILIATIONS = ["Affiliation", "Affiliation"];
-
-const BIBTEX = `@article{sgs,
-  title   = {${TITLE}: ${SUBTITLE}},
-  author  = {...},
-  journal = {...},
-  year    = {...}
-}`;
 
 const ROBOTS = new Set(CLIPS.map((c) => c.robot)).size;
 
@@ -56,12 +50,13 @@ function Opening() {
           </p>
           <p className="sw-label mt-2 text-sw-mute">
             {AFFILIATIONS.map((a, i) => (
-              <span key={i} className="pr-4">
+              <span key={i} className="inline-block whitespace-nowrap pr-4">
                 <sup>{i + 1}</sup>
                 {a}
               </span>
             ))}
-            <span>Venue, year (check)</span>
+            <span className="inline-block whitespace-nowrap pr-4">{EQUAL}</span>
+            <span className="inline-block whitespace-nowrap">{VENUE}</span>
           </p>
         </div>
         <p

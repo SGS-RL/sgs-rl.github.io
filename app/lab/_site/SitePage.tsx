@@ -1,5 +1,15 @@
 import type { CSSProperties, ReactNode } from "react";
-import { CLIPS, LINKS, METHOD_STEPS, SUBTITLE, TITLE } from "../content";
+import {
+  CLIPS,
+  LINKS,
+  METHOD_STEPS,
+  SUBTITLE,
+  TITLE,
+  AFFILIATIONS,
+  AUTHORS,
+  EQUAL,
+  BIBTEX,
+} from "../content";
 import HalftoneVideo from "../_poster/HalftoneVideo";
 import MethodRaster from "../_poster/MethodRaster";
 import PosterChart from "../_poster/PosterChart";
@@ -9,22 +19,6 @@ import ClipIndex from "./ClipIndex";
 import CopyBlock from "./CopyBlock";
 import SiteNav from "./SiteNav";
 import "./site.css";
-
-// Placeholders until the paper is public: names, affiliations and venue
-// are not known to this page yet.
-const AUTHORS = [
-  ["Firstname Lastname", "1"],
-  ["Firstname Lastname", "1"],
-  ["Firstname Lastname", "1, 2"],
-  ["Firstname Lastname", "2"],
-];
-const AFFILIATIONS = ["Affiliation", "Affiliation"];
-const BIBTEX = `@article{sgs,
-  title   = {${TITLE}: ${SUBTITLE}},
-  author  = {...},
-  journal = {...},
-  year    = {...}
-}`;
 
 const SETUP: [string, string, string][] = [
   ["Policy", "Markovian MLP, 4–8 layers", "No transformer, no LSTM"],
@@ -155,11 +149,14 @@ export default function SitePage() {
             </p>
             <p className="text-black/60">
               {AFFILIATIONS.map((a, i) => (
-                <span key={i} className="pr-3">
+                <span key={i} className="inline-block whitespace-nowrap pr-3">
                   <sup>{i + 1}</sup>
                   {a}
                 </span>
               ))}
+              <span className="inline-block whitespace-nowrap pr-3">
+                {EQUAL}
+              </span>
             </p>
             <p className="flex gap-4">
               <a href={LINKS.paper} className="st-link">
