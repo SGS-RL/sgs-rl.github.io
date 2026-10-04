@@ -1,0 +1,57 @@
+/* /lab/site-2: /lab/site evolved. Builds on poster.css (.pz, .pz-grid,
+   .pz-small) and _site/site.css (.st, .st-head, .st-entry,
+   .st-lead, .pz-row). Only what changes lives here. */
+
+/* Header. Default: mark across the measure, then title (8 cols) and
+   authors (4 cols). Short and wide (ultrawide): the capped mark leaves
+   room on its right, so the authors move up beside it, on its baseline. */
+.s2-hd-mark {
+  position: relative;
+  padding-inline: var(--m);
+  padding-top: 8px;
+}
+@media (min-width: 1600px) and (min-aspect-ratio: 2/1) {
+  .s2-hd {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+      "mark meta"
+      "title title";
+    column-gap: calc(var(--g) * 3);
+    padding-right: var(--m);
+  }
+  .s2-hd-mark {
+    grid-area: mark;
+    padding-right: 0;
+  }
+  .s2-hd-info {
+    display: contents;
+  }
+  .s2-hd-title {
+    grid-area: title;
+    padding: 1rem var(--m) 3rem;
+  }
+  .s2-hd-meta {
+    grid-area: meta;
+    align-self: end;
+    max-width: 30rem;
+  }
+}
+
+/* Overview stills open the clip in the player. */
+.s2-still {
+  display: block;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+.s2-still:hover .s2-cap,
+.s2-still:focus-visible .s2-cap {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+/* Clip index preview: unaltered footage on a quiet frame. */
+.s2-frame {
+  background: #efefea;
+}

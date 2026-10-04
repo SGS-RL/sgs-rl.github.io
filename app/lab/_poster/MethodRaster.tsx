@@ -188,7 +188,9 @@ export default function MethodRaster({
 
   const curve = Array.from({ length: 41 }, (_, i) => {
     const x = i / 40;
-    return `${4 + x * 192},${66 - (weight(x) / 0.27) * 58}`;
+    // Rounded so server and browser render identical points (Math.pow
+    // differs in the last digits between engines).
+    return `${(4 + x * 192).toFixed(2)},${(66 - (weight(x) / 0.27) * 58).toFixed(2)}`;
   }).join(" ");
 
   return (

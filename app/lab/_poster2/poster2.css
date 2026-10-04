@@ -1,0 +1,22 @@
+/* /lab/poster-2: additions to the poster system (_poster/poster.css). */
+
+/* Result footage: the frame keeps the clip's own 16:9, never cropped. */
+.p2-video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+  background: #000;
+}
+
+.p2-tile {
+  display: block;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+.p2-tile:hover .p2-tile-cap {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+}

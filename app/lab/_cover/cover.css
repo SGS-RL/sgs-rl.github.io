@@ -1,0 +1,517 @@
+/* SGS wordmark with inset words, and the static poster covers.
+   Builds on poster.css (.pz, .pz-grid, .pz-small). */
+
+/* ---------- Wordmark ----------
+   The box is the mark's cap height: top on the cap line, bottom on the
+   baseline (round overshoots hang 0.01em outside it, as in type). */
+.cv-wm {
+  --wm-measure: calc(100vw - 2 * var(--m, 12px));
+  --wm-cap: 100vw;
+  --wm-f: max(12px, 0.036em);
+  position: relative;
+  display: block;
+  font-family:
+    var(--font-swiss-display), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  font-size: min(calc(var(--wm-measure) / 1.6815), var(--wm-cap));
+  width: 1.6815em;
+  height: 0.7275em;
+}
+.cv-wm[data-step="2"] {
+  --wm-f: max(13px, 0.052em);
+}
+.cv-wm[data-align="right"] {
+  margin-left: auto;
+}
+.cv-wm-mark {
+  display: block;
+  white-space: nowrap;
+  line-height: 0.73;
+  letter-spacing: -0.065em;
+  /* 0.0332em is the S's left side bearing; 0.0012em puts the cap line on
+     the box top. */
+  margin: -0.0012em 0 0 -0.0332em;
+}
+.cv-wm-at {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+.cv-wm-word {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+  font-size: var(--wm-f);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  /* With line-height 1 the cap line is 0.1362em below the box top and the
+     baseline 0.8638em. */
+  --ty: -0.1362em;
+  --tx: 0%;
+  transform: translate(var(--tx), var(--ty));
+}
+.cv-wm-word[data-anchor="base"] {
+  --ty: -0.8638em;
+}
+.cv-wm-word[data-align="right"] {
+  --tx: -100%;
+}
+.cv-wm-word[data-align="center"] {
+  --tx: -50%;
+}
+
+/* ---------- Shared type ---------- */
+.cv-lead {
+  font-size: clamp(1.3rem, 5.4vw, 3rem);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+}
+.pz a.cv-link,
+a.cv-link {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+a.cv-link:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* ---------- Study page ---------- */
+.cv-tag {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--g);
+  height: var(--bar);
+  padding-inline: var(--m);
+  background: #000;
+  color: #fff;
+}
+.cv-band {
+  font-size: clamp(2rem, 9vw, 4rem);
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+}
+
+/* ---------- Covers ----------
+   A cover is one full first screen under the black bar. It is a size
+   container, so every measure below is in cqw/cqh of the cover and each
+   layout switches on the cover's own aspect ratio:
+     portrait  < 1      phone (0.48), iPad portrait (0.71)
+     landscape 1 – 2.1  iPad landscape (1.49), laptop (1.66)
+     wide      > 2.1    ultrawide (2.44) */
+.cv-cover {
+  container: cover / size;
+  position: relative;
+  overflow: hidden;
+  height: calc(100svh - var(--bar, 30px));
+  min-height: 480px;
+  background: var(--ground);
+  color: var(--type);
+}
+.cv-cover h1 {
+  font-weight: 400;
+}
+.cv-br {
+  display: none;
+}
+
+/* C1: close to the current cover.
+   Two raster boxes; one shows per screen shape. In portrait the box is
+   placed so the robot lands between the subtitle and the SGS; its top runs
+   into the sky, which prints as paper, so no edge shows there. */
+.cv-c1-raster-l {
+  display: none;
+}
+.cv-c1-raster-p {
+  inset: 21% 0 19% 0;
+}
+.cv-c1-top {
+  padding-top: 8px;
+}
+.cv-c1-title {
+  padding-top: max(10px, 1.6cqh);
+}
+.cv-c1-big {
+  font-size: min(22.5cqw, 10.5cqh);
+  line-height: 0.84;
+  letter-spacing: -0.055em;
+}
+.cv-c1-sub {
+  font-size: min(9.4cqw, 4.4cqh);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  margin-top: 0.3em;
+}
+.cv-c1-mark {
+  position: absolute;
+  left: var(--m);
+  bottom: var(--m);
+  --mk: calc(100cqw - 2 * var(--m));
+}
+@container cover (aspect-ratio > 0.6) {
+  .cv-c1-raster-p {
+    inset: 25% 0 27% 0;
+  }
+}
+@container cover (aspect-ratio > 1) {
+  .cv-c1-raster-p {
+    display: none;
+  }
+  .cv-c1-raster-l {
+    display: block;
+    inset: 0;
+  }
+  .cv-c1-big {
+    font-size: min(12.5cqw, 19cqh);
+  }
+  .cv-c1-sub {
+    font-size: min(5.2cqw, 7.9cqh);
+  }
+  .cv-c1-mark {
+    left: auto;
+    right: var(--m);
+    --mk: min(calc((100cqw - 2 * var(--m)) * 0.5), calc(45cqh * 1.6815));
+  }
+}
+
+/* C2: journal */
+.cv-c2-page {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--m);
+  padding: max(8px, 1.2cqh) var(--m) var(--m);
+}
+.cv-c2-text {
+  font-size: min(19cqw, 9.5cqh);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+}
+.cv-c2-thumb {
+  display: inline-block;
+  width: 1.3em;
+  height: 0.74em;
+  vertical-align: -0.02em;
+}
+.cv-c2-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--g);
+  padding-bottom: max(10px, 1.6cqh);
+  color: #111;
+}
+.cv-c2-mark {
+  --mk: calc(100cqw - 2 * var(--m));
+}
+@container cover (aspect-ratio > 1) {
+  .cv-c2-text {
+    font-size: min(10cqw, 16.5cqh);
+  }
+  .cv-c2-foot {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--g);
+  }
+  .cv-c2-meta {
+    flex-direction: column;
+    padding-bottom: 0;
+    max-width: 22em;
+  }
+  .cv-c2-mark {
+    --mk: min(calc((100cqw - 2 * var(--m)) * 0.6), calc(30cqh * 1.6815));
+  }
+}
+@container cover (aspect-ratio > 2.1) {
+  .cv-c2-text {
+    font-size: min(9cqw, 20cqh);
+  }
+}
+
+/* C3: split, after Laïka. Title and SGS stacked on portrait screens,
+   side by side on landscape ones. */
+.cv-c3-page {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+}
+.cv-c3-raster {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+.cv-c3-row {
+  padding-block: 6px 10px;
+  color: var(--raster);
+}
+.cv-c3-base {
+  --measure: calc(100cqw - 2 * var(--m));
+  display: flex;
+  flex-direction: column;
+  gap: max(12px, 2cqh);
+  padding: 0 var(--m) var(--m);
+}
+.cv-c3-title {
+  white-space: nowrap;
+  line-height: 0.86;
+  letter-spacing: -0.055em;
+  /* Width-bound by the widest line of the current break. */
+  font-size: calc(var(--measure) / 6.43);
+}
+.cv-c3-title .cv-br-4 {
+  display: inline;
+}
+.cv-c3-mark {
+  --mk: var(--measure);
+}
+@container cover (aspect-ratio > 0.6) {
+  .cv-c3-title .cv-br-4 {
+    display: none;
+  }
+  .cv-c3-title .cv-br-3 {
+    display: inline;
+  }
+  .cv-c3-title {
+    font-size: calc(var(--measure) / 8.16);
+  }
+}
+@container cover (aspect-ratio > 1) {
+  .cv-c3-base {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--g);
+  }
+  .cv-c3-title {
+    font-size: calc(var(--measure) * 0.6 / 8.16);
+  }
+  .cv-c3-mark {
+    --mk: calc(var(--measure) * 0.4 - var(--g));
+  }
+}
+@container cover (aspect-ratio > 2.1) {
+  .cv-c3-title .cv-br-3 {
+    display: none;
+  }
+  .cv-c3-title {
+    font-size: calc(var(--measure) * 0.69 / 12.46);
+  }
+  .cv-c3-mark {
+    --mk: calc(var(--measure) * 0.26 - var(--g));
+  }
+}
+
+/* C4: panels, after Mélisande. On landscape screens the gutters sit on
+   the middle of the grid and the words keep to the right half, so the
+   robot in the lower left panel stays clear. */
+.cv-c4 {
+  display: flex;
+  flex-direction: column;
+}
+.cv-c4-image {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  margin: 0 var(--m);
+  margin-top: max(8px, 1.2cqh);
+}
+.cv-c4-raster-l {
+  display: none;
+}
+.cv-c4-gv,
+.cv-c4-gh {
+  position: absolute;
+  background: var(--ground);
+}
+.cv-c4-gv {
+  top: 0;
+  bottom: 0;
+  left: 64%;
+  width: var(--g);
+}
+.cv-c4-gh {
+  left: 0;
+  right: 0;
+  top: 47%;
+  height: var(--g);
+}
+.cv-c4-title {
+  position: absolute;
+  inset: 0;
+  font-size: min(calc((100cqw - 2 * var(--m)) / 7.05), 7cqh);
+  line-height: 1;
+  letter-spacing: -0.045em;
+  white-space: nowrap;
+}
+.cv-c4-w {
+  position: absolute;
+  background: var(--ground);
+  padding: 0.02em 0.14em 0.1em;
+}
+.cv-c4-w1 {
+  left: 0;
+  top: 0;
+  padding-left: 0;
+}
+.cv-c4-w2 {
+  right: 0;
+  top: 31%;
+  padding-right: 0;
+}
+.cv-c4-w3 {
+  left: 0;
+  top: calc(47% + var(--g));
+  padding-left: 0;
+}
+.cv-c4-w4 {
+  right: 0;
+  bottom: 0;
+  padding-right: 0;
+  padding-bottom: 0.06em;
+}
+.cv-c4-foot {
+  padding: max(10px, 1.4cqh) var(--m) var(--m);
+}
+.cv-c4-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--g);
+  padding-bottom: max(10px, 1.6cqh);
+}
+.cv-c4-mark {
+  --mk: calc(100cqw - 2 * var(--m));
+}
+@container cover (aspect-ratio < 0.6) {
+  /* Narrow phones: the last line spans the measure, so no sliver of
+     raster is left beside it. */
+  .cv-c4-w4 {
+    left: 0;
+    text-align: right;
+  }
+}
+@container cover (aspect-ratio > 1) {
+  .cv-c4-raster-p {
+    display: none;
+  }
+  .cv-c4-raster-l {
+    display: block;
+  }
+  .cv-c4-gv {
+    left: calc(50% - var(--g) / 2);
+  }
+  .cv-c4-gh {
+    top: calc(50% - var(--g) / 2);
+  }
+  .cv-c4-title {
+    font-size: min(7cqw, 10cqh);
+  }
+  .cv-c4-w2 {
+    top: 0;
+    right: auto;
+    left: calc(50% + var(--g) / 2);
+    padding-left: 0;
+  }
+  .cv-c4-w3 {
+    top: calc(50% + var(--g) / 2);
+    left: calc(50% + var(--g) / 2);
+    padding-left: 0;
+  }
+  .cv-c4-foot {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--g);
+    padding-top: max(16px, 2.4cqh);
+  }
+  .cv-c4-meta {
+    flex-direction: column;
+    padding-bottom: 0;
+    max-width: 22em;
+  }
+  .cv-c4-mark {
+    --mk: min(calc((100cqw - 2 * var(--m)) * 0.62), calc(30cqh * 1.6815));
+  }
+}
+
+/* C5: one object, after Don Pasquale. The top area is its own size
+   container, so the line down the right edge is sized to its height. */
+.cv-c5-page {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+}
+.cv-c5-top {
+  container: c5 / size;
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+.cv-c5-title {
+  position: absolute;
+  inset: max(8px, 1.2cqh) var(--m) auto var(--m);
+  height: 0;
+}
+.cv-c5-big {
+  display: block;
+  font-size: 16.5cqw;
+  line-height: 0.88;
+  letter-spacing: -0.05em;
+}
+.cv-c5-side {
+  position: absolute;
+  right: 0;
+  top: 0;
+  writing-mode: vertical-rl;
+  white-space: nowrap;
+  font-size: calc((100cqh - 2 * max(8px, 1.2cqh)) / 12.75);
+  line-height: 0.86;
+  letter-spacing: -0.045em;
+}
+.cv-c5-object {
+  left: var(--m);
+  right: calc(var(--m) + 14cqw);
+  top: calc(max(8px, 1.2cqh) + 33cqw);
+  bottom: 2cqh;
+}
+.cv-c5-foot {
+  padding: 0 var(--m) var(--m);
+}
+.cv-c5-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px var(--g);
+  justify-content: space-between;
+  padding-bottom: max(10px, 1.6cqh);
+}
+.cv-c5-mark {
+  --mk: calc(100cqw - 2 * var(--m));
+}
+@container cover (aspect-ratio > 1) {
+  .cv-c5-big {
+    font-size: min(9cqw, 15cqh);
+  }
+  .cv-c5-object {
+    left: 34%;
+    right: 14%;
+    top: 6%;
+    bottom: 6%;
+  }
+  .cv-c5-foot {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+  }
+  .cv-c5-meta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .cv-c5-mark {
+    --mk: min(calc((100cqw - 2 * var(--m)) * 0.42), calc(32cqh * 1.6815));
+  }
+}

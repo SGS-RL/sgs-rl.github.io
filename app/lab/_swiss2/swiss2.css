@@ -1,0 +1,110 @@
+/* /lab/swiss-2: the Swiss light system from lab.css, with a sticky bar, a
+   capped page width for ultrawide screens and Kunstmuseum Bern's habit of
+   fixed text measures. Everything here is scoped under .s2. */
+
+.s2 {
+  --s2-bar: 2.75rem;
+  /* Page width cap, padding included: content is 1760 px at most. */
+  --s2-max: 1840px;
+}
+
+/* Centre the page grid on wide screens. Full-bleed bands (the bar's
+   background, the clip wall) stay full width. */
+.s2 .s2-wrap {
+  width: 100%;
+  max-width: var(--s2-max);
+  margin-inline: auto;
+}
+
+.s2 section[id] {
+  scroll-margin-top: var(--s2-bar);
+}
+
+/* Bar */
+.s2-bar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  height: var(--s2-bar);
+  background: var(--sw-bg);
+  border-bottom: 1px solid var(--sw-rule);
+}
+.s2-navlink {
+  color: var(--sw-mute);
+  transition: color 0.15s;
+}
+.s2-navlink:hover,
+.s2-navlink[aria-current] {
+  color: var(--sw-fg);
+}
+.s2-navlink[aria-current] {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3em;
+}
+/* Paper and Code join the bar once the title's links have scrolled away,
+   so they never show twice. */
+.s2-late {
+  transition:
+    opacity 0.2s,
+    visibility 0.2s;
+}
+.s2-late[data-hidden] {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Phone menu */
+.s2-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  background: var(--sw-bg);
+  color: var(--sw-fg);
+  overflow-y: auto;
+}
+.s2-menu-row {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr) auto;
+  align-items: baseline;
+  border-top: 1px solid var(--sw-hair);
+  padding-block: 0.6rem;
+}
+
+/* Body copy measure (Bern caps text at about 900 px). */
+.s2-measure {
+  max-width: 56rem;
+}
+.s2-body {
+  font-size: 1.0625rem;
+  line-height: 1.45;
+}
+@media (min-width: 768px) {
+  .s2-body {
+    font-size: 1.125rem;
+  }
+}
+
+/* Stand-ins for parts that other agents are still building. */
+.s2-standin {
+  border: 1px dashed var(--sw-mute);
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent 0 10px,
+    color-mix(in srgb, var(--sw-fg) 4%, transparent) 10px 11px
+  );
+}
+.s2-tag {
+  display: inline-block;
+  background: var(--sw-fg);
+  color: var(--sw-bg);
+  padding: 0.05rem 0.4rem;
+}
+
+.s2-pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+}

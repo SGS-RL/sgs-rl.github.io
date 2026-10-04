@@ -1,0 +1,608 @@
+/* Clip gallery (app/lab/_gallery): grid by robot, wall, quilt and player.
+   Colours and spacing are custom properties, so the same markup renders in
+   the Swiss system (.gal-skin-swiss, inside .swiss) and in the NOF system
+   (.gal-skin-pz, inside .pz). */
+
+.gal-skin-swiss {
+  --gal-bg: var(--sw-bg, #fafaf7);
+  --gal-fg: var(--sw-fg, #111110);
+  --gal-mute: var(--sw-mute, #6d6d68);
+  --gal-rule: var(--sw-rule, #111110);
+  --gal-hair: var(--sw-hair, #d9d9d3);
+  --gal-panel: var(--sw-panel, #efefea);
+  --gal-accent: var(--sw-accent, #e4321b);
+  --gal-hover: transparent;
+  --gal-m: 1rem;
+  --gal-gap: 1rem;
+  --gal-seam: 2px;
+  --gal-seam-color: var(--gal-bg);
+}
+@media (min-width: 768px) {
+  .gal-skin-swiss {
+    --gal-m: 2.5rem;
+    --gal-gap: 1.5rem;
+  }
+}
+
+/* One ink: hierarchy from size and position, as in the NOF system. */
+.gal-skin-pz {
+  --gal-bg: #fff;
+  --gal-fg: #111;
+  --gal-mute: #111;
+  --gal-rule: #111;
+  --gal-hair: rgb(17 17 17 / 0.25);
+  --gal-panel: #e9e9e9;
+  --gal-accent: #111;
+  --gal-hover: #f6ee1f;
+  --gal-m: var(--m, 12px);
+  --gal-gap: var(--g, 10px);
+  --gal-seam: 3px;
+  --gal-seam-color: #111;
+}
+
+.gal-mute {
+  color: var(--gal-mute);
+}
+.gal-pz-entry {
+  font-size: clamp(1.3rem, 5.4vw, 2.25rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+.gal-pz-row {
+  font-size: clamp(15px, 1.45vw, 21px);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+.gal-pz-list {
+  font-size: 15px;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+/* Hide at a container step (data.ts STEPS) of the nearest `gal` container. */
+@container gal (width < 600px) {
+  .gal-h0 {
+    display: none !important;
+  }
+}
+@container gal (600px <= width < 1000px) {
+  .gal-h1 {
+    display: none !important;
+  }
+}
+@container gal (1000px <= width < 1800px) {
+  .gal-h2 {
+    display: none !important;
+  }
+}
+@container gal (1800px <= width < 2400px) {
+  .gal-h3 {
+    display: none !important;
+  }
+}
+@container gal (width >= 2400px) {
+  .gal-h4 {
+    display: none !important;
+  }
+}
+
+/* ---- Grid by robot ---------------------------------------------------- */
+
+.gal-grid {
+  container: gal-grid / inline-size;
+  color: var(--gal-fg);
+}
+.gal-group + .gal-group {
+  margin-top: 3.5rem;
+}
+.gal-skin-pz .gal-group + .gal-group {
+  margin-top: 2.25rem;
+}
+.gal-tiles,
+.gal-group-head {
+  --gal-cols: 2;
+  display: grid;
+  grid-template-columns: repeat(var(--gal-cols), minmax(0, 1fr));
+  column-gap: var(--gal-gap);
+}
+@container gal-grid (width >= 600px) {
+  .gal-tiles,
+  .gal-group-head {
+    --gal-cols: 3;
+  }
+}
+@container gal-grid (width >= 1000px) {
+  .gal-tiles,
+  .gal-group-head {
+    --gal-cols: 4;
+  }
+}
+@container gal-grid (width >= 1900px) {
+  .gal-tiles,
+  .gal-group-head {
+    --gal-cols: 6;
+  }
+}
+@container gal-grid (width >= 3000px) {
+  .gal-tiles,
+  .gal-group-head {
+    --gal-cols: 8;
+  }
+}
+
+.gal-group-head {
+  align-items: baseline;
+  row-gap: 0.4rem;
+  border-top: 1px solid var(--gal-rule);
+  padding-top: 0.75rem;
+}
+.gal-skin-pz .gal-group-head {
+  padding-top: 0.2rem;
+}
+.gal-group-name {
+  grid-column: 1 / 2;
+  white-space: nowrap;
+}
+.gal-group-count {
+  grid-column: -2 / -1;
+  text-align: right;
+  white-space: nowrap;
+}
+.gal-group-desc {
+  grid-column: 1 / -1;
+  grid-row: 2;
+}
+@container gal-grid (width >= 600px) {
+  .gal-group-desc {
+    grid-column: 2 / -2;
+    grid-row: 1;
+  }
+}
+
+.gal-tiles {
+  row-gap: 1.5rem;
+  margin-top: 1.25rem;
+}
+.gal-skin-pz .gal-tiles {
+  row-gap: 1.25rem;
+  margin-top: 0.75rem;
+}
+.gal-tiles > li {
+  min-width: 0;
+}
+.gal-tile {
+  display: block;
+  width: 100%;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+}
+.gal-frame {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--gal-panel);
+}
+.gal-cap {
+  display: grid;
+  grid-template-columns: 2.75em minmax(0, 1fr);
+  column-gap: 0.4em;
+  margin-top: 0.5rem;
+}
+@media (hover: hover) {
+  .gal-skin-swiss .gal-tile:hover .gal-cap-title {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+  }
+  .gal-skin-pz .gal-tile:hover .gal-cap {
+    background: var(--gal-hover);
+  }
+  .gal-wall-tile:hover video {
+    opacity: 0.82;
+  }
+  .gq-clip:hover .gq-chip {
+    background: #111;
+    color: #fff;
+  }
+  .gal-btn:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+  .gal-list-row:hover {
+    color: var(--gal-fg);
+  }
+  .gal-skin-pz .gal-list-row:hover {
+    background: rgb(246 238 31 / 0.4);
+  }
+}
+.gal-skin-pz .gal-cap {
+  grid-template-columns: 2.6em minmax(0, 1fr);
+  margin-top: 0.35rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--gal-hair);
+}
+.gal-skin-pz .gal-tile:focus-visible .gal-cap {
+  background: var(--gal-hover);
+}
+.gal-tile:focus-visible {
+  outline: 2px solid var(--gal-accent);
+  outline-offset: 3px;
+}
+
+/* ---- Wall --------------------------------------------------------------- */
+
+.gal-wall {
+  container: gal / inline-size;
+  color: var(--gal-fg);
+}
+.gal-wall-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--gal-wc0), minmax(0, 1fr));
+  gap: var(--gal-seam);
+  background: var(--gal-seam-color);
+}
+@container gal (width >= 600px) {
+  .gal-wall-grid {
+    grid-template-columns: repeat(var(--gal-wc1), minmax(0, 1fr));
+  }
+}
+@container gal (width >= 1000px) {
+  .gal-wall-grid {
+    grid-template-columns: repeat(var(--gal-wc2), minmax(0, 1fr));
+  }
+}
+@container gal (width >= 1800px) {
+  .gal-wall-grid {
+    grid-template-columns: repeat(var(--gal-wc3), minmax(0, 1fr));
+  }
+}
+@container gal (width >= 2400px) {
+  .gal-wall-grid {
+    grid-template-columns: repeat(var(--gal-wc4), minmax(0, 1fr));
+  }
+}
+.gal-skin-pz .gal-wall-grid {
+  padding: var(--gal-seam);
+}
+.gal-wall-tile {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--gal-panel);
+  cursor: pointer;
+}
+.gal-wall-tile video {
+  transition: opacity 0.2s;
+}
+.gal-wall-tile:focus-visible {
+  outline: 2px solid var(--gal-accent);
+  outline-offset: -2px;
+}
+.gal-wall-cap {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.25rem 1.5rem;
+  padding: 0.6rem var(--gal-m) 0;
+}
+
+/* ---- Quilt -------------------------------------------------------------- */
+
+.gal-quilt {
+  container: gal / inline-size;
+  background: #111;
+  color: #111;
+}
+.gal-quilt-grid {
+  --gq-cols: 3;
+  --gq-gap: 3px;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--gq-cols), minmax(0, 1fr));
+  grid-auto-rows: calc(
+    (100cqw - (var(--gq-cols) + 1) * var(--gq-gap)) / var(--gq-cols)
+  );
+  grid-auto-flow: dense;
+  gap: var(--gq-gap);
+  padding: var(--gq-gap);
+}
+@container gal (width >= 600px) {
+  .gal-quilt-grid {
+    --gq-cols: 4;
+  }
+}
+@container gal (width >= 1000px) {
+  .gal-quilt-grid {
+    --gq-cols: 6;
+  }
+}
+@container gal (width >= 1800px) {
+  .gal-quilt-grid {
+    --gq-cols: 8;
+  }
+}
+@container gal (width >= 2400px) {
+  .gal-quilt-grid {
+    --gq-cols: 10;
+  }
+}
+.gq-cell {
+  position: relative;
+  overflow: hidden;
+  container-type: inline-size;
+}
+.gq-w2 {
+  grid-column: span 2;
+}
+.gq-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: #fff;
+  padding: 0.5rem;
+}
+@container gal (width >= 1000px) {
+  .gq-text {
+    padding: 0.75rem;
+  }
+}
+.gq-index {
+  font-size: 20cqw;
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  margin-left: -0.04em;
+}
+.gq-label {
+  font-size: 15cqw;
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+
+.gq-clip {
+  display: block;
+  isolation: isolate;
+  background: var(--ground);
+  text-align: left;
+  cursor: pointer;
+}
+.gq-clip > canvas,
+.gq-clip > img,
+.gq-clip > video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.gq-clip > canvas {
+  mix-blend-mode: multiply;
+}
+/* Without WebGL the raster is the poster in greyscale, printed on the
+   ground. */
+.gq-clip > img {
+  display: none;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.3);
+  mix-blend-mode: multiply;
+}
+[data-gl="0"] .gq-clip > img {
+  display: block;
+}
+[data-gl="0"] .gq-clip > canvas {
+  display: none;
+}
+.gq-clip > video {
+  object-fit: cover;
+  opacity: 0;
+}
+.gq-clip[data-state="real"] > video,
+.gq-clip[data-state="mix"] > video {
+  opacity: 1;
+}
+.gq-clip[data-state="real"] > canvas,
+.gq-clip[data-state="real"] > img {
+  visibility: hidden;
+}
+/* Mid-change, the video shows through a dot screen whose dots grow until
+   they close: the raster opens into the picture. --reveal runs 0..1. */
+.gq-clip[data-state="mix"] > video {
+  --s: 16px;
+  --r: calc(var(--reveal, 0) * (var(--s) * 0.5 + 1px));
+  --dot: radial-gradient(
+    circle,
+    #000 var(--r),
+    transparent calc(var(--r) + 0.75px)
+  );
+  -webkit-mask-image: var(--dot), var(--dot);
+  mask-image: var(--dot), var(--dot);
+  -webkit-mask-size: var(--s) var(--s);
+  mask-size: var(--s) var(--s);
+  -webkit-mask-position:
+    0 0,
+    calc(var(--s) / 2) calc(var(--s) / 2);
+  mask-position:
+    0 0,
+    calc(var(--s) / 2) calc(var(--s) / 2);
+}
+.gq-chip {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 1;
+  max-width: 100%;
+  background: var(--ground);
+  color: #111;
+  padding: 0.15rem 0.4rem 0.25rem;
+}
+.gq-clip:focus-visible .gq-chip {
+  background: #111;
+  color: #fff;
+}
+.gq-clip:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: -3px;
+}
+
+/* ---- Player ------------------------------------------------------------- */
+
+.gal-player {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--gal-bg);
+  color: var(--gal-fg);
+  outline: none;
+}
+.gal-player-bar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-inline: var(--gal-m);
+}
+.gal-player.gal-skin-swiss .gal-player-bar {
+  height: 3rem;
+  border-bottom: 1px solid var(--gal-rule);
+}
+.gal-player.gal-skin-pz .gal-player-bar {
+  --gal-mute: rgb(255 255 255 / 0.6);
+  height: var(--bar, 30px);
+  background: #111;
+  color: #fff;
+}
+.gal-btn {
+  color: inherit;
+  white-space: nowrap;
+}
+.gal-player-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.gal-player-fig {
+  flex: none;
+  width: min(100%, calc(56svh * 16 / 9));
+  margin-inline: auto;
+}
+.gal-player-frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--gal-panel);
+}
+.gal-player-cap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.75rem var(--gal-m) 1rem;
+}
+.gal-player-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 var(--gal-m) 2.5rem;
+}
+@media (min-width: 900px) {
+  /* On very wide screens the player is centred, bar included. */
+  .gal-player {
+    --gal-player-max: calc(1440px + 26rem + 2rem);
+  }
+  .gal-player-bar {
+    padding-inline: max(var(--gal-m), (100% - var(--gal-player-max)) / 2);
+  }
+  .gal-player-body {
+    flex-direction: row;
+    gap: 2rem;
+    width: 100%;
+    max-width: calc(var(--gal-player-max) + 2 * var(--gal-m));
+    margin-inline: auto;
+    padding: 1.5rem var(--gal-m) 0;
+  }
+  .gal-player-main {
+    flex: 1;
+    min-width: 0;
+  }
+  .gal-player-fig {
+    width: min(100%, calc((100svh - 12rem) * 16 / 9), 1440px);
+    margin-inline: 0;
+  }
+  .gal-player-cap {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1.5rem;
+    padding-inline: 0;
+  }
+  .gal-player-cap > :last-child {
+    text-align: right;
+  }
+  .gal-player-list {
+    flex: none;
+    width: clamp(17rem, 25vw, 26rem);
+    padding: 0 0 2.5rem;
+  }
+}
+
+.gal-list-group + .gal-list-group {
+  margin-top: 1.5rem;
+}
+.gal-list-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-top: 1px solid var(--gal-rule);
+  padding: 0.45rem 0 0.4rem;
+}
+.gal-list-row {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: 2.75em minmax(0, 1fr) auto;
+  column-gap: 0.75rem;
+  width: 100%;
+  padding: 0.45rem 0;
+  border-top: 1px solid var(--gal-hair);
+  text-align: left;
+  color: var(--gal-mute);
+}
+.gal-list-row[aria-current="true"] {
+  color: var(--gal-fg);
+}
+.gal-list-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--gal-hair);
+}
+.gal-list-progress > span {
+  display: block;
+  height: 100%;
+  background: var(--gal-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+/* NOF skin: the row fills with yellow as its clip plays. */
+.gal-skin-pz .gal-list-row,
+.gal-skin-pz .gal-list-head {
+  padding-inline: 0.25rem;
+}
+.gal-skin-pz .gal-list-progress {
+  inset: 0;
+  height: auto;
+  z-index: -1;
+  background: rgb(246 238 31 / 0.35);
+}
+.gal-skin-pz .gal-list-progress > span {
+  background: var(--gal-hover);
+}

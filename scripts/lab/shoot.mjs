@@ -6,10 +6,20 @@
 //   npx http-server out -p 4173 -s -c-1 &
 //   node scripts/lab/shoot.mjs previews '[{"name":"site","size":"m","url":"/lab/site/"}]'
 //
-// Job fields: name, size ("m" 390x844 @2x | "d" 1440x900), url, and
-// optionally hero (0..1, scroll position within #top's scrub), click
-// (selector), sel (selector to scroll to), dy (extra scroll px), wait (ms),
-// full (full-page shot).
+// Job fields: name, size (see `sizes`: "m" phone, "t"/"tl" iPad portrait and
+// landscape, "d" laptop, "w" ultrawide), url, and optionally hero (0..1,
+// scroll position within #top's scrub), click (selector), sel (selector to
+// scroll to), dy (extra scroll px), wait (ms), full (full-page shot).
+//
+// On a Mac with Google Chrome, no Playwright browser download is needed:
+// install playwright-core anywhere and point at it, then use the system
+// Chrome (which plays H.264, so the WebM stand-ins are unnecessary):
+//
+//   PLAYWRIGHT_MODULE=/path/to/node_modules/playwright-core/index.mjs \
+//   PLAYWRIGHT_CHANNEL=chrome BASE_URL=http://localhost:3100 \
+//   node scripts/lab/shoot.mjs previews '[...]'
+//
+// BASE_URL may point at `next dev`; its dev badge is hidden in the shots.
 import fs from "node:fs";
 
 const { chromium } = await import("playwright").catch(
@@ -33,13 +43,35 @@ const sizes = {
     isMobile: true,
     hasTouch: true,
   },
+  t: {
+    viewport: { width: 820, height: 1180 },
+    deviceScaleFactor: 2,
+    isMobile: true,
+    hasTouch: true,
+  },
+  tl: {
+    viewport: { width: 1180, height: 820 },
+    deviceScaleFactor: 2,
+    isMobile: true,
+    hasTouch: true,
+  },
   d: { viewport: { width: 1440, height: 900 } },
+  w: { viewport: { width: 2560, height: 1080 } },
 };
 
 fs.mkdirSync(out, { recursive: true });
-const browser = await chromium.launch({
-  args: ["--use-gl=swiftshader", "--enable-webgl", "--ignore-gpu-blocklist"],
-});
+const channel = process.env.PLAYWRIGHT_CHANNEL;
+const browser = await chromium.launch(
+  channel
+    ? { channel }
+    : {
+        args: [
+          "--use-gl=swiftshader",
+          "--enable-webgl",
+          "--ignore-gpu-blocklist",
+        ],
+      },
+);
 for (const j of jobs) {
   const ctx = await browser.newContext(sizes[j.size]);
   // Swap MP4s for the VP9 stand-ins from webm-standins.sh, served by the
@@ -51,12 +83,20 @@ for (const j of jobs) {
       return route.continue({ url: `${u.origin}/__webm/${name}` });
     return route.continue();
   });
+  // Hide the `next dev` badge.
+  await ctx.addInitScript(() =>
+    document.addEventListener("DOMContentLoaded", () => {
+      const s = document.createElement("style");
+      s.textContent = "nextjs-portal{display:none!important}";
+      document.head.append(s);
+    }),
+  );
   const page = await ctx.newPage();
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
   page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
-  await page.goto(base + j.url, { waitUntil: "networkidle" });
-  await page.waitForTimeout(800);
+  await page.goto(base + j.url, { waitUntil: "load" });
+  await page.waitForTimeout(1500);
   if (j.hero !== undefined) {
     const total = await page.evaluate(
       () => document.getElementById("top").offsetHeight - innerHeight,

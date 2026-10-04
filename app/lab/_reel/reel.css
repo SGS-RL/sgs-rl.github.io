@@ -1,0 +1,273 @@
+/* Highlight reel: one plain video with chapters by robot. The parts share
+   roles (fg, mute, rules, track, fill); each skin maps them onto its system.
+   Swiss: the .swiss tokens in lab.css. Poster (pz): one ink on a colour
+   band, set with --rl-ink by the section around it. */
+
+.rl {
+  --rl-gap: 3px;
+  --rl-group-gap: 10px;
+  --rl-max-h: 70svh;
+}
+
+.rl-swiss {
+  --rl-fg: var(--sw-fg);
+  --rl-mute: var(--sw-mute);
+  --rl-rule: var(--sw-rule);
+  --rl-hair: var(--sw-hair);
+  --rl-track: var(--sw-hair);
+  --rl-fill: var(--sw-fg);
+  --rl-now: var(--sw-accent);
+  --rl-frame: var(--sw-panel);
+}
+
+.rl-pz {
+  --rl-ink: #111;
+  --rl-fg: var(--rl-ink);
+  --rl-mute: color-mix(in srgb, var(--rl-ink) 62%, transparent);
+  --rl-rule: var(--rl-ink);
+  --rl-hair: color-mix(in srgb, var(--rl-ink) 28%, transparent);
+  --rl-track: color-mix(in srgb, var(--rl-ink) 24%, transparent);
+  --rl-fill: var(--rl-ink);
+  --rl-now: var(--rl-ink);
+  --rl-frame: color-mix(in srgb, var(--rl-ink) 12%, transparent);
+  --rl-hi: #fff;
+  --rl-gap: 4px;
+  --rl-group-gap: 12px;
+  color: var(--rl-ink);
+}
+
+/* Player: the video, its bar, controls and caption share one width, capped
+   so the video never grows taller than --rl-max-h. */
+.rl-player {
+  margin: 0;
+  width: min(100%, calc(var(--rl-max-h) * var(--rl-aspect, 1.7778)));
+  min-width: 0;
+}
+.rl-frame {
+  position: relative;
+  aspect-ratio: var(--rl-aspect, 1.7778);
+  background: var(--rl-frame);
+  overflow: hidden;
+  cursor: pointer;
+}
+.rl-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Segmented bar: one segment per chapter, scrubbable. The hit area is
+   taller than the 3 px line. */
+.rl-track {
+  display: grid;
+  height: 22px;
+  align-items: center;
+  cursor: pointer;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+@media (pointer: coarse) {
+  .rl-track {
+    height: 26px;
+  }
+}
+.rl-seg {
+  position: relative;
+  height: 3px;
+  background: var(--rl-track);
+  overflow: hidden;
+  transition: height 0.12s ease;
+}
+.rl-pz .rl-seg {
+  height: 4px;
+}
+.rl-track:hover .rl-seg,
+.rl-track:focus-visible .rl-seg,
+.rl-track[data-scrub] .rl-seg {
+  height: 7px;
+}
+.rl-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--rl-fill);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+.rl-fill[data-now] {
+  background: var(--rl-now);
+}
+
+/* Controls */
+.rl-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  min-height: 32px;
+  color: var(--rl-fg);
+  cursor: pointer;
+  white-space: nowrap;
+}
+@media (pointer: coarse) {
+  .rl-btn {
+    min-height: 44px;
+    min-width: 32px;
+  }
+}
+.rl-glyph {
+  width: 0.8em;
+  height: 0.8em;
+  flex: none;
+  fill: currentColor;
+}
+
+/* Chapter list */
+.rl-group {
+  break-inside: avoid;
+}
+.rl-group + .rl-group {
+  margin-top: 0.9rem;
+}
+.rl-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1em;
+  border-top: 1px solid var(--rl-rule);
+  padding-block: 4px;
+  color: var(--rl-fg);
+}
+.rl-row {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: 1.9em minmax(0, 1fr) auto;
+  align-items: baseline;
+  column-gap: 0.4em;
+  width: 100%;
+  border-top: 1px solid var(--rl-hair);
+  padding-block: 4px;
+  text-align: left;
+  color: var(--rl-mute);
+  cursor: pointer;
+  transition: color 0.15s;
+}
+@media (pointer: coarse) {
+  .rl-row {
+    padding-block: 7px;
+  }
+}
+.rl-row:hover,
+.rl-row[aria-current] {
+  color: var(--rl-fg);
+}
+/* Progress through the current chapter: the row fills from the left
+   (Swiss: a light tint of the type colour; poster: white). */
+.rl-rowfill {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--rl-rowfill);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  pointer-events: none;
+}
+.rl-swiss {
+  --rl-rowfill: color-mix(in srgb, var(--sw-fg) 7%, transparent);
+}
+.rl-pz {
+  --rl-rowfill: var(--rl-hi);
+}
+.rl-pz .rl-row[aria-current] {
+  background: color-mix(in srgb, var(--rl-hi) 40%, transparent);
+}
+.rl-mark {
+  width: 0.5rem;
+  height: 0.5rem;
+  align-self: center;
+  background: var(--rl-now);
+}
+
+/* Labelled timeline: robot bands, the bar, chapter ticks, on one grid. */
+.rl-timeline {
+  display: grid;
+  align-items: start;
+  container-type: inline-size;
+}
+.rl-band {
+  border-top: 1px solid var(--rl-rule);
+  margin-top: 0.6rem;
+  padding-top: 3px;
+  color: var(--rl-fg);
+  min-width: 0;
+}
+.rl-tick {
+  min-width: 0;
+  padding-top: 1px;
+  padding-right: 4px;
+  text-align: left;
+  color: var(--rl-mute);
+  cursor: pointer;
+}
+/* Titles need about 60 px per two-second chapter; narrower timelines show
+   numbers only (titles stay for screen readers). */
+@container (max-width: 640px) {
+  .rl-tick-title {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+.rl-tick:hover,
+.rl-tick[aria-current] {
+  color: var(--rl-fg);
+}
+
+/* Full screen: the player fills the screen, video on top, bar and controls
+   below it, nothing over the picture. */
+.rl-player:fullscreen {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1.5rem 2rem;
+  background: #000;
+  --rl-fg: #f0efea;
+  --rl-mute: #a3a39e;
+  --rl-hair: #3a3a38;
+  --rl-track: #4a4a47;
+  --rl-fill: #f0efea;
+  --rl-frame: #000;
+  color: #f0efea;
+}
+.rl-player:fullscreen .rl-frame {
+  flex: 1 1 auto;
+  min-height: 0;
+  aspect-ratio: auto;
+}
+.rl-player:-webkit-full-screen {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1.5rem 2rem;
+  background: #000;
+  --rl-fg: #f0efea;
+  --rl-mute: #a3a39e;
+  --rl-hair: #3a3a38;
+  --rl-track: #4a4a47;
+  --rl-fill: #f0efea;
+  --rl-frame: #000;
+  color: #f0efea;
+}
+.rl-player:-webkit-full-screen .rl-frame {
+  flex: 1 1 auto;
+  min-height: 0;
+  aspect-ratio: auto;
+}

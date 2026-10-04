@@ -19,15 +19,23 @@ The owner's starting brief, in short:
 
 ## Status
 
-| What                                     | Where                               | State            |
-| ---------------------------------------- | ----------------------------------- | ---------------- |
-| Scroll-past fix for the current homepage | `app/components/VideoNarrative.tsx` | Done, not live   |
-| Lab index                                | `/lab/`                             | Done             |
-| Swiss, light (first study)               | `/lab/swiss/`                       | Earlier study    |
-| Swiss, dark (first study)                | `/lab/swiss-dark/`                  | Earlier study    |
-| Clip layout studies                      | `/lab/clips/`                       | Earlier study    |
-| Poster series (NOF style)                | `/lab/poster/`                      | Earlier study    |
-| **Website (NOF style)**                  | **`/lab/site/`**                    | **Latest study** |
+| What                                     | Where                               | State          |
+| ---------------------------------------- | ----------------------------------- | -------------- |
+| Scroll-past fix for the current homepage | `app/components/VideoNarrative.tsx` | Done, not live |
+| Lab index                                | `/lab/`                             | Done           |
+| Swiss, light (first study)               | `/lab/swiss/`                       | Earlier study  |
+| Swiss, dark (first study)                | `/lab/swiss-dark/`                  | Earlier study  |
+| Clip layout studies                      | `/lab/clips/`                       | Earlier study  |
+| Poster series (NOF style)                | `/lab/poster/`                      | Earlier study  |
+| Website (NOF style)                      | `/lab/site/`                        | Round 1 study  |
+| **Serious page, round 2**                | **`/lab/swiss-2/`**                 | **Latest**     |
+| **Site page, round 2**                   | **`/lab/site-2/`**                  | **Latest**     |
+| **Poster page, round 2**                 | **`/lab/poster-2/`**                | **Latest**     |
+| Highlight reel (`app/lab/_reel/`)        | `/lab/reel/`                        | Round 2 part   |
+| Wordmark and covers (`app/lab/_cover/`)  | `/lab/cover/`                       | Round 2 part   |
+| Method, paper-accurate (`_method/`)      | `/lab/method/`                      | Round 2 part   |
+| Scaling with clips (`_scaling/`)         | `/lab/scaling/`                     | Round 2 part   |
+| Clip gallery and player (`_gallery/`)    | `/lab/gallery/`                     | Round 2 part   |
 
 Nothing on this branch is live. GitHub Pages deploys from `main` only
 (`.github/workflows/deploy.yml`). Once merged, the lab pages are at
@@ -101,7 +109,7 @@ What `/lab/site/` contains, top to bottom:
   pages scrub it with native sticky scroll, so the page never locks and a
   fast flick goes straight past.
 - **Font.** Inter Tight stands in for Neue Haas Grotesk; the owner cut
-  the font search short. Swapping is one variable
+  the font search short, but worth reconsidering in the future. Swapping is one variable
   (`--font-swiss-display`, loaded in `app/lab/layout.tsx`).
 - **Halftone rendering.** One shared WebGL context renders every halftone
   and copies the result into each element's canvas
@@ -149,12 +157,17 @@ Inputs only the owner can give:
 - [ ] **CI Node version.** The deploy workflow runs Node 20, now past end
       of life; bump it to 22 (see Deploying).
 
+## References
+
+`docs/research/swiss-references.md` covers Neo Neo's projects (NOF,
+Faire, Théâtre Public Montreuil, ON, Act–Art), the NOF website as Neo Neo
+built it (no longer live; studied through the Wayback Machine) and three
+Swiss museum sites, with measured type sizes, colours and techniques. The
+images it cites are local only, under `previews/research/` (git-ignored);
+on a machine without them, rerun the research from the URLs in the doc.
+
 ## Unexplored
 
-- The real neoneo.ch site. The environment's network policy blocks the
-  domain, so the design works from the owner's screenshots of NOF posters
-  and the NOF website. Allow `www.neoneo.ch` in the environment's network
-  settings to study the source.
 - Testing on a real iPhone. Everything was checked in headless Chromium
   only. Scroll scrubbing and WebGL halftones on iOS Safari are untested on
   a device.
@@ -353,5 +366,63 @@ What the owner has said, to keep later work on course:
 - "I like the screenshot way for now." Review through screenshots.
 - "Don't focus too much on the video part, it's more important to nail
   the website design."
-- Cut short a search for a Helvetica-like font ("don't focu…"), read as:
-  don't spend time on fonts.
+
+### Round 2 (owner on a laptop, 2026-10-04)
+
+Two tracks, both to be polished toward a final version; the owner picks
+one later with feedback from labmates.
+
+**Serious track** (from `/lab/swiss/`):
+
+- Loves the title, the summary layout, its type and its guides/rules.
+- Likes the numbered list beside the video ("01 Pit" with timestamps).
+- Does not want the video first, nor scroll-scrubbed: impatient readers
+  flick past it and skip the best content. Plan: a 15–30 s highlight reel,
+  1–5 s per robot, played as a standard video that scrolling cannot speed
+  up. Placeholder reel: `HIGHLIGHTS` in `app/lab/content.ts`.
+- Setup and Method feel thin ("not enough meat").
+- Big stat numbers are out. The interactive plot is in. Idea: let readers
+  see the policies at each scale and for each method (owner can supply a
+  ~5 s clip per method and scale).
+- Clip collection, from `/lab/clips/`: likes Grid (everything playing,
+  click to see larger); likes the organisation of Rows but not the sideways
+  scroll, so a grid grouped in rows by robot; loves Player and wants a click
+  on a grid tile to open Player mode instead of a single large video; Wall
+  looks clean, possibly as a transition between method/results and the clip
+  collection.
+
+**Playful track** (from `/lab/site/` and `/lab/poster/`):
+
+- Site: loves the big SGS with "Success-Guided Sampling" inside it, and the
+  palette. Wants a variant with "Success" in the top counter of the first S,
+  "Guided" under the G's inward bar, "Sampling" in a counter of the last S,
+  slightly offset in a Swiss way.
+- Site: loves the opening page as a way to show all the information.
+  Overview, Manipulation and Scaling entries: colours, type and layout are
+  right; text and clip choices need work. Method: loves the type and style;
+  the explanation should improve, along the lines of a labmate's explainer
+  (https://rosarioscalise.com/garage-success-guided-sampling). Results:
+  titles, rules, sizes and layout are particularly good.
+- Site: loves the Clips index, but the clips must be shown unaltered (no
+  halftone, no recolouring); here the footage is the evidence.
+- Site: keep the big SGS at the end.
+- Check phone, iPad, laptop and ultrawide, not just phone and laptop.
+- Poster: the first page may be the favourite, but the video in it is
+  choppy and must go: make it a static designed poster, drop unneeded text,
+  give the full title more weight. Keep `/lab/poster/` as it is and iterate
+  in a new page.
+- Poster: summary and the "Success-Guided Sampling" sections are loved; the
+  list of facts needs better content (owner may hand-curate).
+- Poster: show the highlight reel sooner, right after the cover or right
+  after the summary.
+- Poster: Method is "amazing" and close to the labmate's explainer; make the
+  animation more faithful to the paper in the same style.
+- Poster: full-page pink locomotion/manipulation plots are good. The
+  "Manipulation / NIST Taskboard" titles and colours are great, but the real
+  videos need room, unaltered.
+- Poster: loves the Index quilt. Idea: use a quilt like it (mixed cell
+  sizes, an Index cell spanning two) as a page separator that turns from
+  flat colour rasters into the real videos while scrolling, or vice versa.
+- Study neoneo.ch (NOF, Faire, Théâtre Public Montreuil, ON catalogue, Act
+  Art) and Swiss museum sites (Kunsthaus Zürich, Kunstmuseum Basel,
+  Kunstmuseum Bern), the neoneo work above all.

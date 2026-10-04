@@ -18,6 +18,41 @@ export const INTRO = {
   runLength: 60.16,
 };
 
+// Highlight reel: a plain video (not scroll-driven) with chapters. This is
+// a placeholder cut from CLIPS (2–3 s each, grouped by robot) until the
+// real 15–30 s reel exists; `start` is seconds into the reel.
+export const HIGHLIGHTS = {
+  src: "/lab/media/highlights.mp4",
+  poster: "/lab/media/highlights-poster.jpg",
+  duration: 21.5,
+  chapters: [
+    { start: 0, robot: "ANYmal", title: "Stairs", clip: "loco-02" },
+    { start: 2, robot: "ANYmal", title: "Stepping blocks", clip: "loco-05" },
+    { start: 4, robot: "ANYmal", title: "Rubble", clip: "loco-07" },
+    { start: 6, robot: "ANYmal", title: "Narrow bridge", clip: "loco-09" },
+    { start: 8, robot: "ANYmal", title: "Lattice", clip: "loco-10" },
+    {
+      start: 10,
+      robot: "Franka",
+      title: "Taskboard insertion",
+      clip: "manip-01",
+    },
+    { start: 13, robot: "Franka", title: "Taskboard, close", clip: "manip-02" },
+    {
+      start: 15.5,
+      robot: "UR arm",
+      title: "Block insertion",
+      clip: "real-01",
+    },
+    {
+      start: 18.5,
+      robot: "UR arm",
+      title: "Block insertion",
+      clip: "real-02",
+    },
+  ],
+};
+
 // Start time (seconds, in the original 1x run) of each terrain in the intro.
 // Names are descriptive guesses from the footage (check).
 export const TERRAINS: { name: string; start: number }[] = [
