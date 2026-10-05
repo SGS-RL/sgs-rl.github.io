@@ -8,6 +8,9 @@ export type ReelChapter = {
   robot: string;
   title: string;
   clip?: string;
+  // Override the clip manifest (for reels cut from other footage).
+  domain?: "Sim" | "Real";
+  speed?: string;
 };
 
 export type ReelData = {
@@ -71,7 +74,9 @@ export function layout(reel: ReelData) {
     const g = groups[groups.length - 1];
     g.to = i;
     g.end = end;
-    const meta = CLIPS.find((k) => k.id === c.clip);
+    const meta = c.domain
+      ? { domain: c.domain, speed: c.speed ?? "1×" }
+      : CLIPS.find((k) => k.id === c.clip);
     if (meta) {
       g.domains = uniq([...g.domains, meta.domain]);
       if (meta.domain === "Real") g.speeds = uniq([...g.speeds, meta.speed]);

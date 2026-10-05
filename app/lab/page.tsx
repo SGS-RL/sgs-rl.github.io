@@ -6,6 +6,26 @@ type Study = [href: string, name: string, note: string];
 
 const GROUPS: [string, Study[]][] = [
   [
+    "Round 3: pages with the real footage",
+    [
+      [
+        "/lab/swiss-3/",
+        "Serious 3",
+        "Serious, with the real clips: the mock reel, clips by robot, sim runs in pairs, continuous runs on request.",
+      ],
+      [
+        "/lab/site-3/",
+        "Site 3",
+        "Site, with the real clips: entries rebuilt around the footage, reel, clip index, continuous runs.",
+      ],
+      [
+        "/lab/poster-3/",
+        "Poster 3",
+        "Poster, with the real clips: reel after the cover, unaltered manipulation videos, quilt, continuous runs.",
+      ],
+    ],
+  ],
+  [
     "Round 2: pages",
     [
       [

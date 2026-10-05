@@ -1,0 +1,205 @@
+/* /lab/poster-3: additions to the poster system (_poster/poster.css) for
+   the owner's footage. Evidence clips keep their own aspect, never
+   cropped, never treated. */
+
+/* The box has the file's exact aspect (16:9, or 1288:360 for pairs), so
+   "cover" crops nothing; it only keeps sub-pixel rounding from showing a
+   hairline of background under the picture. */
+.p3-video {
+  display: block;
+  width: 100%;
+  aspect-ratio: var(--a, 16 / 9);
+  object-fit: cover;
+  background: rgb(0 0 0 / 0.08);
+}
+
+/* A clip that opens the player, or picks the large view. */
+.p3-tile {
+  display: block;
+  width: 100%;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+}
+.p3-tile:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+@media (hover: hover) {
+  .p3-tile:hover .p3-cap-t {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.15em;
+  }
+  .p3-tile:hover video {
+    opacity: 0.88;
+  }
+}
+
+/* Caption row under a clip: title left, length and speed right. */
+.p3-cap {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75em;
+  padding-top: 3px;
+}
+
+/* The thumbnail playing in the large view above. */
+.p3-thumb[aria-pressed="true"] .p3-cap {
+  background: var(--p3-mark, #ff6464);
+}
+.p3-thumb .p3-cap {
+  padding-inline: 2px;
+}
+
+/* Under a UR5e simulation pair: one label per run, on the video's own
+   columns (two 640 px runs, 8 px apart). */
+.p3-sides {
+  display: grid;
+  grid-template-columns: 640fr 8fr 640fr;
+  align-items: baseline;
+}
+.p3-sides > :nth-child(2) {
+  grid-column: 3;
+}
+
+/* Speed of the reel's current chapter, on the picture, when it is not
+   real time. */
+.p3-speedtag {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  padding: 2px 6px 3px;
+  background: #111;
+  color: #fff;
+  pointer-events: none;
+}
+.p3-reelrow {
+  grid-template-columns: 1.9em minmax(0, 1fr) 2.2em 2.6em;
+  font-size: clamp(15px, 1.3vw, 19px);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+.p3-reelrow > :nth-child(4),
+.p3-reelrow > :nth-child(5) {
+  text-align: right;
+}
+
+/* Explicit controls: a ruled box in the section's type colour. */
+.p3-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  min-height: 36px;
+  padding: 0 0.75em;
+  border: 1px solid currentColor;
+  white-space: nowrap;
+  cursor: pointer;
+}
+@media (hover: hover) {
+  .p3-btn:hover {
+    background: var(--p3-btn-hover, #fff);
+  }
+}
+@media (pointer: coarse) {
+  .p3-btn {
+    min-height: 44px;
+  }
+}
+
+/* Continuous runs: the frame holds the preview or the full run, capped so
+   a 16:9 frame never runs off a short, wide screen. */
+.p3-run-frame {
+  position: relative;
+  width: min(100%, calc(72svh * 16 / 9));
+}
+.p3-tag {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  padding: 2px 6px 3px;
+  background: #111;
+  color: #fff;
+  pointer-events: none;
+}
+
+/* Clip index: a typographic list, one row per clip. */
+.p3-index-row {
+  display: grid;
+  grid-template-columns: 2.6em minmax(0, 1fr) 3.2em 2.2em;
+  column-gap: 0.75em;
+  align-items: baseline;
+  width: 100%;
+  padding: 0.3rem 0.25rem;
+  border-top: 1px solid rgb(17 17 17 / 0.25);
+  text-align: left;
+  cursor: pointer;
+}
+@media (hover: hover) {
+  .p3-index-row:hover {
+    background: #f6ee1f;
+  }
+}
+.p3-index-row:focus-visible {
+  outline: 2px solid #111;
+  outline-offset: -2px;
+}
+.p3-list {
+  font-size: clamp(15px, 1.3vw, 19px);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+
+/* Player (copy in ./Player): the frame takes the clip's aspect. */
+.p3-player .gal-player-fig {
+  width: min(100%, calc(56svh * var(--a, 1.7778)));
+}
+.p3-player .gal-player-frame {
+  aspect-ratio: var(--a, 1.7778);
+  background: #000;
+}
+.p3-player .p3-sides {
+  padding-inline: var(--gal-m);
+}
+@media (min-width: 900px) {
+  .p3-player .gal-player-fig {
+    width: min(100%, calc((100svh - 12rem) * var(--a, 1.7778)), 1440px);
+  }
+  .p3-player .p3-sides {
+    padding-inline: 0;
+  }
+}
+
+/* Locomotion: every terrain clip, 2 / 3 / 4 columns. */
+.p3-loco-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem var(--g);
+}
+@media (min-width: 768px) {
+  .p3-loco-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    row-gap: 1.5rem;
+  }
+}
+@media (min-width: 1800px) {
+  .p3-loco-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* Hardware bench on ultrawide: large view and runs share the row evenly,
+   so the large view stays within the screen's height. (Unlayered, so it
+   overrides the Tailwind column spans.) */
+@media (min-width: 1800px) {
+  .p3-bench-main {
+    grid-column: span 6 / span 6;
+  }
+  .p3-bench-thumbs {
+    grid-column: span 6 / span 6;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

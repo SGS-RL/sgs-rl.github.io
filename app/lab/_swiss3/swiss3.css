@@ -1,0 +1,290 @@
+/* /lab/swiss-3 (copied from swiss2.css): the Swiss light system from lab.css, with a sticky bar, a
+   capped page width for ultrawide screens and Kunstmuseum Bern's habit of
+   fixed text measures. Everything here is scoped under .s3. */
+
+.s3 {
+  --s3-bar: 2.75rem;
+  /* Page width cap, padding included: content is 1760 px at most. */
+  --s3-max: 1840px;
+}
+
+/* Centre the page grid on wide screens. Full-bleed bands (the bar's
+   background, the clip wall) stay full width. */
+.s3 .s3-wrap {
+  width: 100%;
+  max-width: var(--s3-max);
+  margin-inline: auto;
+}
+
+.s3 section[id] {
+  scroll-margin-top: var(--s3-bar);
+}
+
+/* Bar */
+.s3-bar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  height: var(--s3-bar);
+  background: var(--sw-bg);
+  border-bottom: 1px solid var(--sw-rule);
+}
+.s3-navlink {
+  color: var(--sw-mute);
+  transition: color 0.15s;
+}
+.s3-navlink:hover,
+.s3-navlink[aria-current] {
+  color: var(--sw-fg);
+}
+.s3-navlink[aria-current] {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3em;
+}
+/* Paper and Code join the bar once the title's links have scrolled away,
+   so they never show twice. */
+.s3-late {
+  transition:
+    opacity 0.2s,
+    visibility 0.2s;
+}
+.s3-late[data-hidden] {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Phone menu */
+.s3-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  background: var(--sw-bg);
+  color: var(--sw-fg);
+  overflow-y: auto;
+}
+.s3-menu-row {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr) auto;
+  align-items: baseline;
+  border-top: 1px solid var(--sw-hair);
+  padding-block: 0.6rem;
+}
+
+/* Body copy measure (Bern caps text at about 900 px). */
+.s3-measure {
+  max-width: 56rem;
+}
+.s3-body {
+  font-size: 1.0625rem;
+  line-height: 1.45;
+}
+@media (min-width: 768px) {
+  .s3-body {
+    font-size: 1.125rem;
+  }
+}
+
+.s3-pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+}
+
+/* ---- Round 3 additions ------------------------------------------------ */
+
+/* Reel chapters: number, title, speed, start time. */
+.s3-rl-row {
+  grid-template-columns: 1.9em minmax(0, 1fr) auto 2.6em;
+}
+.s3-rl-row > :last-child {
+  justify-content: flex-end;
+}
+.s3-speed[data-fast] {
+  color: var(--sw-fg);
+  font-weight: 500;
+}
+
+/* Tiles take the item's aspect (pairs 1288:360); the frame never crops. */
+.s3 .s3-frame,
+.s3-player .gal-player-frame {
+  aspect-ratio: var(--a, 1.7778);
+}
+/* A label over each half of a pair. A pair is two 640 x 360 runs with an
+   8 px white gap (scripts/lab/encode_library.py), so the right label
+   starts at 648/1288 of the width, over the right run's left edge. */
+.s3-sides {
+  display: grid;
+  grid-template-columns: 648fr 640fr;
+  padding-bottom: 0.4rem;
+  text-align: left;
+}
+.s3-sides > span {
+  min-width: 0;
+}
+.s3-sides > span:first-child {
+  padding-right: 0.75rem;
+}
+
+/* Collection: 2 columns on phones, 4 from iPad portrait, 6 on ultrawide
+   (they line up with the 4- and 12-column page grid). A pair spans two. */
+.s3-coll .gal-tiles,
+.s3-head {
+  --gal-cols: 2;
+}
+@container gal-grid (width >= 600px) {
+  .s3-coll .gal-tiles,
+  .s3-head {
+    --gal-cols: 4;
+  }
+}
+@container gal-grid (width >= 1600px) {
+  .s3-coll .gal-tiles,
+  .s3-head {
+    --gal-cols: 6;
+  }
+}
+.s3-coll .gal-tiles > li[data-pair] {
+  grid-column: span 2;
+}
+.s3-head {
+  display: grid;
+  grid-template-columns: repeat(var(--gal-cols), minmax(0, 1fr));
+  column-gap: var(--gal-gap);
+  row-gap: 0.5rem;
+  align-items: baseline;
+  border-top: 1px solid var(--gal-rule);
+  padding-top: 0.75rem;
+}
+.s3-head-name {
+  grid-column: 1 / -1;
+}
+.s3-head-desc {
+  grid-column: 1 / -1;
+  max-width: 60ch;
+}
+.s3-head-count {
+  grid-column: 1 / -1;
+  white-space: nowrap;
+}
+@container gal-grid (width >= 600px) {
+  .s3-head-name {
+    grid-column: 1 / -2;
+  }
+  .s3-head-count {
+    grid-column: -2 / -1;
+    grid-row: 1;
+    text-align: right;
+  }
+}
+@container gal-grid (width >= 1000px) {
+  .s3-head-name {
+    grid-column: 1 / 3;
+  }
+  .s3-head-desc {
+    grid-column: 3 / -2;
+    grid-row: 1;
+  }
+}
+
+/* Wall: one packed band per container step (see Wall.tsx); a pair spans
+   two cells, at the row height of the 16:9 tiles. */
+.gal-wall .s3-wall {
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  grid-auto-rows: calc(
+    (100cqw - (var(--cols) - 1) * var(--gal-seam)) / var(--cols) * 9 / 16
+  );
+}
+.s3-wall > li[data-pair] {
+  grid-column: span 2;
+}
+.gal-wall .s3-wall-tile {
+  aspect-ratio: auto;
+  height: 100%;
+}
+
+/* Transfer: two hardware runs under the two halves of the pair, with the
+   pair's own gap between them, so their edges line up. */
+.s3-hw {
+  column-gap: calc(100% * 8 / 1288);
+}
+.s3-tab {
+  color: var(--sw-mute);
+}
+.s3-tab:hover,
+.s3-tab[aria-pressed="true"] {
+  color: var(--sw-fg);
+}
+.s3-tab[aria-pressed="true"] {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3em;
+}
+
+/* Runs: small fact list beside the video. */
+.s3-facts {
+  display: grid;
+  grid-template-columns: 5.5em minmax(0, 1fr);
+  column-gap: 0.75rem;
+  row-gap: 0.15rem;
+}
+.s3-facts dd {
+  color: var(--sw-fg);
+}
+
+/* Player: the figure is as wide as its aspect allows. --fa is the aspect
+   of the whole figure (a pair stacked on phones is a quarter of it). */
+.s3-player .gal-player-fig {
+  --fa: var(--a, 1.7778);
+  width: min(100%, calc(56svh * var(--fa)));
+}
+.s3-player .s3-side-narrow,
+.s3-player .s3-half-right {
+  display: none;
+}
+.s3-player .s3-sides-wide {
+  padding-inline: var(--gal-m);
+  padding-top: 0.6rem;
+}
+.s3-half-right canvas {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--gal-panel);
+  cursor: pointer;
+}
+@media (max-width: 599px) {
+  .s3-player .gal-player-fig[data-pair] {
+    --fa: calc(16 / 18);
+  }
+  .s3-player [data-pair] .s3-sides-wide {
+    display: none;
+  }
+  .s3-player [data-pair] .s3-side-narrow,
+  .s3-player [data-pair] .s3-half-right {
+    display: block;
+  }
+  .s3-player [data-pair] .s3-side-narrow,
+  .s3-player [data-pair] .s3-half-right > p {
+    padding: 0.6rem var(--gal-m) 0.4rem;
+  }
+  /* The left run alone: 640 of the 1288 px, at 16:9. */
+  .s3-player [data-pair] .gal-player-frame {
+    aspect-ratio: 16 / 9;
+  }
+  .s3-player [data-pair] .gal-player-frame video {
+    object-fit: cover;
+    object-position: 0 50%;
+  }
+}
+@media (min-width: 900px) {
+  .s3-player .gal-player-fig {
+    width: min(100%, calc((100svh - 12rem) * var(--fa)), 1440px);
+  }
+  .s3-player .s3-sides-wide {
+    padding-inline: 0;
+    padding-top: 0;
+  }
+}

@@ -45,3 +45,6 @@ next-env.d.ts
 
 # design review screenshots (scripts/lab/shoot.mjs)
 /previews/
+
+# The owner's footage, encoded by scripts/lab/encode_library.py; kept out of git.
+/public/lab/media/library/

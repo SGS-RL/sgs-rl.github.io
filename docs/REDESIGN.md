@@ -5,14 +5,16 @@ project site. Branch: `claude/website-redesign-brainstorm-hz3x4c`.
 
 ## Start here
 
-- **Where things stand (2026-10-04).** Two tracks are being polished in
-  parallel: a _serious_ one (Swiss, light: `/lab/swiss-2/`) and a
-  _playful_ one (NOF poster system: `/lab/site-2/` and `/lab/poster-2/`).
+- **Where things stand (2026-10-05).** Two tracks are being polished in
+  parallel: a _serious_ one (Swiss, light: `/lab/swiss-3/`) and a
+  _playful_ one (NOF poster system: `/lab/site-3/` and `/lab/poster-3/`).
+  The round 3 pages carry the owner's real footage; round 2 (`-2` routes)
+  keeps the placeholders for comparison.
   The owner picks one later with labmates. Round 2 also produced parts
   studied on their own pages (reel, wordmark and covers, method, scaling,
   gallery, full title, method as navigation).
-- **Plan.** (1) The owner is preparing the real clips and will hand them
-  over. (2) Iterate the serious version with them. (3) Then the playful
+- **Plan.** (1) The owner hands over the real clips (most arrived
+  2026-10-05; see "Needs the owner's attention"). (2) Iterate the serious version with them. (3) Then the playful
   version. (4) The owner decides with labmates. (5) Promote the chosen
   design to the homepage.
 - **Ground rule.** Never change a study the owner has already seen,
@@ -50,9 +52,12 @@ way as below.
 | What                                     | Where                | State                        |
 | ---------------------------------------- | -------------------- | ---------------------------- |
 | Scroll-past fix for the current homepage | `VideoNarrative.tsx` | Done, not live               |
-| **Serious page, round 2** (`_swiss2/`)   | **`/lab/swiss-2/`**  | **Latest, serious track**    |
-| **Site page, round 2** (`_site2/`)       | **`/lab/site-2/`**   | **Latest, playful track**    |
-| **Poster page, round 2** (`_poster2/`)   | **`/lab/poster-2/`** | **Latest, playful track**    |
+| **Serious page, round 3** (`_swiss3/`)   | **`/lab/swiss-3/`**  | **Latest, serious track**    |
+| **Site page, round 3** (`_site3/`)       | **`/lab/site-3/`**   | **Latest, playful track**    |
+| **Poster page, round 3** (`_poster3/`)   | **`/lab/poster-3/`** | **Latest, playful track**    |
+| Serious page, round 2 (`_swiss2/`)       | `/lab/swiss-2/`      | Round 2, placeholders        |
+| Site page, round 2 (`_site2/`)           | `/lab/site-2/`       | Round 2, placeholders        |
+| Poster page, round 2 (`_poster2/`)       | `/lab/poster-2/`     | Round 2, placeholders        |
 | Method as navigation (`_nav/`)           | `/lab/method-nav/`   | Part, round 3, see below     |
 | Full title, six settings (`_title/`)     | `/lab/title/`        | Part, round 3, owner to pick |
 | Highlight reel (`_reel/`)                | `/lab/reel/`         | Part, round 2                |
@@ -239,6 +244,67 @@ For reference, round 1's `/lab/site/` contains, top to bottom:
     point 30–95% along its path and jiggles. The owner noticed it looks
     unnatural. A fix (point-mass motion with noise, outcome unchanged) is
     proposed but deferred until after the clips.
+- **The owner's footage (2026-10-05).** Delivered as a zip of the drive
+  folder "SGS" (Anymal-C, Anymal-D PACE, Franka Sim, UR5e Real, UR5e Sim),
+  2.1 GB, plus a spreadsheet ("SGS Clip Selector") rating each UR5e sim
+  clip. Neither is in the repo. `scripts/lab/encode_library.py <SGS
+folder>` turns it into `public/lab/media/library/` (27 MB); the
+  manifest is `app/lab/library.ts` (`LIBRARY`, `RUNS`, `REEL3`). Add new
+  footage by adding entries to both. The encoded media is git-ignored (the
+  owner's call, 2026-10-05): on a fresh checkout, get the drive folder and
+  run the script, or the round 3 pages show empty video frames. Choices
+  behind it:
+  - UR5e sim tasks are shown as pairs, as the owner asked: the most
+    interesting run and a nominal one side by side in one video (1288 ×
+    360, 8 px white gap; the shorter run holds its last frame). Picks from
+    the spreadsheet: BNC 5 + 2, gear mesh 1 + 3, nut 1 + 3, rod 1 + 2,
+    waterproof 1 + 2, rectangular peg 3 + 1 (all its runs are nominal).
+    Each sim clip comes in three cameras (follow, mixed, static close-up);
+    the owner wants only the static close-up for now (2026-10-05), for
+    the pairs and the reel alike.
+  - Continuous runs (ANYmal C 60 s, UR5e hardware gear mesh 64 s, Franka
+    30 s): the owner wants them shown in full but not forced on viewers.
+    Each gets the full run (960 px) and a sped-up preview of about 10 s
+    (`-fast`, 6× or 3×), so a page can loop the preview and play the full
+    run only on request.
+  - The Franka footage arrived as one 30 s run with camera cuts at 12.8 s
+    and 18.4 s; three excerpts are cut from it for the collection.
+  - Mock highlight reel (28.3 s, `reel.mp4`), in the owner's order: UR5e
+    hardware rod (clip 5), nut (clip 3, at 3×), gear mesh (clip 1, at 2×);
+    UR5e sim rod and BNC; Franka close-up; ANYmal D climbing box, stepping
+    stones, gap. Segment times are in `REEL` in the script.
+  - Hardware clips are assumed to be real time; the nut clips are 4K at
+    60 fps and slow, hence the speed-up in the reel.
+  - The earlier studies keep the placeholder `CLIPS` and `HIGHLIGHTS` in
+    `content.ts`, so they still look as they did when reviewed. Round 3
+    pages use the library.
+- **Round 3 pages (2026-10-05).** Each copies its round 2 page into a new
+  folder and swaps in the library footage; shared components were copied,
+  not edited, where pairs or runs needed changes (each folder has its own
+  `Player`, gallery and clip list that keep a clip's aspect). All three:
+  the mock reel (`REEL3`) as a plain video with the speed of every chapter
+  shown; UR5e sim pairs never cropped, their two sides labelled; a new
+  continuous-runs section that loops the sped-up preview (muted, speed
+  labelled) and plays the full run at 1× only on "Watch the full run"; the
+  scaling chart keeps the old placeholder clips, labelled as such, until
+  the scaling clips exist. Per page:
+  - `/lab/swiss-3/`: sections 01 Summary … 05 Runs, 06 Clips, 07 Cite;
+    clips grouped by robot and sim/hardware; Wall kept as the band into the
+    collection (pairs take two cells); the sim-to-hardware comparison in
+    Results shows the UR5e pairs over two hardware runs (rod, nut, gear
+    mesh); on phones, Player stacks a pair's two runs.
+  - `/lab/site-3/`: Highlights right after the header; Overview entries
+    rebuilt on the footage (Locomotion yellow, Manipulation pink with the
+    pairs, Hardware blue with white type, Scaling mint); Runs after the
+    Overview; the clip index lists all 34 clips with a preview that keeps
+    each clip's aspect.
+  - `/lab/poster-3/`: reel after the cover; Manipulation in three blocks
+    (UR5e hardware by task, UR5e sim pairs, Franka); a new blue Locomotion
+    page with all 12 ANYmal D terrains; a red Runs page; the Index quilt
+    rebuilt from the real 16:9 clips (pairs left out: a square cell would
+    crop them); a plain clip list in place of the video grid; facts
+    redrafted from the footage (rows to confirm listed in
+    `_poster3/facts.ts`).
 - **Full title (`/lab/title/`).** Six ways to fit "A Balanced Data Diet:
   Addressing the Exploration Bottleneck in Mega-Scale RL for Robot
   Control" on a first screen, emphasising "Exploration Bottleneck": T1–T3
@@ -250,8 +316,13 @@ For reference, round 1's `/lab/site/` contains, top to bottom:
 
 Inputs only the owner can give:
 
-- [ ] **Real clips (in progress: the owner is preparing them).** Where
-      they go:
+- [ ] **Remaining clips.** Delivered 2026-10-05 (see Decisions). Still
+      to come: ANYmal D "random jump box" (empty folder) and ANYmal C
+      per-terrain clips; the scaling clips. Also check: real-time speed of
+      the hardware clips, task and terrain names (from folder names), the
+      reel cut. Where new footage goes: add it to
+      `scripts/lab/encode_library.py` and `app/lab/library.ts` and rerun
+      the script. The older placeholder layout, for reference:
   - Clip collection (gallery, clip index, quilt): one entry per clip in
     `CLIPS` in `app/lab/content.ts`, plus a 960 px MP4 in
     `public/lab/media/clips/`, a 384 px MP4 in `clips-sm/` and a poster
@@ -266,6 +337,12 @@ Inputs only the owner can give:
 - [ ] **Pick a direction**, after both tracks are iterated with the real
       clips: serious (`/lab/swiss-2/`) or playful (`/lab/site-2/`,
       `/lab/poster-2/`), with labmates' feedback.
+- [ ] **Round 3 choices the agents flagged:** where the Runs section
+      goes (before or after Clips), Site 3's solid blue Hardware band, the
+      clips picked for the Site 3 entries, Poster 3's blue Locomotion and
+      red Runs grounds, and the new copy ("policies trained in simulation
+      run on a physical UR5e", the Setup robot rows, Poster 3's facts).
+      `/lab/swiss-3/` still has the p(1 − p) passage in its method.
 - [ ] **Pick a full-title setting** from `/lab/title/` (T1–T6), or none.
 - [ ] **Method on the site:** version A or B from `/lab/method-nav/`, the
       round 2 method, or a link to the explainer.
@@ -339,7 +416,8 @@ app/
     layout.tsx                   lab fonts, noindex metadata
     page.tsx                     /lab/ index of studies (add new ones here)
     content.ts                   shared content: title, authors, links,
-                                 BibTeX, clips, reel chapters
+                                 BibTeX, placeholder clips and reel
+    library.ts                   the owner's footage: LIBRARY, RUNS, REEL3
     lab.css                      Swiss system (.swiss, sw-*)
     _components/                 first Swiss studies, /lab/clips layouts
     _poster/                     NOF poster system (round 1)
@@ -362,13 +440,16 @@ app/
                                  clips.ts (scaling clip list)
     _gallery/                    ClipGallery, RobotGrid, ClipWall,
                                  QuiltSeparator, player
+    _swiss3/ _site3/ _poster3/   round 3 pages (real footage)
     _title/                      TitleStudy, title.css (/lab/title)
     _nav/                        method as navigation (/lab/method-nav):
                                  nav.ts (maze, learner, sampler), draw.ts,
                                  TaskFigure, SnapshotFigure, TrainFigure
     <route>/page.tsx             one folder per study route
 public/lab/media/                intro, highlights, clips, clips-sm, covers
-scripts/lab/                     review tooling (below)
+  library/                       the owner's footage, encoded (round 3)
+scripts/lab/                     review tooling (below);
+                                 encode_library.py builds media/library
 ```
 
 ## Set up a development environment
@@ -639,3 +720,19 @@ one later with feedback from labmates.
   deferred.
 - Next: the owner hands over all the clips; then iterate the serious
   version, then the playful one.
+
+### Round 4 (owner, 2026-10-05)
+
+- Handed over most of the footage (see Decisions, "The owner's footage").
+  Still missing: one ANYmal D clip (random jump box); ANYmal C per-terrain
+  clips are coming.
+- Continuous one-minute runs "are very nice, and I want to show them in
+  full, but they are a bit too long to be forced upon the person watching".
+- UR5e sim: show the most interesting run and a nominal one next to each
+  other, combined into one video. "I only want to use the static close up
+  shots for now."
+- Reel order: hardware first (rod clip 5, nut clip 3, gear mesh clip 1),
+  then a few UR5e sim, a few Franka, a few ANYmal. Mock it for now; it will
+  be polished.
+- Asked to iterate on all the designs with the content populated. Built as
+  `/lab/swiss-3/`, `/lab/site-3/`, `/lab/poster-3/`.

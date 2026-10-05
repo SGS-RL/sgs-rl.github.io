@@ -1,0 +1,213 @@
+/* /lab/site-3: /lab/site-2 with the owner's footage. Builds on poster.css
+   (.pz, .pz-grid, .pz-small, .pz-row) and _site/site.css (.st, .st-head,
+   .st-entry, .st-lead). Only what changes lives here. */
+
+.s3 {
+  --frame: color-mix(in srgb, currentColor 10%, transparent);
+}
+
+/* Header, as in site-2. Default: mark across the measure, then title
+   (8 cols) and authors (4 cols). Short and wide (ultrawide): the capped
+   mark leaves room on its right, so the authors move up beside it. */
+.s3-hd-mark {
+  position: relative;
+  padding-inline: var(--m);
+  padding-top: 8px;
+}
+@media (min-width: 1600px) and (min-aspect-ratio: 2/1) {
+  .s3-hd {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+      "mark meta"
+      "title title";
+    column-gap: calc(var(--g) * 3);
+    padding-right: var(--m);
+  }
+  .s3-hd-mark {
+    grid-area: mark;
+    padding-right: 0;
+  }
+  .s3-hd-info {
+    display: contents;
+  }
+  .s3-hd-title {
+    grid-area: title;
+    padding: 1rem var(--m) 3rem;
+  }
+  .s3-hd-meta {
+    grid-area: meta;
+    align-self: end;
+    max-width: 30rem;
+  }
+}
+
+/* Anchors inside a section land under the bar and the pinned heading. */
+.s3-anchor {
+  scroll-margin-top: calc(var(--bar) + var(--head));
+}
+
+/* ---- Clips in the Overview entries ------------------------------------ */
+
+/* A row of clips that share one height: each grows in proportion to its
+   aspect (--a), so nothing is cropped and tops and bottoms line up.
+   Narrow screens wrap: a pair or a lead clip takes the measure, other
+   16:9 clips go two to a line. Rows with a pair stay wrapped up to iPad
+   portrait, where a pair across the measure is still large enough. */
+.s3-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.9rem var(--g);
+}
+.s3-tile {
+  flex: 1 1 100%;
+  min-width: 0;
+}
+.s3-tile[data-kind="clip"]:not([data-lead]) {
+  flex-basis: calc(50% - var(--g) / 2);
+}
+@media (min-width: 768px) {
+  .s3-row:not([data-wide]) {
+    flex-wrap: nowrap;
+  }
+  .s3-row:not([data-wide]) > .s3-tile {
+    flex: var(--a) 1 0%;
+  }
+}
+@media (min-width: 1024px) {
+  .s3-row[data-wide] {
+    flex-wrap: nowrap;
+  }
+  .s3-row[data-wide] > .s3-tile {
+    flex: var(--a) 1 0%;
+  }
+}
+
+.s3-clip {
+  display: block;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+.s3-clip:hover .s3-cap,
+.s3-clip:focus-visible .s3-cap {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+/* A frame with the clip's own aspect: poster underneath, video on top,
+   both filling it exactly. */
+.s3-frame {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: var(--a, 1.7778);
+  background: var(--frame);
+  overflow: hidden;
+}
+.s3-frame > img,
+.s3-frame > video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.s3-frame-quiet {
+  --frame: #efefea;
+  cursor: pointer;
+}
+.s3-mute {
+  color: color-mix(in srgb, currentColor 68%, transparent);
+}
+
+/* ---- Highlight reel ---------------------------------------------------- */
+
+/* Chapters: number, task, speed, start. */
+.s3-chap-cols,
+.rl-row.s3-chap-cols {
+  display: grid;
+  grid-template-columns: 2em minmax(0, 1fr) 2.6em 2.8em;
+  column-gap: 0.4em;
+  align-items: baseline;
+}
+@media (min-width: 1024px) {
+  /* Beside the video the player is the reel's height; keep the chapter
+     list from pushing the band taller on short laptop screens. */
+  .s3-reel .rl-row {
+    padding-block: 3px;
+  }
+}
+
+/* ---- Continuous runs --------------------------------------------------- */
+
+.s3-runfig {
+  width: min(100%, calc(62svh * 16 / 9));
+}
+.s3-runframe {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--frame);
+  overflow: hidden;
+}
+.s3-runframe > img,
+.s3-runframe > video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.s3-runbtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  min-height: 36px;
+  border: 1px solid currentColor;
+  padding: 0.2em 0.7em;
+  white-space: nowrap;
+  cursor: pointer;
+}
+@media (pointer: coarse) {
+  .s3-runbtn {
+    min-height: 44px;
+  }
+}
+.s3-runbtn:focus-visible {
+  background: var(--type);
+  color: var(--ground);
+}
+@media (hover: hover) {
+  .s3-runbtn:hover {
+    background: var(--type);
+    color: var(--ground);
+  }
+}
+.s3-runbtn svg {
+  width: 0.62em;
+  height: 0.62em;
+  fill: currentColor;
+  flex: none;
+}
+
+/* ---- Player: each clip in its own aspect ------------------------------- */
+
+.s3-player .gal-player-frame {
+  aspect-ratio: var(--a);
+}
+.s3-player .gal-player-fig {
+  width: min(100%, calc(56svh * var(--a)));
+}
+/* Phones: the frame runs edge to edge; keep the labels off the edge. */
+.s3-player-sides {
+  padding-inline: var(--gal-m);
+}
+@media (min-width: 900px) {
+  .s3-player .gal-player-fig {
+    width: min(100%, calc((100svh - 13rem) * var(--a)), 1440px);
+  }
+  .s3-player-sides {
+    padding-inline: 0;
+  }
+}
