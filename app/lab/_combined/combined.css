@@ -2,6 +2,24 @@
    (.pz, .pz-grid, .pz-small) and _site/site.css (.st, .st-lead, .st-link).
    Only what this page adds lives here. */
 
+/* The title breaks after the colon. The break is generated content, so a
+   copied title stays on one line ("A Balanced Data Diet: Addressing ...").
+   The space before the break is a no-break space: an ordinary one after
+   the break would be dropped at the start of the line, and from the copy. */
+.cb-hd-break::after {
+  content: "\A";
+  white-space: pre;
+}
+
+/* The wordmark is an image. At its size, the text box of "SGS" reaches far
+   below the letters and covered the title and the links under it, so a
+   click there selected "SGS" instead (as on site-2 and site-3). */
+.cb-hd .cv-wm {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
 /* Header, as in site-2 and site-3. Default: mark across the measure, then
    title (8 cols) and authors (4 cols). Short and wide (ultrawide): the
    capped mark leaves room on its right, so the authors move up beside it. */

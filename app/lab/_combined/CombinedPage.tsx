@@ -11,7 +11,7 @@ import "./combined.css";
 // Wordmark, poster.css and site.css) are imported.
 //
 // Sections so far:
-// 1. Header, from /lab/site-2 and /lab/site-3.
+// 1. Header, from /lab/site-2 and /lab/site-3, with the full title.
 export default function CombinedPage() {
   return (
     <div className="pz st cb">

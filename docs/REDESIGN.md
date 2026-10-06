@@ -320,9 +320,30 @@ folder>` turns it into `public/lab/media/library/` (27 MB); the
   change for this page, copy it into `_combined/` first. The nav bar
   (`_combined/Nav.tsx`) lists only the sections already on the page
   (`SECTIONS`); add each new section there. Sections so far:
-  1. Header, from Site 2 and Site 3 (identical in both): the V6 wordmark,
+  1. Header, from Site 2 and Site 3 (identical in both): wordmark,
      title, authors, affiliations, venue, Paper and Code. The "Cite ↓"
-     link is left out until there is a Cite section.
+     link is left out until there is a Cite section. Changed in round 2
+     of the section, at the owner's request:
+     - The paper's full title (`FULL_TITLE` in `_combined/content.ts`).
+       It breaks after the colon with CSS generated content, so selecting
+       and copying it gives one line; the space before the break is a
+       no-break space, since an ordinary one at the start of the next line
+       is dropped from the copy (Chrome turns it back into a plain space
+       on copy). "Mega-Scale" never breaks at its hyphen. A "Copy title"
+       button (`CopyTitle.tsx`) sits next to Paper and Code.
+     - Ignacio Dagnigo's affiliation is the University of Washington, so
+       "Independent Researcher" is gone (`AUTHORS`, `AFFILIATIONS` in
+       `_combined/content.ts`; the shared `content.ts` still has the old
+       one).
+     - "Guided" is centred in the G's counter at its old height
+       (`_combined/Wordmark.tsx`, a copy of the V6 wordmark): x 0.846em,
+       the middle of the counter (0.637–1.056em) measured at mid-word from
+       a render with the inset words hidden.
+     - The wordmark ignores pointer events and selection. At its size the
+       text box of "SGS" reaches well below the letters and covered the
+       title and the header links: clicking the title selected "SGS", and
+       on a laptop the Paper and Code links under the mark could not be
+       clicked. Site 2 and Site 3 still have this.
 - **Footage through the Google Drive connector (2026-10-06).** The owner's
   drive folder is "Research Media/SGS"; it also has a `highlights` folder
   with four ~150 MB cuts (`sgs_highlights`, `sgs_highlights_annotated`,
@@ -377,6 +398,9 @@ Inputs only the owner can give:
 - [ ] **Pick a full-title setting** from `/lab/title/` (T1–T6), or none.
 - [ ] **Method on the site:** version A or B from `/lab/method-nav/`, the
       round 2 method, or a link to the explainer.
+- [ ] **Ignacio Dagnigo's affiliation** is fixed on `/lab/combined/` only
+      (University of Washington); the shared `content.ts` and the older
+      studies still say "Independent Researcher".
 - [ ] **Paper and code links** (`LINKS` in `app/lab/content.ts`, still `#`).
 - [ ] **Facts to check** (in `app/lab/content.ts` unless noted):
   - The paper's softmax temperature T, N for each task, and κ and t for
@@ -777,3 +801,6 @@ one later with feedback from labmates.
   built, they review and iterate, and the next section starts only after
   they approve. Built at `/lab/combined/`.
 - Section 1: the title page from Site 2/3 (the header with the big SGS).
+  Asked for: Ignacio's affiliation as University of Washington; the whole
+  paper title, easy to copy and paste; "Guided" more centred in the G at
+  the same height.
