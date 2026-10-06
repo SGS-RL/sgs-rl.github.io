@@ -5,7 +5,12 @@ project site. Branch: `claude/website-redesign-brainstorm-hz3x4c`.
 
 ## Start here
 
-- **Where things stand (2026-10-05).** Two tracks are being polished in
+- **Where things stand (2026-10-06).** The owner is assembling one site
+  from the parts they like, at `/lab/combined/` (`app/lab/_combined/`),
+  one section at a time: they describe a section, it is built and
+  screenshotted, they review, and only after they approve does the next
+  section start. See "Combined site" under Decisions.
+- **Before that (2026-10-05).** Two tracks are being polished in
   parallel: a _serious_ one (Swiss, light: `/lab/swiss-3/`) and a
   _playful_ one (NOF poster system: `/lab/site-3/` and `/lab/poster-3/`).
   The round 3 pages carry the owner's real footage; round 2 (`-2` routes)
@@ -51,6 +56,7 @@ way as below.
 
 | What                                     | Where                | State                        |
 | ---------------------------------------- | -------------------- | ---------------------------- |
+| **Combined site** (`_combined/`)         | **`/lab/combined/`** | **Being built, by section**  |
 | Scroll-past fix for the current homepage | `VideoNarrative.tsx` | Done, not live               |
 | **Serious page, round 3** (`_swiss3/`)   | **`/lab/swiss-3/`**  | **Latest, serious track**    |
 | **Site page, round 3** (`_site3/`)       | **`/lab/site-3/`**   | **Latest, playful track**    |
@@ -305,6 +311,31 @@ folder>` turns it into `public/lab/media/library/` (27 MB); the
     crop them); a plain clip list in place of the video grid; facts
     redrafted from the footage (rows to confirm listed in
     `_poster3/facts.ts`).
+- **Combined site (`/lab/combined/`, 2026-10-06).** One page assembled
+  from the studies, section by section, each approved before the next.
+  Parts are copied into `app/lab/_combined/` rather than imported from
+  their study, so the studies stay as the owner reviewed them; shared
+  pieces that do not change (`content.ts`, `library.ts`, the `Wordmark`,
+  `poster.css`, `site.css`) are imported. When a shared piece needs a
+  change for this page, copy it into `_combined/` first. The nav bar
+  (`_combined/Nav.tsx`) lists only the sections already on the page
+  (`SECTIONS`); add each new section there. Sections so far:
+  1. Header, from Site 2 and Site 3 (identical in both): the V6 wordmark,
+     title, authors, affiliations, venue, Paper and Code. The "Cite ↓"
+     link is left out until there is a Cite section.
+- **Footage through the Google Drive connector (2026-10-06).** The owner's
+  drive folder is "Research Media/SGS"; it also has a `highlights` folder
+  with four ~150 MB cuts (`sgs_highlights`, `sgs_highlights_annotated`,
+  `sgs_things_you_can_do`, `sgs_3030_dank_cut`) not used yet. The Drive
+  connector returns files as base64 and refuses anything over 10 MB; in
+  practice files over about 6.5 MB also fail (the message is too large
+  for the client). That brought in 17 of the 40 source files
+  `encode_library.py` needs (all ANYmal D terrains, 5 of the 12 UR5e sim
+  close-ups); every UR5e hardware clip and the continuous runs are too
+  large. Fetching them needs `drive.google.com` and
+  `drive.usercontent.google.com` allowed in the cloud environment's
+  network settings and a share link, or the encoded library handed over
+  some other way.
 - **Full title (`/lab/title/`).** Six ways to fit "A Balanced Data Diet:
   Addressing the Exploration Bottleneck in Mega-Scale RL for Robot
   Control" on a first screen, emphasising "Exploration Bottleneck": T1–T3
@@ -442,6 +473,8 @@ app/
                                  QuiltSeparator, player
     _swiss3/ _site3/ _poster3/   round 3 pages (real footage)
     _title/                      TitleStudy, title.css (/lab/title)
+    _combined/                   /lab/combined: the site assembled section
+                                 by section (CombinedPage, Header, Nav)
     _nav/                        method as navigation (/lab/method-nav):
                                  nav.ts (maze, learner, sampler), draw.ts,
                                  TaskFigure, SnapshotFigure, TrainFigure
@@ -736,3 +769,11 @@ one later with feedback from labmates.
   be polished.
 - Asked to iterate on all the designs with the content populated. Built as
   `/lab/swiss-3/`, `/lab/site-3/`, `/lab/poster-3/`.
+
+### Round 5 (owner, 2026-10-06)
+
+- "Now I'm gonna build section by section a combined website which has
+  all the parts I like." Process: the owner describes a section, it is
+  built, they review and iterate, and the next section starts only after
+  they approve. Built at `/lab/combined/`.
+- Section 1: the title page from Site 2/3 (the header with the big SGS).

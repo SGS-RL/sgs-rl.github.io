@@ -6,6 +6,16 @@ type Study = [href: string, name: string, note: string];
 
 const GROUPS: [string, Study[]][] = [
   [
+    "Combined site, built section by section",
+    [
+      [
+        "/lab/combined/",
+        "Combined",
+        "The parts the owner picked from the studies, added one approved section at a time. So far: the Site header.",
+      ],
+    ],
+  ],
+  [
     "Round 3: pages with the real footage",
     [
       [

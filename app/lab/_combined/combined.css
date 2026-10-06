@@ -1,0 +1,39 @@
+/* /lab/combined: the site assembled from the studies. Builds on poster.css
+   (.pz, .pz-grid, .pz-small) and _site/site.css (.st, .st-lead, .st-link).
+   Only what this page adds lives here. */
+
+/* Header, as in site-2 and site-3. Default: mark across the measure, then
+   title (8 cols) and authors (4 cols). Short and wide (ultrawide): the
+   capped mark leaves room on its right, so the authors move up beside it. */
+.cb-hd-mark {
+  position: relative;
+  padding-inline: var(--m);
+  padding-top: 8px;
+}
+@media (min-width: 1600px) and (min-aspect-ratio: 2/1) {
+  .cb-hd {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+      "mark meta"
+      "title title";
+    column-gap: calc(var(--g) * 3);
+    padding-right: var(--m);
+  }
+  .cb-hd-mark {
+    grid-area: mark;
+    padding-right: 0;
+  }
+  .cb-hd-info {
+    display: contents;
+  }
+  .cb-hd-title {
+    grid-area: title;
+    padding: 1rem var(--m) 3rem;
+  }
+  .cb-hd-meta {
+    grid-area: meta;
+    align-self: end;
+    max-width: 30rem;
+  }
+}
