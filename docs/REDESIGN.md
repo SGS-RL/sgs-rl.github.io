@@ -60,6 +60,7 @@ way as below.
 | Header colours (`_combined/inks.ts`)     | `/lab/header-colors/` | Part, owner to pick          |
 | Highlights placement and controls        | `/lab/highlights/`    | Part, owner to pick          |
 | Opening: A or B × Overview or Summary    | `/lab/opening/`       | Part, owner to pick          |
+| Serious start, colour later (O1–O4)      | `/lab/serious-start/` | Part, owner to pick          |
 | Scroll-past fix for the current homepage | `VideoNarrative.tsx`  | Done, not live               |
 | **Serious page, round 3** (`_swiss3/`)   | **`/lab/swiss-3/`**   | **Latest, serious track**    |
 | **Site page, round 3** (`_site3/`)       | **`/lab/site-3/`**    | **Latest, playful track**    |
@@ -375,12 +376,29 @@ folder>` turns it into `public/lab/media/library/` (27 MB); the
        "not available here".
      - Summary (`_combined/Summary.tsx`): Serious 3's "01 Summary" (rule,
        small label, the lead paragraph on columns 4–12) in the page's
-       single weight, without the section number. The owner liked the round 3 reel
-       as a plain video with progress bars and chapters, but wants no
-       unneeded text, the controls as undistracting as possible, and asked
-       whether the reel can come first or share the first screen with the
-       title. `/lab/highlights/` compares five placements and three sets of
-       controls:
+       single weight, without the section number.
+  4. Serious start (`/lab/serious-start/`, `_combined/SeriousStart.tsx`).
+     Before committing to the wordmark opening, the owner asked for a page
+     that "starts off a bit more serious" and turns "more colorful and
+     playful as we scroll down", with no SGS logotype but still making
+     clear it is SGS, since the title does not say it; then highlights,
+     summary, and the colourful Overview. The top uses the Swiss system
+     of `/lab/swiss` (`.swiss`, `sw-*`: paper, display type at weight
+     600, hairline rules, small labels, the red accent) and a Swiss bar
+     that names "SGS Success-Guided Sampling"; four openings say SGS:
+     O1 the name at display size with S, G, S in red; O2 an acrostic of
+     large red letters with the words beside them; O3 a red "SGS" tag
+     and the name, then "A Balanced Data Diet:" at display size; O4
+     "SGS" in plain display letters with the name beside it. After each:
+     the reel (titles under the bar) and the summary as Swiss sections
+     (rule, label, content on columns 4–12), then the Overview's white
+     heading band and colour bands, on the Swiss margins (`.cb-ss-colour`
+     sets the poster grid's `--m` and `--g` to the Swiss values). The owner liked the round 3 reel
+     as a plain video with progress bars and chapters, but wants no
+     unneeded text, the controls as undistracting as possible, and asked
+     whether the reel can come first or share the first screen with the
+     title. `/lab/highlights/` compares five placements and three sets of
+     controls:
      - A after the header (the reel across the measure, no heading or
        caption; on phones it is already on the first screen), B side by
        side from 1024 px (mark, title and authors in 5 columns, the reel
@@ -566,7 +584,8 @@ app/
                                  /lab/header-colors; Reel (quiet reel) and
                                  HighlightsStudy for /lab/highlights;
                                  Opening, Overview, Summary and
-                                 OpeningStudy for /lab/opening
+                                 OpeningStudy for /lab/opening;
+                                 SeriousStart for /lab/serious-start
     _nav/                        method as navigation (/lab/method-nav):
                                  nav.ts (maze, learner, sampler), draw.ts,
                                  TaskFigure, SnapshotFigure, TrainFigure
@@ -890,3 +909,10 @@ one later with feedback from labmates.
   yeah I agree let's try both this and the more serious summary paragraph
   and show me both with both combos for the first page so I can compare."
   Built as `/lab/opening/`.
+- Before choosing: "If I still wanted a very clean look, but have it so
+  that it starts off a bit more serious, and the design starts to become
+  a bit more colorful and playful as we scroll down, I am wondering if we
+  can start with something that is not the SGS logo type of thing, but we
+  still somehow emphasize that this is SGS, since it's not in the title.
+  Then, we do highlights video, then summary, and then start having a
+  colorful overview like we have now." Built as `/lab/serious-start/`.

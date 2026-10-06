@@ -28,6 +28,11 @@ const GROUPS: [string, Study[]][] = [
         "Opening",
         "Openings A and B from Highlights, each followed by Site 3's colourful Overview or the serious summary paragraph.",
       ],
+      [
+        "/lab/serious-start/",
+        "Serious start",
+        "A page that starts serious (Swiss, no wordmark; four ways to say SGS) and turns colourful at the Overview.",
+      ],
     ],
   ],
   [

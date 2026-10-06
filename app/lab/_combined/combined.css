@@ -325,3 +325,102 @@
   line-height: 1.12;
   letter-spacing: -0.03em;
 }
+
+/* ---- Serious start (SeriousStart.tsx) ----------------------------------
+   The Swiss system of lab.css (.swiss tokens, .sw-grid, .sw-label,
+   .sw-lead) for the top of the page; the Overview below it keeps the
+   poster system, on the Swiss margins. */
+.cb-ss-bar {
+  height: 2.75rem;
+  border-bottom: 1px solid var(--sw-rule);
+  background: var(--sw-bg);
+  font-size: 0.9375rem;
+}
+.cb {
+  --ss-title: 17vw;
+}
+@media (min-width: 768px) {
+  .cb {
+    --ss-title: min(8.4vw, 15svh);
+  }
+}
+/* The lead size of the serious pages, for titles set at that size. */
+.cb-ss-lead {
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+  font-size: clamp(1.5rem, 3.2vw, 2.6rem);
+}
+/* "A Balanced Data Diet:" over the subtitle (O3). */
+.cb-ss-display {
+  font-size: var(--ss-title);
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+}
+/* O1: the method's name at display size. */
+.cb-ss-name {
+  font-size: 17vw;
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 0.92;
+}
+@media (min-width: 768px) {
+  .cb-ss-name {
+    font-size: min(7.4vw, 14svh);
+  }
+}
+/* O2: the acrostic. */
+.cb-ss-acro {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+.cb-ss-acro-letter {
+  min-width: 0.72em;
+  font-size: 24vw;
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 0.86;
+}
+@media (min-width: 768px) {
+  .cb-ss-acro-letter {
+    font-size: min(9.5vw, 16svh);
+  }
+}
+.cb-ss-acro-word {
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  font-size: clamp(1.5rem, 3.2vw, 2.6rem);
+}
+/* O3: the tag. */
+.cb-ss-tagline {
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  font-size: clamp(1.25rem, 2.2vw, 1.9rem);
+}
+.cb-ss-tag {
+  background: var(--sw-accent);
+  color: #fff;
+  font-weight: 600;
+  padding: 0.08em 0.32em 0.1em;
+  letter-spacing: -0.01em;
+}
+/* O4: plain letters. */
+.cb-ss-letters {
+  font-size: var(--ss-title);
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 0.86;
+}
+/* The Overview's grid on the Swiss margins. */
+.cb-ss-colour {
+  --m: 1rem;
+  --g: 1rem;
+}
+@media (min-width: 768px) {
+  .cb-ss-colour {
+    --m: 2.5rem;
+    --g: 1.5rem;
+  }
+}
