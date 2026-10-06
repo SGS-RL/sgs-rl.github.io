@@ -311,3 +311,29 @@ export const STANDIN_REEL: ReelData = {
     sim(19.067, "ANYmal D", "Stairs"),
   ],
 };
+
+/**
+ * Stand-in clips (single UR5e simulation runs, static close-up), for pages
+ * that show the UR5e pairs while the pairs cannot be built in a cloud
+ * session (STANDIN_CLIPS in scripts/lab/encode_library.py).
+ */
+export const STANDIN_CLIPS: Item[] = (
+  [
+    ["rod", "Rod", 2.2],
+    ["nut", "Nut", 3.1],
+    ["gear-mesh", "Gear mesh", 2.2],
+    ["waterproof", "Waterproof connector", 2.0],
+    ["rectangular-peg", "Rectangular peg", 2.1],
+  ] as const
+).map(([task, title, duration]) => ({
+  id: `standin-ur5e-sim-${task}`,
+  title,
+  robot: "UR5e",
+  category: "Manipulation",
+  domain: "Sim",
+  speed: "1×",
+  kind: "clip",
+  aspect: 16 / 9,
+  duration,
+  ...media(`standin-ur5e-sim-${task}`),
+}));

@@ -317,3 +317,11 @@
     padding-top: 0.25rem;
   }
 }
+
+/* ---- Summary (Summary.tsx) --------------------------------------------- */
+/* The serious page's lead size, in the single weight. */
+.cb-sum {
+  font-size: clamp(1.5rem, 3.2vw, 2.6rem);
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+}

@@ -59,6 +59,7 @@ way as below.
 | **Combined site** (`_combined/`)         | **`/lab/combined/`**  | **Being built, by section**  |
 | Header colours (`_combined/inks.ts`)     | `/lab/header-colors/` | Part, owner to pick          |
 | Highlights placement and controls        | `/lab/highlights/`    | Part, owner to pick          |
+| Opening: A or B × Overview or Summary    | `/lab/opening/`       | Part, owner to pick          |
 | Scroll-past fix for the current homepage | `VideoNarrative.tsx`  | Done, not live               |
 | **Serious page, round 3** (`_swiss3/`)   | **`/lab/swiss-3/`**   | **Latest, serious track**    |
 | **Site page, round 3** (`_site3/`)       | **`/lab/site-3/`**    | **Latest, playful track**    |
@@ -358,12 +359,28 @@ folder>` turns it into `public/lab/media/library/` (27 MB); the
   2. Highlights (not yet on the page). **Narrowed to A or B, with
      controls 2 (titles under the bar)**; the owner will pick once the
      next section exists, since the choice depends on what follows
-     (2026-10-06). The owner liked the round 3 reel
-     as a plain video with progress bars and chapters, but wants no
-     unneeded text, the controls as undistracting as possible, and asked
-     whether the reel can come first or share the first screen with the
-     title. `/lab/highlights/` compares five placements and three sets of
-     controls:
+     (2026-10-06).
+  3. Overview or Summary (not yet on the page). The owner "really liked
+     the colorful overview from site 3" and asked for it and the serious
+     summary paragraph, each after both openings. `/lab/opening/` shows
+     A + Overview, A + Summary, B + Overview, B + Summary (openings in
+     `_combined/Opening.tsx`):
+     - Overview (`_combined/Overview.tsx`): Site 3's four entries with its
+       text, copied; the clip rows and the player are imported unchanged
+       from `_site3` (`Row`, `Gallery`); copy them in if they need to
+       change. Its links point at sections the page does not have yet.
+       Missing footage falls back at build time: single UR5e simulation
+       runs (`STANDIN_CLIPS` in `library.ts`) stand in for the pairs, said
+       so in the entry; the hardware frames are drawn empty and marked
+       "not available here".
+     - Summary (`_combined/Summary.tsx`): Serious 3's "01 Summary" (rule,
+       small label, the lead paragraph on columns 4–12) in the page's
+       single weight, without the section number. The owner liked the round 3 reel
+       as a plain video with progress bars and chapters, but wants no
+       unneeded text, the controls as undistracting as possible, and asked
+       whether the reel can come first or share the first screen with the
+       title. `/lab/highlights/` compares five placements and three sets of
+       controls:
      - A after the header (the reel across the measure, no heading or
        caption; on phones it is already on the first screen), B side by
        side from 1024 px (mark, title and authors in 5 columns, the reel
@@ -547,7 +564,9 @@ app/
                                  by section (CombinedPage, Header, Nav);
                                  inks.ts and HeaderColors for
                                  /lab/header-colors; Reel (quiet reel) and
-                                 HighlightsStudy for /lab/highlights
+                                 HighlightsStudy for /lab/highlights;
+                                 Opening, Overview, Summary and
+                                 OpeningStudy for /lab/opening
     _nav/                        method as navigation (/lab/method-nav):
                                  nav.ts (maze, learner, sampler), draw.ts,
                                  TaskFigure, SnapshotFigure, TrainFigure
@@ -867,3 +886,7 @@ one later with feedback from labmates.
   yet, I think it will depend on the next section. But let's keep both,
   with the pending decision to choose, and let's proceed to the next
   part."
+- Next section: "oh I really liked the colorful overview from site 3, but
+  yeah I agree let's try both this and the more serious summary paragraph
+  and show me both with both combos for the first page so I can compare."
+  Built as `/lab/opening/`.

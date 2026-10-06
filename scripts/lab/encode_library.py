@@ -19,6 +19,7 @@ What it makes (manifest in app/lab/library.ts must match the ids):
     runs/{id}-fast.mp4  the same run sped up to about 10 s, 640 px
     reel.mp4, reel.jpg  the mock highlight reel, 1280 x 720
     standin-reel.mp4    a stand-in reel from the smaller files (see STANDIN)
+    clips/standin-*     single sim runs standing in for pairs (STANDIN_CLIPS)
 
 Requires ffmpeg. Add new footage by adding entries below and to library.ts.
 """
@@ -88,6 +89,10 @@ STANDIN = [
     (f"{D}/gap/anymal_d_gap.mp4", 1.5, 4.0, 1),
     (f"{D}/stairs/anymal_d_stairs.mp4", 1.0, 3.5, 1),
 ]
+
+# Stand-in clips for the same reason: single UR5e sim runs (static
+# close-up) where the pages show pairs. Items: STANDIN_CLIPS in library.ts.
+STANDIN_CLIPS = [("rod", 1), ("nut", 3), ("gear_mesh", 3), ("waterproof", 2), ("rectangular_peg", 1)]
 
 # ANYmal-D renders are 1920 x 1088; crop to 16:9 before scaling.
 FIT = "crop=iw:min(ih\\,iw*9/16),scale={w}:-2"
@@ -202,6 +207,9 @@ def main():
         jobs += run_jobs(o.root, ident, rel, speed)
     jobs += reel_jobs(o.root)
     jobs += reel_jobs(o.root, STANDIN, "standin-reel")
+    for task, n in STANDIN_CLIPS:
+        src = os.path.join(o.root, "UR5e Sim", task, f"clip{n}", f"{task}_clip{n}_static_closeup.mp4")
+        jobs += clip_jobs(src, f"standin-ur5e-sim-{task.replace('_', '-')}")
 
     todo = [
         (out, go) for out, go in jobs

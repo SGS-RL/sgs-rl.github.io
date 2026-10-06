@@ -23,6 +23,11 @@ const GROUPS: [string, Study[]][] = [
         "Highlights",
         "Where the highlight reel goes relative to the header (A–E), and three quiet sets of controls (1–3).",
       ],
+      [
+        "/lab/opening/",
+        "Opening",
+        "Openings A and B from Highlights, each followed by Site 3's colourful Overview or the serious summary paragraph.",
+      ],
     ],
   ],
   [
