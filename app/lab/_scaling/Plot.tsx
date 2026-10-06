@@ -536,7 +536,8 @@ function Ticks({
     const n = Math.max(0, Math.min(LAST, s + d));
     onPick(n);
     const sib = e.currentTarget.parentElement?.children[n] as
-      HTMLElement | undefined;
+      | HTMLElement
+      | undefined;
     sib?.focus();
   };
   return (

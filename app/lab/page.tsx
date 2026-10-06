@@ -18,6 +18,11 @@ const GROUPS: [string, Study[]][] = [
         "Header colours",
         "The combined page's header in twelve colour schemes: the mark in colour on white, light grounds, strong grounds.",
       ],
+      [
+        "/lab/highlights/",
+        "Highlights",
+        "Where the highlight reel goes relative to the header (A–E), and three quiet sets of controls (1–3).",
+      ],
     ],
   ],
   [

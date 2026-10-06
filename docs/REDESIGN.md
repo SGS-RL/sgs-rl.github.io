@@ -58,6 +58,7 @@ way as below.
 | ---------------------------------------- | --------------------- | ---------------------------- |
 | **Combined site** (`_combined/`)         | **`/lab/combined/`**  | **Being built, by section**  |
 | Header colours (`_combined/inks.ts`)     | `/lab/header-colors/` | Part, owner to pick          |
+| Highlights placement and controls        | `/lab/highlights/`    | Part, owner to pick          |
 | Scroll-past fix for the current homepage | `VideoNarrative.tsx`  | Done, not live               |
 | **Serious page, round 3** (`_swiss3/`)   | **`/lab/swiss-3/`**   | **Latest, serious track**    |
 | **Site page, round 3** (`_site3/`)       | **`/lab/site-3/`**    | **Latest, playful track**    |
@@ -352,7 +353,36 @@ folder>` turns it into `public/lab/media/library/` (27 MB); the
        blue; H4 black with red words), light grounds (H5–H8, pairs from
        the poster palettes and Site 3 bands) and strong grounds (H9–H12).
        Schemes are `SCHEMES` in `_combined/inks.ts`; the page uses
-       `HEADER_INKS` (H1) until the owner picks.
+       `HEADER_INKS` (H1) until the owner picks. The owner deferred the
+       choice (2026-10-06) to get on with the rest of the site.
+  2. Highlights (not yet on the page). The owner liked the round 3 reel
+     as a plain video with progress bars and chapters, but wants no
+     unneeded text, the controls as undistracting as possible, and asked
+     whether the reel can come first or share the first screen with the
+     title. `/lab/highlights/` compares five placements and three sets of
+     controls:
+     - A after the header (the reel across the measure, no heading or
+       caption; on phones it is already on the first screen), B side by
+       side from 1024 px (mark, title and authors in 5 columns, the reel
+       in 7), C a mark at 27svh with the authors beside it, then the title
+       beside the reel (phones as A), D the reel first, filling the first
+       screen, E the title and authors, the reel, then the mark.
+     - Controls (`_combined/Reel.tsx`, on the shared `_reel/engine`): a
+       2 px segmented bar that grows on hover and stays scrubbable, play
+       and full screen as icons at its end, and the chapter names in the
+       small size; 1 names the chapter on screen ("UR5e, Nut" and
+       "Simulation" or "Hardware, 3×"), 2 sets every title under its
+       segment with the robot and domain under them (phones as 1), 3 runs
+       every title in one wrapping line grouped by robot and domain.
+       Gone from round 3: the caption paragraph, chapter numbers, start
+       times, the time readout, column heads, the "Play" and "Full
+       screen" words, the Highlights heading band.
+     - The reel there is a stand-in (`STANDIN_REEL` in `library.ts`,
+       `standin-reel.mp4` from `STANDIN` in `encode_library.py`): five
+       UR5e simulation close-ups and four ANYmal D terrains, the only
+       footage a cloud session could fetch. The page switches to `REEL3`
+       by itself when `public/lab/media/library/reel.mp4` exists at build
+       time.
 - **Footage through the Google Drive connector (2026-10-06).** The owner's
   drive folder is "Research Media/SGS"; it also has a `highlights` folder
   with four ~150 MB cuts (`sgs_highlights`, `sgs_highlights_annotated`,
@@ -509,7 +539,8 @@ app/
     _combined/                   /lab/combined: the site assembled section
                                  by section (CombinedPage, Header, Nav);
                                  inks.ts and HeaderColors for
-                                 /lab/header-colors
+                                 /lab/header-colors; Reel (quiet reel) and
+                                 HighlightsStudy for /lab/highlights
     _nav/                        method as navigation (/lab/method-nav):
                                  nav.ts (maze, learner, sampler), draw.ts,
                                  TaskFigure, SnapshotFigure, TrainFigure
@@ -818,3 +849,10 @@ one later with feedback from labmates.
 - Then: "can we try different colors for this? I think the current one is
   decent, but I'd like to explore different alternatives." Built as
   `/lab/header-colors/`.
+- Next, after deferring the colour call: a Highlights section. "Having
+  the video like we did was good, but we should make sure that there's no
+  unnecessary details/text. The sliders that showed progress and the
+  interactiveness was nice, but we should keep them as not distracting as
+  possible. And I wonder if there is a way to show this either first, or
+  on the same page as the title. Let's try a bunch of different
+  variations." Built as `/lab/highlights/`.

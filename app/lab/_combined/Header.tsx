@@ -12,8 +12,84 @@ import Wordmark from "./Wordmark";
 // wide screen. Changed here: the paper's full title, which copies as one
 // line (the break after the colon is drawn by CSS, so it is not copied),
 // a "Copy title" button, Ignacio's affiliation, and Guided centred in the G.
+// Its parts (Mark, Title, Meta) are exported for the layouts compared on
+// /lab/highlights/.
+
 // Browsers may break a line after the hyphen in "Mega-Scale"; keep it whole.
 const [pre, post] = FULL_SUBTITLE.split("Mega-Scale");
+
+// measure: the width the mark spans (default: the page measure); cap: the
+// upper limit of its font-size (it is 0.7275em tall).
+export function Mark({
+  inks = HEADER_INKS,
+  measure,
+  cap = HEADER_CAP,
+}: {
+  inks?: Inks;
+  measure?: string;
+  cap?: string;
+}) {
+  return (
+    <Wordmark
+      color={inks.mark}
+      words={inks.words}
+      measure={measure}
+      cap={cap}
+    />
+  );
+}
+
+export function Title({ className = "st-lead" }: { className?: string }) {
+  return (
+    <h1 className={`cb-hd-title ${className}`}>
+      <span className="cb-hd-break">{TITLE}:&nbsp;</span>
+      {pre}
+      <span className="whitespace-nowrap">Mega-Scale</span>
+      {post}
+    </h1>
+  );
+}
+
+// Authors, affiliations, venue and links.
+export function Meta({
+  inks = HEADER_INKS,
+  className = "",
+}: {
+  inks?: Inks;
+  className?: string;
+}) {
+  return (
+    <div className={`cb-hd-meta pz-small flex flex-col gap-3 ${className}`}>
+      <p>
+        {AUTHORS.map(([name, aff], i) => (
+          <span key={i} className="inline-block whitespace-nowrap pr-3">
+            {name}
+            <sup>{aff}</sup>
+          </span>
+        ))}
+      </p>
+      <p style={{ color: inks.mute }}>
+        {AFFILIATIONS.map((a, i) => (
+          <span key={i} className="inline-block whitespace-nowrap pr-3">
+            <sup>{i + 1}</sup>
+            {a}
+          </span>
+        ))}
+        <span className="inline-block whitespace-nowrap pr-3">{EQUAL}</span>
+      </p>
+      <p className="flex flex-wrap gap-x-4">
+        <span>{VENUE}</span>
+        <a href={LINKS.paper} className="st-link">
+          Paper ↗
+        </a>
+        <a href={LINKS.code} className="st-link">
+          Code ↗
+        </a>
+        <CopyTitle />
+      </p>
+    </div>
+  );
+}
 
 // inks: the colour scheme (see ./inks.ts; /lab/header-colors/ compares
 // several). id: "top" on the page, the scheme's id on the comparison.
@@ -31,44 +107,11 @@ export default function Header({
       style={{ background: inks.ground, color: inks.type }}
     >
       <div className="cb-hd-mark">
-        <Wordmark color={inks.mark} words={inks.words} cap={HEADER_CAP} />
+        <Mark inks={inks} />
       </div>
       <div className="cb-hd-info pz-grid gap-y-5 pb-8 pt-4 md:pb-12">
-        <h1 className="cb-hd-title st-lead col-span-6 md:col-span-8">
-          <span className="cb-hd-break">{TITLE}:&nbsp;</span>
-          {pre}
-          <span className="whitespace-nowrap">Mega-Scale</span>
-          {post}
-        </h1>
-        <div className="cb-hd-meta pz-small col-span-6 flex flex-col gap-3 md:col-span-4 md:pt-1">
-          <p>
-            {AUTHORS.map(([name, aff], i) => (
-              <span key={i} className="inline-block whitespace-nowrap pr-3">
-                {name}
-                <sup>{aff}</sup>
-              </span>
-            ))}
-          </p>
-          <p style={{ color: inks.mute }}>
-            {AFFILIATIONS.map((a, i) => (
-              <span key={i} className="inline-block whitespace-nowrap pr-3">
-                <sup>{i + 1}</sup>
-                {a}
-              </span>
-            ))}
-            <span className="inline-block whitespace-nowrap pr-3">{EQUAL}</span>
-          </p>
-          <p className="flex flex-wrap gap-x-4">
-            <span>{VENUE}</span>
-            <a href={LINKS.paper} className="st-link">
-              Paper ↗
-            </a>
-            <a href={LINKS.code} className="st-link">
-              Code ↗
-            </a>
-            <CopyTitle />
-          </p>
-        </div>
+        <Title className="st-lead col-span-6 md:col-span-8" />
+        <Meta inks={inks} className="col-span-6 md:col-span-4 md:pt-1" />
       </div>
     </header>
   );

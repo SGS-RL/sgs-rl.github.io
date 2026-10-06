@@ -18,6 +18,7 @@ What it makes (manifest in app/lab/library.ts must match the ids):
     runs/{id}.mp4       continuous runs in full, 960 px
     runs/{id}-fast.mp4  the same run sped up to about 10 s, 640 px
     reel.mp4, reel.jpg  the mock highlight reel, 1280 x 720
+    standin-reel.mp4    a stand-in reel from the smaller files (see STANDIN)
 
 Requires ffmpeg. Add new footage by adding entries below and to library.ts.
 """
@@ -70,6 +71,22 @@ REEL = [
     (f"{D}/climbing_box/anymal_d_climbing_box.mp4", 1.0, 3.5, 1),
     (f"{D}/stepping_stones/anymal_d_stepping_stones.mp4", 1.0, 3.5, 1),
     (f"{D}/gap/anymal_d_gap.mp4", 1.5, 4.0, 1),
+]
+
+# Stand-in reel (about 22 s) cut only from footage the Drive connector
+# could fetch in a cloud session (files under about 6.5 MB): UR5e sim
+# close-ups, then ANYmal-D. Used by /lab/highlights while reel.mp4 cannot
+# be built there. Chapters: STANDIN_REEL in app/lab/library.ts.
+STANDIN = [
+    ("UR5e Sim/rod/clip1/rod_clip1_static_closeup.mp4", 0, 2.2, 1),
+    ("UR5e Sim/nut/clip3/nut_clip3_static_closeup.mp4", 0, 3.1, 1),
+    ("UR5e Sim/gear_mesh/clip3/gear_mesh_clip3_static_closeup.mp4", 0, 2.2, 1),
+    ("UR5e Sim/waterproof/clip2/waterproof_clip2_static_closeup.mp4", 0, 2.0, 1),
+    ("UR5e Sim/rectangular_peg/clip1/rectangular_peg_clip1_static_closeup.mp4", 0, 2.1, 1),
+    (f"{D}/climbing_box/anymal_d_climbing_box.mp4", 1.0, 3.5, 1),
+    (f"{D}/stepping_stones/anymal_d_stepping_stones.mp4", 1.0, 3.5, 1),
+    (f"{D}/gap/anymal_d_gap.mp4", 1.5, 4.0, 1),
+    (f"{D}/stairs/anymal_d_stairs.mp4", 1.0, 3.5, 1),
 ]
 
 # ANYmal-D renders are 1920 x 1088; crop to 16:9 before scaling.
@@ -141,20 +158,20 @@ def run_jobs(root, ident, rel, speed):
     return [(full, go)]
 
 
-def reel_jobs(root):
-    out = os.path.join(OUT, "reel.mp4")
+def reel_jobs(root, segs=REEL, name="reel"):
+    out = os.path.join(OUT, f"{name}.mp4")
 
     def go():
         args, parts = [], []
-        for k, (rel, a, b, speed) in enumerate(REEL):
+        for k, (rel, a, b, speed) in enumerate(segs):
             args += ["-ss", str(a), "-to", str(b), "-i", os.path.join(root, rel)]
             parts.append(
                 f"[{k}]crop=iw:min(ih\\,iw*9/16),scale=1280:720,setsar=1,"
                 f"setpts=(PTS-STARTPTS)/{speed},fps=30[v{k}]"
             )
-        f = ";".join(parts) + ";" + "".join(f"[v{k}]" for k in range(len(REEL))) + f"concat=n={len(REEL)}:v=1:a=0"
+        f = ";".join(parts) + ";" + "".join(f"[v{k}]" for k in range(len(segs))) + f"concat=n={len(segs)}:v=1:a=0"
         run([*args, "-filter_complex", f, "-crf", "26", *X264, out])
-        run(["-ss", "0.5", "-i", out, "-frames:v", "1", "-q:v", "3", os.path.join(OUT, "reel.jpg")])
+        run(["-ss", "0.5", "-i", out, "-frames:v", "1", "-q:v", "3", os.path.join(OUT, f"{name}.jpg")])
 
     return [(out, go)]
 
@@ -184,6 +201,7 @@ def main():
     for ident, rel, speed in RUNS:
         jobs += run_jobs(o.root, ident, rel, speed)
     jobs += reel_jobs(o.root)
+    jobs += reel_jobs(o.root, STANDIN, "standin-reel")
 
     todo = [
         (out, go) for out, go in jobs

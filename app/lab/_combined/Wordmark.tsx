@@ -61,14 +61,16 @@ function Inset({ word }: { word: InsetWord }) {
 }
 
 // The large "SGS" with "Success-Guided Sampling" set inside its letters.
-// cap: upper limit for the mark's font-size (the mark is 1.6815em wide and
-// 0.7275em tall); color: ink of the mark and the words; words: a different
-// ink for the words.
+// measure: the width it spans (default: the page measure); cap: upper limit
+// for its font-size (the mark is 1.6815em wide and 0.7275em tall); color:
+// ink of the mark and the words; words: a different ink for the words.
 export default function Wordmark({
+  measure,
   cap,
   color,
   words,
 }: {
+  measure?: string;
   cap?: string;
   color?: string;
   words?: string;
@@ -81,6 +83,7 @@ export default function Wordmark({
       className="cv-wm"
       style={
         {
+          ...(measure ? { "--wm-measure": measure } : {}),
           ...(cap ? { "--wm-cap": cap } : {}),
           ...(color ? { color } : {}),
         } as CSSProperties

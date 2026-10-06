@@ -97,61 +97,69 @@ const run = (
 });
 
 export const LIBRARY: Item[] = [
-  ...REAL.map(([task, title, n, duration]): Item => ({
-    id: `ur5e-real-${task}-${n}`,
-    title: `${title}, run ${n}`,
-    robot: "UR5e",
-    category: "Manipulation",
-    domain: "Real",
-    speed: "1×",
-    kind: "clip",
-    aspect: 16 / 9,
-    duration,
-    ...media(`ur5e-real-${task}-${n}`),
-  })),
-  ...PAIRS.map(([task, title, duration, sides]): Item => ({
-    id: `ur5e-sim-${task}`,
-    title,
-    robot: "UR5e",
-    category: "Manipulation",
-    domain: "Sim",
-    speed: "1×",
-    kind: "pair",
-    aspect: 1288 / 360,
-    duration,
-    sides,
-    ...media(`ur5e-sim-${task}`),
-  })),
+  ...REAL.map(
+    ([task, title, n, duration]): Item => ({
+      id: `ur5e-real-${task}-${n}`,
+      title: `${title}, run ${n}`,
+      robot: "UR5e",
+      category: "Manipulation",
+      domain: "Real",
+      speed: "1×",
+      kind: "clip",
+      aspect: 16 / 9,
+      duration,
+      ...media(`ur5e-real-${task}-${n}`),
+    }),
+  ),
+  ...PAIRS.map(
+    ([task, title, duration, sides]): Item => ({
+      id: `ur5e-sim-${task}`,
+      title,
+      robot: "UR5e",
+      category: "Manipulation",
+      domain: "Sim",
+      speed: "1×",
+      kind: "pair",
+      aspect: 1288 / 360,
+      duration,
+      sides,
+      ...media(`ur5e-sim-${task}`),
+    }),
+  ),
   ...(
     [
       [1, "Nut, wide 1", 6],
       [2, "Nut, close", 5.4],
       [3, "Nut, wide 2", 6],
     ] as const
-  ).map(([n, title, duration]): Item => ({
-    id: `franka-sim-nut-${n}`,
-    title,
-    robot: "Franka",
-    category: "Manipulation",
-    domain: "Sim",
-    speed: "1×",
-    kind: "clip",
-    aspect: 16 / 9,
-    duration,
-    ...media(`franka-sim-nut-${n}`),
-  })),
-  ...ANYMAL_D.map(([slug, title, duration]): Item => ({
-    id: `anymal-d-${slug}`,
-    title,
-    robot: "ANYmal D",
-    category: "Locomotion",
-    domain: "Sim",
-    speed: "1×",
-    kind: "clip",
-    aspect: 16 / 9,
-    duration,
-    ...media(`anymal-d-${slug}`),
-  })),
+  ).map(
+    ([n, title, duration]): Item => ({
+      id: `franka-sim-nut-${n}`,
+      title,
+      robot: "Franka",
+      category: "Manipulation",
+      domain: "Sim",
+      speed: "1×",
+      kind: "clip",
+      aspect: 16 / 9,
+      duration,
+      ...media(`franka-sim-nut-${n}`),
+    }),
+  ),
+  ...ANYMAL_D.map(
+    ([slug, title, duration]): Item => ({
+      id: `anymal-d-${slug}`,
+      title,
+      robot: "ANYmal D",
+      category: "Locomotion",
+      domain: "Sim",
+      speed: "1×",
+      kind: "clip",
+      aspect: 16 / 9,
+      duration,
+      ...media(`anymal-d-${slug}`),
+    }),
+  ),
 ];
 
 /** Continuous runs: shown in full, but only when the reader asks. */
@@ -266,5 +274,40 @@ export const REEL3: ReelData = {
       domain: "Sim",
       speed: "1×",
     },
+  ],
+};
+
+/**
+ * Stand-in reel (21.6 s), cut only from footage a cloud session could fetch
+ * (STANDIN in scripts/lab/encode_library.py): five UR5e simulation
+ * close-ups, then four ANYmal D terrains, all at 1×. Used by
+ * /lab/highlights until reel.mp4 can be built again; not a proposed cut.
+ * Chapter starts are frame-exact (30 fps).
+ */
+const sim = (
+  start: number,
+  robot: string,
+  title: string,
+): ReelData["chapters"][number] => ({
+  start,
+  robot,
+  title,
+  domain: "Sim",
+  speed: "1×",
+});
+export const STANDIN_REEL: ReelData = {
+  src: `${BASE}/standin-reel.mp4`,
+  poster: `${BASE}/standin-reel.jpg`,
+  duration: 21.567,
+  chapters: [
+    sim(0, "UR5e", "Rod"),
+    sim(2.2, "UR5e", "Nut"),
+    sim(5.3, "UR5e", "Gear mesh"),
+    sim(7.467, "UR5e", "Waterproof connector"),
+    sim(9.467, "UR5e", "Rectangular peg"),
+    sim(11.567, "ANYmal D", "Climbing box"),
+    sim(14.067, "ANYmal D", "Stepping stones"),
+    sim(16.567, "ANYmal D", "Gap"),
+    sim(19.067, "ANYmal D", "Stairs"),
   ],
 };

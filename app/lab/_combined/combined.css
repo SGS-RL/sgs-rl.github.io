@@ -55,3 +55,265 @@
     max-width: 30rem;
   }
 }
+
+/* ---- Highlight reel, quiet controls (Reel.tsx) -------------------------
+   The reel engine's poster skin (.rl-pz in ../_reel/reel.css), toned
+   down: a 2 px bar on a faint track, icons instead of labelled buttons,
+   chapter names in the small size. */
+.cb-reel {
+  --cb-icon: 28px;
+  --cb-icon-gap: 4px;
+  --rl-gap: 3px;
+  --rl-group-gap: 12px;
+  --rl-track: color-mix(in srgb, var(--rl-ink) 16%, transparent);
+}
+@media (pointer: coarse) {
+  .cb-reel {
+    --cb-icon: 40px;
+  }
+}
+.cb-reel.rl-pz .rl-seg {
+  height: 2px;
+}
+.cb-reel .rl-track:hover .rl-seg,
+.cb-reel .rl-track:focus-visible .rl-seg,
+.cb-reel .rl-track[data-scrub] .rl-seg {
+  height: 6px;
+}
+.cb-reel-row {
+  display: flex;
+  align-items: center;
+  gap: var(--cb-icon-gap);
+  margin-top: 2px;
+}
+.cb-icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--cb-icon);
+  height: var(--cb-icon);
+  color: var(--rl-mute);
+  cursor: pointer;
+}
+.cb-icon:hover,
+.cb-icon:focus-visible {
+  color: var(--rl-fg);
+}
+.cb-glyph {
+  width: 11px;
+  height: 11px;
+  fill: currentColor;
+}
+.cb-reel-now {
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+  color: var(--rl-fg);
+}
+.cb-reel-mute {
+  color: var(--rl-mute);
+}
+/* 2: titles on the bar's grid, which stops short of the two icons; the
+   robot and domain under them, on a hairline across their chapters. */
+.cb-reel-under {
+  display: grid;
+  align-items: start;
+  row-gap: 0.4rem;
+  margin-right: calc(2 * (var(--cb-icon) + var(--cb-icon-gap)));
+}
+.cb-reel-group {
+  min-width: 0;
+  border-top: 1px solid var(--rl-hair);
+  padding-top: 2px;
+  color: var(--rl-fg);
+}
+.cb-reel-chap {
+  min-width: 0;
+  padding-right: 4px;
+  text-align: left;
+  color: var(--rl-mute);
+  cursor: pointer;
+}
+.cb-reel-chap:hover,
+.cb-reel-chap[aria-current] {
+  color: var(--rl-fg);
+}
+/* 3: one wrapping line of titles. */
+.cb-reel-list {
+  color: var(--rl-mute);
+}
+/* Spaces sit after each word, so a wrapped line starts flush. */
+.cb-reel-run {
+  margin-right: 0.9em;
+}
+.cb-reel-item,
+.cb-reel-robot {
+  margin-right: 0.7em;
+  white-space: nowrap;
+}
+.cb-reel-robot {
+  color: var(--rl-fg);
+}
+
+/* ---- Placements on /lab/highlights ------------------------------------- */
+
+.cb-variant {
+  min-height: 100svh;
+}
+
+/* B: side by side from laptops up; stacked (mark, title, reel, authors)
+   below. */
+.cb-b {
+  display: grid;
+  grid-template-areas: "mark" "title" "reel" "meta";
+  row-gap: 1.25rem;
+  padding: 8px var(--m) 2rem;
+}
+.cb-b-mark {
+  grid-area: mark;
+  position: relative;
+}
+.cb-b-title {
+  grid-area: title;
+  font-size: clamp(1.3rem, 5.4vw, 3rem);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+}
+.cb-b-reel {
+  grid-area: reel;
+}
+.cb-b-meta {
+  grid-area: meta;
+}
+@media (min-width: 1024px) {
+  .cb-b {
+    grid-template-columns:
+      calc((100% - 11 * var(--g)) / 12 * 5 + 4 * var(--g))
+      minmax(0, 1fr);
+    grid-template-areas: "mark reel" "title reel" "meta reel";
+    grid-template-rows: auto auto 1fr;
+    column-gap: var(--g);
+  }
+  .cb-b .cv-wm {
+    --wm-measure: calc(
+      (100vw - 2 * var(--m) - 11 * var(--g)) / 12 * 5 + 4 * var(--g)
+    );
+  }
+  .cb-b-title {
+    font-size: clamp(1.4rem, 2.3vw, 2.6rem);
+  }
+  .cb-b-reel {
+    align-self: start;
+  }
+  .cb-b-reel .rl-player {
+    margin-left: auto;
+  }
+}
+
+/* C: phones and tablets as the header (mark, title, authors) with the
+   reel after it. From laptops up: row 1 the mark (a quarter of the screen
+   high) and the authors; row 2 the title (4 columns) and the reel (8). */
+.cb-c {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  column-gap: var(--g);
+  row-gap: 1.25rem;
+  padding: 8px var(--m) 2rem;
+}
+.cb-c > * {
+  grid-column: 1 / -1;
+}
+.cb-c-mark {
+  position: relative;
+  grid-row: 1;
+}
+.cb-c-title {
+  grid-row: 2;
+  font-size: clamp(1.3rem, 5.4vw, 3rem);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+}
+.cb-c-meta {
+  grid-row: 3;
+}
+.cb-c-reel {
+  grid-row: 4;
+}
+@media (min-width: 768px) {
+  .cb-c {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+  .cb-c-title {
+    grid-column: 1 / span 8;
+  }
+  .cb-c-meta {
+    grid-column: 9 / span 4;
+    grid-row: 2;
+  }
+  .cb-c-reel {
+    grid-row: 3;
+  }
+}
+@media (min-width: 1024px) {
+  .cb-c-mark {
+    grid-column: 1 / span 8;
+    grid-row: 1;
+  }
+  .cb-c-meta {
+    grid-column: 9 / span 4;
+    grid-row: 1;
+    align-self: end;
+  }
+  .cb-c-title {
+    grid-column: 1 / span 4;
+    grid-row: 2;
+    font-size: clamp(1.4rem, 2.2vw, 2.4rem);
+  }
+  .cb-c-reel {
+    grid-column: 5 / span 8;
+    grid-row: 2;
+  }
+  /* When the screen's height limits the reel (ultrawide), it keeps to the
+     right margin, under the authors. */
+  .cb-c-reel .rl-player {
+    margin-left: auto;
+  }
+}
+
+/* E: title (8 columns) and authors (4), the reel across the measure, then
+   the mark. Phones: title, reel, authors, mark. */
+.cb-e {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  column-gap: var(--g);
+  row-gap: 1.25rem;
+  padding: 1rem var(--m) 2rem;
+}
+.cb-e > * {
+  grid-column: 1 / -1;
+}
+.cb-e-mark {
+  position: relative;
+  margin-top: 1rem;
+}
+.cb-e-meta {
+  grid-row: 3;
+}
+.cb-e-reel {
+  grid-row: 2;
+}
+@media (min-width: 768px) {
+  .cb-e {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+  .cb-e-title {
+    grid-column: 1 / span 8;
+    grid-row: 1;
+  }
+  .cb-e-meta {
+    grid-column: 9 / span 4;
+    grid-row: 1;
+    padding-top: 0.25rem;
+  }
+}
