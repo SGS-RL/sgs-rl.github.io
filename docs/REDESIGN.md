@@ -355,7 +355,10 @@ folder>` turns it into `public/lab/media/library/` (27 MB); the
        Schemes are `SCHEMES` in `_combined/inks.ts`; the page uses
        `HEADER_INKS` (H1) until the owner picks. The owner deferred the
        choice (2026-10-06) to get on with the rest of the site.
-  2. Highlights (not yet on the page). The owner liked the round 3 reel
+  2. Highlights (not yet on the page). **Narrowed to A or B, with
+     controls 2 (titles under the bar)**; the owner will pick once the
+     next section exists, since the choice depends on what follows
+     (2026-10-06). The owner liked the round 3 reel
      as a plain video with progress bars and chapters, but wants no
      unneeded text, the controls as undistracting as possible, and asked
      whether the reel can come first or share the first screen with the
@@ -434,6 +437,10 @@ Inputs only the owner can give:
       red Runs grounds, and the new copy ("policies trained in simulation
       run on a physical UR5e", the Setup robot rows, Poster 3's facts).
       `/lab/swiss-3/` still has the p(1 − p) passage in its method.
+- [ ] **Combined page, pending picks:** header colour
+      (`/lab/header-colors/`, H1–H12); highlights placement A or B with
+      controls 2 (`/lab/highlights/`), to be decided after the next
+      section.
 - [ ] **Pick a full-title setting** from `/lab/title/` (T1–T6), or none.
 - [ ] **Method on the site:** version A or B from `/lab/method-nav/`, the
       round 2 method, or a link to the explainer.
@@ -856,3 +863,7 @@ one later with feedback from labmates.
   possible. And I wonder if there is a way to show this either first, or
   on the same page as the title. Let's try a bunch of different
   variations." Built as `/lab/highlights/`.
+- On it: "it's gonna be A or B with titles under bar, not sure which one
+  yet, I think it will depend on the next section. But let's keep both,
+  with the pending decision to choose, and let's proceed to the next
+  part."
