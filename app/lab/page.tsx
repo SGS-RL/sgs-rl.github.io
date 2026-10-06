@@ -13,6 +13,11 @@ const GROUPS: [string, Study[]][] = [
         "Combined",
         "The parts the owner picked from the studies, added one approved section at a time. So far: the Site header.",
       ],
+      [
+        "/lab/header-colors/",
+        "Header colours",
+        "The combined page's header in twelve colour schemes: the mark in colour on white, light grounds, strong grounds.",
+      ],
     ],
   ],
   [

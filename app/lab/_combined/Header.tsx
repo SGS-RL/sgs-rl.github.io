@@ -2,6 +2,7 @@ import { HEADER_CAP } from "../_cover/SiteHeader";
 import { EQUAL, FULL_SUBTITLE, LINKS, TITLE, VENUE } from "../content";
 import { AFFILIATIONS, AUTHORS } from "./content";
 import CopyTitle from "./CopyTitle";
+import { HEADER_INKS, type Inks } from "./inks";
 import Wordmark from "./Wordmark";
 
 // The header of /lab/site-2 and /lab/site-3: the wordmark ("Success",
@@ -14,11 +15,23 @@ import Wordmark from "./Wordmark";
 // Browsers may break a line after the hyphen in "Mega-Scale"; keep it whole.
 const [pre, post] = FULL_SUBTITLE.split("Mega-Scale");
 
-export default function Header() {
+// inks: the colour scheme (see ./inks.ts; /lab/header-colors/ compares
+// several). id: "top" on the page, the scheme's id on the comparison.
+export default function Header({
+  inks = HEADER_INKS,
+  id = "top",
+}: {
+  inks?: Inks;
+  id?: string;
+}) {
   return (
-    <header id="top" className="cb-hd bg-white">
+    <header
+      id={id}
+      className="cb-hd"
+      style={{ background: inks.ground, color: inks.type }}
+    >
       <div className="cb-hd-mark">
-        <Wordmark color="#ff6464" cap={HEADER_CAP} />
+        <Wordmark color={inks.mark} words={inks.words} cap={HEADER_CAP} />
       </div>
       <div className="cb-hd-info pz-grid gap-y-5 pb-8 pt-4 md:pb-12">
         <h1 className="cb-hd-title st-lead col-span-6 md:col-span-8">
@@ -36,7 +49,7 @@ export default function Header() {
               </span>
             ))}
           </p>
-          <p className="text-black/60">
+          <p style={{ color: inks.mute }}>
             {AFFILIATIONS.map((a, i) => (
               <span key={i} className="inline-block whitespace-nowrap pr-3">
                 <sup>{i + 1}</sup>

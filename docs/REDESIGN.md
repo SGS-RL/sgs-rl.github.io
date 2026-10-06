@@ -54,28 +54,29 @@ The owner's starting brief, in short:
 Every study is linked from `/lab/` (`app/lab/page.tsx`), grouped the same
 way as below.
 
-| What                                     | Where                | State                        |
-| ---------------------------------------- | -------------------- | ---------------------------- |
-| **Combined site** (`_combined/`)         | **`/lab/combined/`** | **Being built, by section**  |
-| Scroll-past fix for the current homepage | `VideoNarrative.tsx` | Done, not live               |
-| **Serious page, round 3** (`_swiss3/`)   | **`/lab/swiss-3/`**  | **Latest, serious track**    |
-| **Site page, round 3** (`_site3/`)       | **`/lab/site-3/`**   | **Latest, playful track**    |
-| **Poster page, round 3** (`_poster3/`)   | **`/lab/poster-3/`** | **Latest, playful track**    |
-| Serious page, round 2 (`_swiss2/`)       | `/lab/swiss-2/`      | Round 2, placeholders        |
-| Site page, round 2 (`_site2/`)           | `/lab/site-2/`       | Round 2, placeholders        |
-| Poster page, round 2 (`_poster2/`)       | `/lab/poster-2/`     | Round 2, placeholders        |
-| Method as navigation (`_nav/`)           | `/lab/method-nav/`   | Part, round 3, see below     |
-| Full title, six settings (`_title/`)     | `/lab/title/`        | Part, round 3, owner to pick |
-| Highlight reel (`_reel/`)                | `/lab/reel/`         | Part, round 2                |
-| Wordmark and covers (`_cover/`)          | `/lab/cover/`        | Part, round 2                |
-| Method, paper-accurate (`_method/`)      | `/lab/method/`       | Part, round 2                |
-| Scaling with clips (`_scaling/`)         | `/lab/scaling/`      | Part, round 2, needs clips   |
-| Clip gallery and player (`_gallery/`)    | `/lab/gallery/`      | Part, round 2, needs clips   |
-| Swiss, light (first study)               | `/lab/swiss/`        | Earlier study, frozen        |
-| Swiss, dark (first study)                | `/lab/swiss-dark/`   | Earlier study, frozen        |
-| Website, NOF style (`_site/`)            | `/lab/site/`         | Round 1, frozen              |
-| Poster series, NOF style (`_poster/`)    | `/lab/poster/`       | Earlier study, keep intact   |
-| Clip layout studies (`_components/`)     | `/lab/clips/`        | Earlier study, frozen        |
+| What                                     | Where                 | State                        |
+| ---------------------------------------- | --------------------- | ---------------------------- |
+| **Combined site** (`_combined/`)         | **`/lab/combined/`**  | **Being built, by section**  |
+| Header colours (`_combined/inks.ts`)     | `/lab/header-colors/` | Part, owner to pick          |
+| Scroll-past fix for the current homepage | `VideoNarrative.tsx`  | Done, not live               |
+| **Serious page, round 3** (`_swiss3/`)   | **`/lab/swiss-3/`**   | **Latest, serious track**    |
+| **Site page, round 3** (`_site3/`)       | **`/lab/site-3/`**    | **Latest, playful track**    |
+| **Poster page, round 3** (`_poster3/`)   | **`/lab/poster-3/`**  | **Latest, playful track**    |
+| Serious page, round 2 (`_swiss2/`)       | `/lab/swiss-2/`       | Round 2, placeholders        |
+| Site page, round 2 (`_site2/`)           | `/lab/site-2/`        | Round 2, placeholders        |
+| Poster page, round 2 (`_poster2/`)       | `/lab/poster-2/`      | Round 2, placeholders        |
+| Method as navigation (`_nav/`)           | `/lab/method-nav/`    | Part, round 3, see below     |
+| Full title, six settings (`_title/`)     | `/lab/title/`         | Part, round 3, owner to pick |
+| Highlight reel (`_reel/`)                | `/lab/reel/`          | Part, round 2                |
+| Wordmark and covers (`_cover/`)          | `/lab/cover/`         | Part, round 2                |
+| Method, paper-accurate (`_method/`)      | `/lab/method/`        | Part, round 2                |
+| Scaling with clips (`_scaling/`)         | `/lab/scaling/`       | Part, round 2, needs clips   |
+| Clip gallery and player (`_gallery/`)    | `/lab/gallery/`       | Part, round 2, needs clips   |
+| Swiss, light (first study)               | `/lab/swiss/`         | Earlier study, frozen        |
+| Swiss, dark (first study)                | `/lab/swiss-dark/`    | Earlier study, frozen        |
+| Website, NOF style (`_site/`)            | `/lab/site/`          | Round 1, frozen              |
+| Poster series, NOF style (`_poster/`)    | `/lab/poster/`        | Earlier study, keep intact   |
+| Clip layout studies (`_components/`)     | `/lab/clips/`         | Earlier study, frozen        |
 
 "Part" pages show one piece in several variants, so it can be judged on
 its own before it goes into a page. The round 2 pages import some of them
@@ -344,6 +345,14 @@ folder>` turns it into `public/lab/media/library/` (27 MB); the
        title and the header links: clicking the title selected "SGS", and
        on a laptop the Paper and Code links under the mark could not be
        clicked. Site 2 and Site 3 still have this.
+     - Colour: the owner finds the coral "decent" and asked for
+       alternatives. `/lab/header-colors/` shows the header in twelve
+       schemes of three inks (ground, mark, type), in three groups: the
+       mark in colour on white (H1 coral, the current one; H2 red; H3
+       blue; H4 black with red words), light grounds (H5–H8, pairs from
+       the poster palettes and Site 3 bands) and strong grounds (H9–H12).
+       Schemes are `SCHEMES` in `_combined/inks.ts`; the page uses
+       `HEADER_INKS` (H1) until the owner picks.
 - **Footage through the Google Drive connector (2026-10-06).** The owner's
   drive folder is "Research Media/SGS"; it also has a `highlights` folder
   with four ~150 MB cuts (`sgs_highlights`, `sgs_highlights_annotated`,
@@ -498,7 +507,9 @@ app/
     _swiss3/ _site3/ _poster3/   round 3 pages (real footage)
     _title/                      TitleStudy, title.css (/lab/title)
     _combined/                   /lab/combined: the site assembled section
-                                 by section (CombinedPage, Header, Nav)
+                                 by section (CombinedPage, Header, Nav);
+                                 inks.ts and HeaderColors for
+                                 /lab/header-colors
     _nav/                        method as navigation (/lab/method-nav):
                                  nav.ts (maze, learner, sampler), draw.ts,
                                  TaskFigure, SnapshotFigure, TrainFigure
@@ -804,3 +815,6 @@ one later with feedback from labmates.
   Asked for: Ignacio's affiliation as University of Washington; the whole
   paper title, easy to copy and paste; "Guided" more centred in the G at
   the same height.
+- Then: "can we try different colors for this? I think the current one is
+  decent, but I'd like to explore different alternatives." Built as
+  `/lab/header-colors/`.

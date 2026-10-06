@@ -62,13 +62,16 @@ function Inset({ word }: { word: InsetWord }) {
 
 // The large "SGS" with "Success-Guided Sampling" set inside its letters.
 // cap: upper limit for the mark's font-size (the mark is 1.6815em wide and
-// 0.7275em tall); color: ink of the mark and the words.
+// 0.7275em tall); color: ink of the mark and the words; words: a different
+// ink for the words.
 export default function Wordmark({
   cap,
   color,
+  words,
 }: {
   cap?: string;
   color?: string;
+  words?: string;
 }) {
   return (
     <div
@@ -86,7 +89,7 @@ export default function Wordmark({
       <span className="cv-wm-mark" aria-hidden="true">
         SGS
       </span>
-      <span aria-hidden="true">
+      <span aria-hidden="true" style={words ? { color: words } : undefined}>
         {WORDS.map((w) => (
           <Inset key={w.text} word={w} />
         ))}
