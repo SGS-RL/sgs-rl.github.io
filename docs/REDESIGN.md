@@ -86,6 +86,10 @@ project site. Branch: `claude/website-redesign-brainstorm-hz3x4c`.
   Then: "i don't like just light actually, let's bring back light and
   bold". Both sizes (W1, W2) are now thin with bold key phrases (weights
   200 and 500), the approved summary's stroke. Thin only is dropped.
+  **Picked: W1** ("whatever you showed me on the phone renders", which
+  were W1). Next the owner edits the copy section by section: the text of
+  each is printed in the chat, one at a time, for them to edit and paste
+  back.
 - **Netlify from a cloud session (checked 2026-10-07).** Not possible yet:
   no `NETLIFY_AUTH_TOKEN` in the environment, and the network policy
   blocks `api.netlify.com`, `app.netlify.com` and
