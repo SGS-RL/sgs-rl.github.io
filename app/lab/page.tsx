@@ -11,7 +11,12 @@ const GROUPS: [string, Study[]][] = [
       [
         "/lab/combined/",
         "Combined",
-        "The parts the owner picked from the studies, added one approved section at a time. So far: the Site header.",
+        "The parts the owner picked from the studies, added one approved section at a time: header, highlights, summary, overview, method.",
+      ],
+      [
+        "/lab/combined-draft/",
+        "Combined, draft",
+        "The combined page with sections 6–12 (configurations to clips), set up but not yet reviewed; parked here and taken back one at a time.",
       ],
       [
         "/lab/combined-f-sizes/",

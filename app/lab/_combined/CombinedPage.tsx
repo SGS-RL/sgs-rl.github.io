@@ -18,7 +18,7 @@ import {
   Results,
 } from "./MoreSections";
 import OverviewChosen from "./OverviewChosen";
-import { SECTIONS } from "./sections";
+import { DRAFT_SECTIONS, SECTIONS } from "./sections";
 import SummaryPlain, { type SummaryVariant } from "./SummaryPlain";
 import SummarySized, { SummarySizeSwitch } from "./SummarySized";
 import ChosenHeader, { HeaderSwitch } from "./HeaderChoice";
@@ -45,7 +45,9 @@ import "./reels.css";
 // 5. Method: version B of /lab/method-nav (the live maze, its text and the
 //    explainer link) and the Beta weighting to play with (./Method.tsx).
 // 6–12 set up on 2026-10-07 from the owner's list, populated where the
-//    content existed, placeholders ("To come") elsewhere: task
+//    content existed, placeholders ("To come") elsewhere. Parked, with
+//    `draft`, at /lab/combined-draft/ until they are reviewed one at a
+//    time (owner, 2026-10-07); /lab/combined/ ends at the Method. Task
 //    configurations in training (paper Figure 2), PPO next to PPO with SGS,
 //    sampling over training (paper Figure 7), the Index quilt of
 //    /lab/poster-3 as a divider, results (the scaling chart with a policy
@@ -57,13 +59,16 @@ const QUILT = LIBRARY.filter((c) => c.kind === "clip");
 export default function CombinedPage({
   summary,
   sizes = false,
+  draft = false,
 }: {
   summary?: SummaryVariant;
   sizes?: boolean;
+  // Include sections 6–12, not yet reviewed (/lab/combined-draft/).
+  draft?: boolean;
 }) {
   return (
     <div className="pz st cb">
-      <Nav sections={SECTIONS} />
+      <Nav sections={draft ? DRAFT_SECTIONS : SECTIONS} />
       <ChosenHeader />
       <Highlights />
       {sizes ? (
@@ -77,6 +82,10 @@ export default function CombinedPage({
         <>
           <OverviewChosen />
           <Method />
+        </>
+      )}
+      {!summary && !sizes && draft && (
+        <>
           <Configurations />
           <Algorithm />
           <OverTraining />

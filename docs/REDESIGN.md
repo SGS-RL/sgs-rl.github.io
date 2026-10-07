@@ -17,6 +17,21 @@ project site. Branch: `claude/website-redesign-brainstorm-hz3x4c`.
   PPO, Over training, the quilt divider, Results, Footage, Clips (see
   Decisions, "Sections 6–12", for what is still "To come"). Not yet on
   the page: Cite and the footer.
+- **Parked draft (2026-10-07, later).** The owner asked to park the draft
+  with all the additional sections and come back to the approved ones
+  only, taking the rest one at a time. `/lab/combined/` now ends at the
+  Method (nav: Highlights, Summary, Overview, Method); the full draft is
+  at `/lab/combined-draft/` (`CombinedPage` with `draft`;
+  `DRAFT_SECTIONS` in `_combined/sections.ts`). Bring a section back by
+  moving it above the `draft` guard in `CombinedPage.tsx` and its entry
+  from `DRAFT_SECTIONS` into `SECTIONS`.
+- **Netlify from a cloud session (checked 2026-10-07).** Not possible yet:
+  no `NETLIFY_AUTH_TOKEN` in the environment, and the network policy
+  blocks `api.netlify.com`, `app.netlify.com` and
+  `sgs-rl-lab.netlify.app`. A deploy publishes the whole `out/` folder,
+  so it must also carry the footage: fetch it first with
+  `scripts/lab/fetch_library.sh` (needs `sgs-rl-lab.netlify.app`), or the
+  live site loses its videos.
 - **Footage on a new machine.** The encoded videos are git-ignored. Run
   `scripts/lab/fetch_library.sh` to download them from the Netlify
   preview (list in `scripts/lab/library-files.txt`), or encode them from
@@ -428,7 +443,7 @@ folder>` turns it into `public/lab/media/library/` (27 MB); the
      from /lab/method-nav/, plus an explanation of the beta weighting ...
      maybe even interactive and to show how the parameters of it affect
      where the samples get sampled from". So: version B's text and the live
-     maze (../_nav TrainFigure) beside it, with the explainer link; then
+     maze (../\_nav TrainFigure) beside it, with the explainer link; then
      `_combined/BetaExplorer.tsx`, sliders for t, κ, T and the floor ε (log
      scale) with presets (paper locomotion, paper manipulation, the maze's
      sharp setting, uniform), the curve of the chance of being picked, the
@@ -491,7 +506,7 @@ folder>` turns it into `public/lab/media/library/` (27 MB); the
      round 3 pages keep the collection they were reviewed with.
      Method (2026-10-07), section 5 (`_combined/Method.tsx`), three layouts
      switched on the page (`?method=m1`…`m3`): M1 one sentence, the live
-     maze (../_nav TrainFigure) and what it shows beside it; M2 four
+     maze (../\_nav TrainFigure) and what it shows beside it; M2 four
      numbered steps from the paper (configurations, last 100 outcomes,
      Beta-shaped weight with a floor, draw on every reset) and the paper's
      weight for both domains; M3 the sentence, the maze on the left and
@@ -656,7 +671,7 @@ Inputs only the owner can give:
 - [ ] **Method on the site:** version A or B from `/lab/method-nav/`, the
       round 2 method, or a link to the explainer.
 - [x] **Affiliations** (2026-10-07, every page): University of
-      Washington is 1, NVIDIA 2; Octi Zhang is at both ("1,2*"); Ignacio
+      Washington is 1, NVIDIA 2; Octi Zhang is at both ("1,2\*"); Ignacio
       Dagnigo is at UW.
 - [ ] **Paper and code links** (`LINKS` in `app/lab/content.ts`, still `#`).
 - [ ] **Facts to check** (in `app/lab/content.ts` unless noted):
