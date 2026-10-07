@@ -24,6 +24,11 @@ const GROUPS: [string, Study[]][] = [
         "The Method split into three parts (task configurations, a toy example, the weighting), with four ways to show they sit within the Method.",
       ],
       [
+        "/lab/method-flow/",
+        "Method, in order",
+        "A mock-up of the Method in five parts with band subtitles: the change to PPO, task configurations, the weighting on the toy example, sampling, training.",
+      ],
+      [
         "/lab/combined-f-sizes/",
         "Combined + summary F, sizes",
         "Summary F with switches for size (F–F3), width (capped, full, as wide as the video) and stroke (regular, light, key words bold).",

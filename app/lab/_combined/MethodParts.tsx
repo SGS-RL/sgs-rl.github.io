@@ -26,7 +26,7 @@ export const PARTS: [slug: string, title: string][] = [
   ["weighting", "The weighting"],
 ];
 
-function PartHead({
+export function PartHead({
   n,
   title,
   style,
@@ -56,7 +56,7 @@ function PartHead({
   );
 }
 
-function Part({
+export function Part({
   id,
   n,
   title,

@@ -69,10 +69,19 @@ function Slider({
   );
 }
 
-export default function BetaExplorer() {
-  const [t, setT] = useState(0.66);
-  const [kappa, setKappa] = useState(5);
-  const [le, setLe] = useState(-4);
+// presetLabel: the name of the toy example's own setting, which depends on
+// where the explorer sits relative to the live maze. fromToy: start at that
+// setting instead of t 0.66, κ 5, ε 1e-4.
+export default function BetaExplorer({
+  presetLabel = PRESETS[0][0],
+  fromToy = false,
+}: {
+  presetLabel?: string;
+  fromToy?: boolean;
+} = {}) {
+  const [t, setT] = useState(fromToy ? PRESETS[0][1] : 0.66);
+  const [kappa, setKappa] = useState(fromToy ? PRESETS[0][2] : 5);
+  const [le, setLe] = useState(fromToy ? PRESETS[0][3] : -4);
   const k: Kernel = useMemo(
     () => ({ t, kappa, T, eps: 10 ** le }),
     [t, kappa, le],
@@ -239,7 +248,7 @@ export default function BetaExplorer() {
                 className={`st-link ${on ? "" : "opacity-60"}`}
                 onClick={() => pick(pr)}
               >
-                {pr[0]}
+                {pr === PRESETS[0] ? presetLabel : pr[0]}
               </button>
             );
           })}

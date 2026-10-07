@@ -38,6 +38,24 @@ project site. Branch: `claude/website-redesign-brainstorm-hz3x4c`.
   combined page keeps the one-piece Method until the owner picks; its
   paragraphs now come from `ConfigurationText`, `ToyExampleText` and
   `ExplainerLink` in `Method.tsx` (same output).
+- **Method, in order (2026-10-07, later).** The owner liked Path and
+  Bands best and chose **Bands (M3) for now**, and set an order for the
+  Method: the minimal diff with PPO (naming task configurations without
+  explaining them); task configurations as (s₀, g, e), brief for now,
+  videos or something interactive later; the weighting with the Beta
+  distribution on the toy task, which introduces the toy example; the
+  sampling; the sampling during training. Mocked up at
+  `/lab/method-flow/` (`_combined/MethodFlow.tsx`): parts 1 (the parked
+  `AlgorithmPair`), 2 (new text and a "To come"), 3 (the Beta explorer,
+  starting at the toy example's own setting, `fromToy`), 4
+  (`SamplingFigure.tsx`, new: the toy snapshot with each configuration's
+  chance as a dot and a round of 48 draws, one per robot, every 1.6 s;
+  SGS or uniform; counts per round), 5 (the live maze). Part 4's numbers
+  are computed from the snapshot: 15 of 158 configurations are reached
+  10–90% of the time and get about 48% of SGS's draws, 9% of uniform's.
+  The pseudocode now wraps long lines under themselves on phones instead
+  of scrolling sideways (also in the parked draft). Not on
+  `/lab/combined/` yet.
 - **Netlify from a cloud session (checked 2026-10-07).** Not possible yet:
   no `NETLIFY_AUTH_TOKEN` in the environment, and the network policy
   blocks `api.netlify.com`, `app.netlify.com` and

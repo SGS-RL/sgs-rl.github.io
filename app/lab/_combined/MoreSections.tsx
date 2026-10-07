@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { P } from "../_poster/palettes";
 import ScaleCompare from "../_scaling/ScaleCompare";
 
@@ -19,7 +19,7 @@ function Heading({ id, children }: { id: string; children: ReactNode }) {
 }
 
 // What is still to come, said plainly.
-function ToCome({ children }: { children: ReactNode }) {
+export function ToCome({ children }: { children: ReactNode }) {
   return (
     <p className="cb-tocome pz-small">
       <span className="font-medium">To come.</span> {children}
@@ -96,12 +96,40 @@ function Code({ title, lines }: { title: string; lines: Line[] }) {
       <figcaption className="cb-algo-title">{title}</figcaption>
       <pre className="cb-algo-code">
         {lines.map(([t, m], i) => (
-          <span key={i} className="cb-algo-line" data-mark={m}>
-            {t || " "}
+          // Indent by level (four spaces each), so a long line wraps under
+          // itself on narrow screens instead of scrolling sideways.
+          <span
+            key={i}
+            className="cb-algo-line"
+            data-mark={m}
+            style={
+              {
+                "--i": (t.length - t.trimStart().length) / 4,
+              } as CSSProperties
+            }
+          >
+            {t.trim() || " "}
           </span>
         ))}
       </pre>
     </figure>
+  );
+}
+
+// PPO next to PPO with SGS, and the key; also part 1 of the Method mock-up
+// on /lab/method-flow/ (./MethodFlow.tsx).
+export function AlgorithmPair() {
+  return (
+    <>
+      <div className="cb-algo-pair">
+        <Code title="PPO" lines={PPO} />
+        <Code title="PPO with SGS" lines={SGS} />
+      </div>
+      <p className="pz-small">
+        <span className="cb-algo-key" data-mark="+" /> added{" "}
+        <span className="cb-algo-key ml-4" data-mark="~" /> changed
+      </p>
+    </>
   );
 }
 
@@ -115,14 +143,7 @@ export function Algorithm() {
           changes which configuration an environment resets to. The policy, the
           reward and the PPO update stay as they are.
         </Lead>
-        <div className="cb-algo-pair">
-          <Code title="PPO" lines={PPO} />
-          <Code title="PPO with SGS" lines={SGS} />
-        </div>
-        <p className="pz-small">
-          <span className="cb-algo-key" data-mark="+" /> added{" "}
-          <span className="cb-algo-key ml-4" data-mark="~" /> changed
-        </p>
+        <AlgorithmPair />
       </div>
     </section>
   );

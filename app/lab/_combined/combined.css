@@ -737,16 +737,24 @@
   letter-spacing: -0.025em;
 }
 .cb-algo-code {
-  overflow-x: auto;
+  --step: 2ch;
   font-family: ui-monospace, "SF Mono", Menlo, monospace;
   font-size: clamp(0.72rem, 1vw, 0.95rem);
   line-height: 1.75;
 }
+@media (min-width: 768px) {
+  .cb-algo-code {
+    --step: 4ch;
+  }
+}
+/* One line of pseudocode: indented by level; a line too long for the
+   column wraps with a hanging indent. */
 .cb-algo-line {
   display: block;
-  padding-left: 0.5em;
+  padding-left: calc(0.5em + var(--i, 0) * var(--step) + 2ch);
+  text-indent: -2ch;
   border-left: 3px solid transparent;
-  white-space: pre;
+  white-space: pre-wrap;
 }
 .cb-algo-line[data-mark] {
   background: rgb(228 50 27 / 0.12);
@@ -824,6 +832,13 @@
 }
 .cb-part-in-band {
   padding-inline: var(--m);
+}
+/* A part's contents (lead paragraph, figure, code) one under another. */
+.cb-part-in,
+.cb-part-in-band {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
 }
 /* pinned: the Method band with the part on screen beside it. */
 .cb-pinned {
