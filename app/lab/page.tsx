@@ -19,6 +19,11 @@ const GROUPS: [string, Study[]][] = [
         "The combined page with sections 6–12 (configurations to clips), set up but not yet reviewed; parked here and taken back one at a time.",
       ],
       [
+        "/lab/method-parts/",
+        "Method in parts",
+        "The Method split into three parts (task configurations, a toy example, the weighting), with four ways to show they sit within the Method.",
+      ],
+      [
         "/lab/combined-f-sizes/",
         "Combined + summary F, sizes",
         "Summary F with switches for size (F–F3), width (capped, full, as wide as the video) and stroke (regular, light, key words bold).",

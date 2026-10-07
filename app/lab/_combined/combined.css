@@ -766,3 +766,71 @@
   background: rgb(228 50 27 / 0.05);
   border-left-style: dotted;
 }
+
+/* ---- The Method in parts (MethodParts.tsx) ---------------------------- */
+.cb-part {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+/* Part 1 is one paragraph: the reading column's width, on the left,
+   without its own rule (the part's heading has one). */
+.cb-part-lead {
+  max-width: 36em;
+}
+.cb-part-lead > .cb-reading-p {
+  border-top: 0;
+  padding-top: 0;
+}
+/* rules (and pinned): a hairline across, the number and the name. */
+.cb-part-rule {
+  display: flex;
+  gap: 1.5em;
+  border-top: 1px solid #111;
+  padding-top: 0.5rem;
+  font-size: clamp(1.05rem, 1.35vw, 1.3rem);
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+}
+.cb-part-rule > .pz-num {
+  min-width: 1.5em;
+}
+/* path: "Method / …". */
+.cb-part-path {
+  border-top: 1px solid #111;
+  padding-top: 0.4rem;
+}
+.cb-part-dim {
+  color: rgb(0 0 0 / 0.38);
+}
+/* bands: a white band with black rules, full bleed like the Method band,
+   "Method" small before the part's name. */
+.cb-parts-bands {
+  padding-inline: 0;
+}
+.cb-part-band {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  border-bottom: 1px solid #111;
+  padding: 0.2rem var(--m) 0.3rem;
+}
+.cb-parts-bands .cb-part + .cb-part > .cb-part-band {
+  border-top: 1px solid #111;
+}
+.cb-part-kicker {
+  min-width: 4.5rem;
+  color: rgb(0 0 0 / 0.5);
+}
+.cb-part-in-band {
+  padding-inline: var(--m);
+}
+/* pinned: the Method band with the part on screen beside it. */
+.cb-pinned {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+}
+.cb-pinned-now {
+  color: rgb(0 0 0 / 0.45);
+}

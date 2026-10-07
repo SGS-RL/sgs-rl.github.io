@@ -25,6 +25,19 @@ project site. Branch: `claude/website-redesign-brainstorm-hz3x4c`.
   `DRAFT_SECTIONS` in `_combined/sections.ts`). Bring a section back by
   moving it above the `draft` guard in `CombinedPage.tsx` and its entry
   from `DRAFT_SECTIONS` into `SECTIONS`.
+- **Method in parts (2026-10-07, later).** The owner asked to split the
+  Method under subtitles that still read as part of the Method.
+  `/lab/method-parts/` (`_combined/MethodParts.tsx`) regroups the
+  approved Method's text and figures, unchanged, into three parts: 1 Task
+  configurations (the definition paragraph), 2 A toy example (the live
+  maze, its paragraph, the explainer link), 3 The weighting (the Beta
+  explorer). Four ways to set the subtitles: M1 Rules (hairline, number,
+  name), M2 Path ("Method / …" at the entry size), M3 Bands (smaller white
+  bands, "Method" beside the name), M4 Pinned (as M1, and the Method band
+  stays at the top naming the part on screen, `PinnedBand.tsx`). The
+  combined page keeps the one-piece Method until the owner picks; its
+  paragraphs now come from `ConfigurationText`, `ToyExampleText` and
+  `ExplainerLink` in `Method.tsx` (same output).
 - **Netlify from a cloud session (checked 2026-10-07).** Not possible yet:
   no `NETLIFY_AUTH_TOKEN` in the environment, and the network policy
   blocks `api.netlify.com`, `app.netlify.com` and

@@ -14,6 +14,48 @@ import MethodMaze, { ChanceSwitch } from "./MethodMaze";
 
 const EXPLAINER = "https://rosarioscalise.com/garage-success-guided-sampling";
 
+// The Method's paragraphs, also used by the split versions on
+// /lab/method-parts/ (./MethodParts.tsx).
+export function ConfigurationText() {
+  return (
+    <p className="cb-reading-p">
+      <strong>A task configuration</strong> is one version of the task: where an
+      episode starts, where the goal is, and the terrain or object. SGS draws
+      each episode’s configuration from those the policy{" "}
+      <strong>solves only some of the time</strong>, judged from its recent
+      outcomes.
+    </p>
+  );
+}
+
+export function ToyExampleText() {
+  return (
+    <p className="cb-reading-p">
+      In this toy example, {LIVE.robots} point robots learn to reach every cell
+      of a maze. Every episode starts at S, so{" "}
+      <strong>each cell is one task configuration</strong>. Grey shows how often
+      each is reached.{" "}
+      <strong>
+        The chance of picking a configuration is highest at the edge of the grey
+        region
+      </strong>{" "}
+      (shown in red).{" "}
+      <strong>Red squares are the configurations being tried</strong>, drawn at
+      random from those chances.
+    </p>
+  );
+}
+
+export function ExplainerLink() {
+  return (
+    <p className="cb-reading-p">
+      <a href={EXPLAINER} className="st-link">
+        Step-by-step explainer by Rosario Scalise ↗
+      </a>
+    </p>
+  );
+}
+
 export default function Method({ id = "method" }: { id?: string }) {
   return (
     <section
@@ -30,31 +72,9 @@ export default function Method({ id = "method" }: { id?: string }) {
             <MethodMaze />
           </div>
           <div className="cb-reading">
-            <p className="cb-reading-p">
-              <strong>A task configuration</strong> is one version of the task:
-              where an episode starts, where the goal is, and the terrain or
-              object. SGS draws each episode’s configuration from those the
-              policy <strong>solves only some of the time</strong>, judged from
-              its recent outcomes.
-            </p>
-            <p className="cb-reading-p">
-              In this toy example, {LIVE.robots} point robots learn to reach
-              every cell of a maze. Every episode starts at S, so{" "}
-              <strong>each cell is one task configuration</strong>. Grey shows
-              how often each is reached.{" "}
-              <strong>
-                The chance of picking a configuration is highest at the edge of
-                the grey region
-              </strong>{" "}
-              (shown in red).{" "}
-              <strong>Red squares are the configurations being tried</strong>,
-              drawn at random from those chances.
-            </p>
-            <p className="cb-reading-p">
-              <a href={EXPLAINER} className="st-link">
-                Step-by-step explainer by Rosario Scalise ↗
-              </a>
-            </p>
+            <ConfigurationText />
+            <ToyExampleText />
+            <ExplainerLink />
           </div>
         </div>
         <BetaExplorer />
