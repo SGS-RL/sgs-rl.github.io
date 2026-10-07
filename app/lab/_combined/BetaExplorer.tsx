@@ -69,15 +69,31 @@ function Slider({
   );
 }
 
+// What the weighting does, in a sentence or two; beside the curve, or
+// above the whole explorer where the text runs across the page.
+export function WeightingText() {
+  return (
+    <>
+      <strong>How SGS weighs a task configuration.</strong> A Beta-shaped weight
+      over its success rate <strong>peaks at a target t</strong>;{" "}
+      <strong>κ</strong> sets how sharply. A floor <strong>ε</strong> keeps a
+      small chance for task configurations that always or never succeed.
+    </>
+  );
+}
+
 // presetLabel: the name of the toy example's own setting, which depends on
 // where the explorer sits relative to the live maze. fromToy: start at that
-// setting instead of t 0.66, κ 5, ε 1e-4.
+// setting instead of t 0.66, κ 5, ε 1e-4. withText: the paragraph beside the
+// curve (WeightingText); off where the page sets it above the explorer.
 export default function BetaExplorer({
   presetLabel = PRESETS[0][0],
   fromToy = false,
+  withText = true,
 }: {
   presetLabel?: string;
   fromToy?: boolean;
+  withText?: boolean;
 } = {}) {
   const [t, setT] = useState(fromToy ? PRESETS[0][1] : 0.66);
   const [kappa, setKappa] = useState(fromToy ? PRESETS[0][2] : 5);
@@ -147,18 +163,17 @@ export default function BetaExplorer({
           />
         </div>
         <figcaption className="pz-small mt-2 opacity-70">
-          The maze partway through training. Grey: how often each configuration
-          is reached. Red dot: its chance of being picked next.
+          The maze partway through training. Grey: how often each task
+          configuration is reached. Red dot: its chance of being picked next.
         </figcaption>
       </figure>
 
       <div className="cb-beta-side">
-        <p className="cb-reading-p">
-          <strong>How SGS weighs a configuration.</strong> A Beta-shaped weight
-          over its success rate <strong>peaks at a target t</strong>;{" "}
-          <strong>κ</strong> sets how sharply. A floor <strong>ε</strong> keeps
-          a small chance for configurations that always or never succeed.
-        </p>
+        {withText && (
+          <p className="cb-reading-p">
+            <WeightingText />
+          </p>
+        )}
 
         <svg
           viewBox="0 0 500 200"

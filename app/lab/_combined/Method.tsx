@@ -21,7 +21,7 @@ export function ConfigurationText() {
     <p className="cb-reading-p">
       <strong>A task configuration</strong> is one version of the task: where an
       episode starts, where the goal is, and the terrain or object. SGS draws
-      each episode’s configuration from those the policy{" "}
+      each episode’s task configuration from those the policy{" "}
       <strong>solves only some of the time</strong>, judged from its recent
       outcomes.
     </p>
@@ -36,12 +36,12 @@ export function ToyExampleText() {
       <strong>each cell is one task configuration</strong>. Grey shows how often
       each is reached.{" "}
       <strong>
-        The chance of picking a configuration is highest at the edge of the grey
-        region
+        The chance of picking a task configuration is highest at the edge of the
+        grey region
       </strong>{" "}
       (shown in red).{" "}
-      <strong>Red squares are the configurations being tried</strong>, drawn at
-      random from those chances.
+      <strong>Red squares are the task configurations being tried</strong>,
+      drawn at random from those chances.
     </p>
   );
 }

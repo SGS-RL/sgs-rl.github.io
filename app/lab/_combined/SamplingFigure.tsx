@@ -117,9 +117,9 @@ export default function SamplingFigure() {
         <canvas
           ref={ref}
           role="img"
-          aria-label={`The maze partway through training. ${ROUND} configurations drawn ${
+          aria-label={`The maze partway through training. ${ROUND} task configurations drawn ${
             sampler === "sgs" ? "by SGS" : "uniformly"
-          }: ${counts[1]} of them on configurations reached only some of the time.`}
+          }: ${counts[1]} of them on task configurations reached only some of the time.`}
           className="absolute inset-0 h-full w-full"
         />
       </div>

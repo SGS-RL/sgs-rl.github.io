@@ -849,3 +849,43 @@
 .cb-pinned-now {
   color: rgb(0 0 0 / 0.45);
 }
+
+/* ---- The Method in order, second version (MethodFlow2.tsx) ----------- */
+/* The part's number where "Method" was. */
+.cb-step-num {
+  color: #111;
+}
+/* Text across the page. w1: the summary's next size down (F2), regular,
+   key phrases bold. w2: the summary's own size and stroke (F1, thin, key
+   phrases bolder). */
+.cb-flow-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8em;
+}
+.cb-flow-w1 {
+  font-size: clamp(1.2rem, 2.1vw, 1.75rem);
+  line-height: 1.18;
+  letter-spacing: -0.024em;
+}
+.cb-flow-w1 strong {
+  font-weight: 600;
+}
+.cb-flow-w2 {
+  font-size: clamp(1.35rem, 2.6vw, 2.15rem);
+  line-height: 1.14;
+  letter-spacing: -0.028em;
+  font-weight: 200;
+}
+.cb-flow-w2 strong {
+  font-weight: 500;
+}
+.cb-flow-link {
+  font-size: clamp(1.05rem, 1.35vw, 1.3rem);
+  font-weight: 400;
+}
+/* A maze figure under text that runs across: as wide as the screen's
+   height allows (the maze is 18 x 10 cells). */
+.cb-flow-fig {
+  width: min(100%, calc((100svh - var(--bar) - 12rem) * 1.8));
+}

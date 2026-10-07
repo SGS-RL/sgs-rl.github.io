@@ -56,8 +56,8 @@ export function Configurations() {
           </figcaption>
         </figure>
         <ToCome>
-          A video of the configurations sampled in a real training run: many
-          robots, each reset to its own start and goal.
+          A video of the task configurations sampled in a real training run:
+          many robots, each reset to its own start and goal.
         </ToCome>
       </div>
     </section>
@@ -74,18 +74,18 @@ const PPO: Line[] = [
   ["    for each environment, in parallel:"],
   ["        if its episode ended:"],
   [""],
-  ["            reset to a configuration drawn uniformly"],
+  ["            reset to a task configuration drawn uniformly"],
   ["        step π, store the transition"],
   ["    update π with PPO"],
 ];
 const SGS: Line[] = [
   ["initialize policy π"],
-  ["fix N configurations, each with an empty window", "+"],
+  ["fix N task configurations, each with an empty window", "+"],
   ["for each iteration:"],
   ["    for each environment, in parallel:"],
   ["        if its episode ended:"],
-  ["            record its success in that configuration’s window", "+"],
-  ["            reset to a configuration drawn by success rate", "~"],
+  ["            record its success in that task configuration’s window", "+"],
+  ["            reset to a task configuration drawn by success rate", "~"],
   ["        step π, store the transition"],
   ["    update π with PPO"],
 ];
@@ -140,8 +140,8 @@ export function Algorithm() {
       <div className="cb-sec-body">
         <Lead>
           SGS is <strong>standard PPO with a small outer loop</strong>: it only
-          changes which configuration an environment resets to. The policy, the
-          reward and the PPO update stay as they are.
+          changes which task configuration an environment resets to. The policy,
+          the reward and the PPO update stay as they are.
         </Lead>
         <AlgorithmPair />
       </div>
@@ -156,21 +156,22 @@ export function OverTraining() {
       <Heading id="over-training">Over training</Heading>
       <div className="cb-sec-body">
         <Lead>
-          Early on, SGS samples configurations <strong>almost uniformly</strong>
-          . Halfway, it concentrates on <strong>jumps between islands</strong>{" "}
-          at the same height. Late, on configurations that{" "}
+          Early on, SGS samples task configurations{" "}
+          <strong>almost uniformly</strong>. Halfway, it concentrates on{" "}
+          <strong>jumps between islands</strong> at the same height. Late, on
+          task configurations that{" "}
           <strong>reach the high central pillar</strong>.
         </Lead>
         <figure>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/lab/media/paper/fig7-sampling.jpg"
-            alt="Floating islands terrain in three rows, early, mid and late training, each showing the robots at the configurations SGS sampled."
+            alt="Floating islands terrain in three rows, early, mid and late training, each showing the robots at the task configurations SGS sampled."
             className="cb-fig"
           />
           <figcaption className="pz-small mt-2">
-            Configurations sampled on the floating islands, early, mid and late
-            in training. Paper, Figure 7.
+            Task configurations sampled on the floating islands, early, mid and
+            late in training. Paper, Figure 7.
           </figcaption>
         </figure>
         <ToCome>The same as a video over a whole training run.</ToCome>

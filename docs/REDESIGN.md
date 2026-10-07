@@ -56,6 +56,20 @@ project site. Branch: `claude/website-redesign-brainstorm-hz3x4c`.
   The pseudocode now wraps long lines under themselves on phones instead
   of scrolling sideways (also in the parked draft). Not on
   `/lab/combined/` yet.
+- **Method, in order, second version (2026-10-07, later).** Owner:
+  always say "task configurations", never just "tasks" or
+  "configurations" (applied everywhere the combined pages say it,
+  including the approved Method on `/lab/combined/`, the Beta explorer,
+  the pseudocode and the parked draft); number the Method's steps in
+  their bands instead of repeating "Method" ("more Swiss"); let the text
+  span the full width. `/lab/method-flow-2/` (`_combined/MethodFlow2.tsx`):
+  bands read "01 The change to PPO" … "05 Training"; each step's text runs
+  across the page above its figure, at a larger size so the lines stay
+  readable, in two styles: W1 the summary's next size down (F2), regular
+  with bold key phrases; W2 the summary's own size and stroke (F1, thin,
+  key phrases bold). The weighting's paragraph moves from beside the
+  curve to the full-width text (`BetaExplorer` `withText={false}`); the
+  sampling and training mazes are as wide as the screen height allows.
 - **Netlify from a cloud session (checked 2026-10-07).** Not possible yet:
   no `NETLIFY_AUTH_TOKEN` in the environment, and the network policy
   blocks `api.netlify.com`, `app.netlify.com` and
