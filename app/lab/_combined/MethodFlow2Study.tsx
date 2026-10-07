@@ -7,16 +7,8 @@ import "./combined.css";
 // /lab/method-flow-2: the Method in the owner's order, numbered, with the
 // text across the page in two styles (./MethodFlow2.tsx).
 const STYLES: [FlowText, string, string][] = [
-  [
-    "w1",
-    "W1",
-    "Text across the page at the summary's next size down, regular with bold key phrases.",
-  ],
-  [
-    "w2",
-    "W2",
-    "Text across the page at the summary's size and stroke: thin, key phrases bold.",
-  ],
+  ["w1", "W1", "Text across the page, thin, at the summary's next size down."],
+  ["w2", "W2", "Text across the page, thin, at the summary's size."],
 ];
 
 export default function MethodFlow2Study() {

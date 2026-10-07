@@ -190,7 +190,7 @@ export function Hardware() {
     <Band
       id="real-world"
       title={["Real world", "UR5e"]}
-      note={`${and(TASKS.map((t) => t.task.toLowerCase()))} on a real task board, from camera images, zero-shot. Every run as recorded; pick a run to show it large.`.replace(
+      note={`${and(TASKS.map((t) => t.task.toLowerCase()))} on a real task board, from camera images, zero-shot. Every run as recorded. Pick a run to show it large.`.replace(
         /^./,
         (x) => x.toUpperCase(),
       )}

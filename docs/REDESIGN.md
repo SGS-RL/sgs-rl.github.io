@@ -73,6 +73,17 @@ project site. Branch: `claude/website-redesign-brainstorm-hz3x4c`.
   Then: "use big numbers for the subtitles, then we'll decide on size":
   the numbers are now set at the titles' size ("01 The change to PPO"),
   in a fixed column so the titles line up. W1 or W2 still to pick.
+  Then: "don't use semicolons" (copy rule for the whole site, like "task
+  configurations": rewritten wherever the combined pages, the method
+  studies and the parked draft said one; left only in Poster 3's Runs
+  text, which the draft imports from `_poster3` and is fixed when that
+  section is copied in) and "do we need this mix of thin and bold
+  everywhere? can we try just thin for now?": the Method's text is now
+  thin throughout in both sizes, with no bold key phrases. The summary on
+  `/lab/combined/` still has its bold key phrases (F1 thin + bold, as
+  approved). In JSX, a line whose text holds `&nbsp;` lost its leading
+  space ("s₀and"); write the no-break space as a string,
+  `{"goal\u00a0g."}`.
 - **Netlify from a cloud session (checked 2026-10-07).** Not possible yet:
   no `NETLIFY_AUTH_TOKEN` in the environment, and the network policy
   blocks `api.netlify.com`, `app.netlify.com` and

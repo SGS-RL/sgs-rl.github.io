@@ -58,7 +58,7 @@ export default function MethodFlow({ id = "method" }: { id?: string }) {
             <p className="cb-reading-p">
               SGS is <strong>standard PPO with a small outer loop</strong>. It
               changes only which <strong>task configuration</strong> an
-              environment resets to; the policy, the reward and the PPO update
+              environment resets to. The policy, the reward and the PPO update
               stay as they are.
             </p>
           </div>
@@ -106,15 +106,17 @@ export default function MethodFlow({ id = "method" }: { id?: string }) {
             </div>
             <div className="cb-reading">
               <p className="cb-reading-p">
-                Each time a robot finishes an episode, its next configuration is{" "}
+                Each time a robot finishes an episode, its next task
+                configuration is{" "}
                 <strong>drawn at random in proportion to these weights</strong>.
                 Here, rounds of {LIVE.robots} draws, one per robot.
               </p>
               <p className="cb-reading-p">
-                Only {s.n} of the {s.of} configurations are reached some of the
-                time, yet they get <strong>about {s.sgs}% of the draws</strong>;
-                uniform sampling would give them {s.uniform}%. The others still
-                get some, so none is ruled out.
+                Only {s.n} of the {s.of} task configurations are reached some of
+                the time, yet they get{" "}
+                <strong>about {s.sgs}% of the draws</strong>. Uniform sampling
+                would give them {s.uniform}%. The others still get some, so none
+                is ruled out.
               </p>
             </div>
           </div>
@@ -128,8 +130,8 @@ export default function MethodFlow({ id = "method" }: { id?: string }) {
             <div className="cb-reading">
               <p className="cb-reading-p">
                 During training the loop runs continuously. {LIVE.robots} robots
-                train one policy; whenever one finishes an episode, SGS{" "}
-                <strong>records whether it succeeded</strong>, updates that
+                train one policy. Whenever one finishes an episode, SGS{" "}
+                <strong>records whether it succeeded</strong>, updates that task
                 configuration’s success rate and draws its next one.
               </p>
               <p className="cb-reading-p">

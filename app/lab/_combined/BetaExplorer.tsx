@@ -75,7 +75,7 @@ export function WeightingText() {
   return (
     <>
       <strong>How SGS weighs a task configuration.</strong> A Beta-shaped weight
-      over its success rate <strong>peaks at a target t</strong>;{" "}
+      over its success rate <strong>peaks at a target t</strong>, and{" "}
       <strong>κ</strong> sets how sharply. A floor <strong>ε</strong> keeps a
       small chance for task configurations that always or never succeed.
     </>

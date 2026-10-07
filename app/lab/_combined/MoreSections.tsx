@@ -199,7 +199,7 @@ export function Results() {
         </div>
         <ToCome>
           The chart’s values are read off an earlier figure and need the
-          paper’s; the clips at each scale are placeholders until they are
+          paper’s. The clips at each scale are placeholders until they are
           recorded.
         </ToCome>
       </div>

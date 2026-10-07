@@ -856,34 +856,30 @@
 .cb-step-num {
   min-width: 2.2em;
 }
-/* Text across the page. w1: the summary's next size down (F2), regular,
-   key phrases bold. w2: the summary's own size and stroke (F1, thin, key
-   phrases bolder). */
+/* Text across the page, thin throughout, no bold key phrases (owner,
+   2026-10-07: "can we try just thin for now?"). w1: the summary's next
+   size down (F2). w2: the summary's own size (F1). */
 .cb-flow-text {
   display: flex;
   flex-direction: column;
   gap: 0.8em;
+  font-weight: 200;
+}
+.cb-flow-text strong {
+  font-weight: inherit;
 }
 .cb-flow-w1 {
   font-size: clamp(1.2rem, 2.1vw, 1.75rem);
   line-height: 1.18;
   letter-spacing: -0.024em;
 }
-.cb-flow-w1 strong {
-  font-weight: 600;
-}
 .cb-flow-w2 {
   font-size: clamp(1.35rem, 2.6vw, 2.15rem);
   line-height: 1.14;
   letter-spacing: -0.028em;
-  font-weight: 200;
-}
-.cb-flow-w2 strong {
-  font-weight: 500;
 }
 .cb-flow-link {
   font-size: clamp(1.05rem, 1.35vw, 1.3rem);
-  font-weight: 400;
 }
 /* A maze figure under text that runs across: as wide as the screen's
    height allows (the maze is 18 x 10 cells). */

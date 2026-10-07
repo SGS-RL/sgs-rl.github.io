@@ -9,10 +9,12 @@ import SamplingFigure from "./SamplingFigure";
 // The Method in the owner's order, second version (owner, 2026-10-07):
 // "task configurations" always in full; the parts numbered 01–05 in their
 // bands instead of repeating "Method", the numbers as large as the titles; the text across the full width,
-// above each figure, with the mazes wider. Two text styles, compared on
+// above each figure, with the mazes wider; no semicolons; the text thin
+// throughout, without bold key phrases (the <strong> marks stay in the
+// markup, drawn at the text's weight). Two sizes, compared on
 // /lab/method-flow-2/:
-//   w1  the summary's next size down (F2), regular with bold key phrases
-//   w2  the summary's own size and stroke (F1, thin with bold key phrases)
+//   w1  the summary's next size down (F2)
+//   w2  the summary's own size (F1)
 
 export type FlowText = "w1" | "w2";
 
@@ -99,7 +101,7 @@ export default function MethodFlow2({
             <p>
               SGS is <strong>standard PPO with a small outer loop</strong>. It
               changes only which <strong>task configuration</strong> an
-              environment resets to; the policy, the reward and the PPO update
+              environment resets to. The policy, the reward and the PPO update
               stay as they are.
             </p>
           }
@@ -140,7 +142,7 @@ export default function MethodFlow2({
                 configurations. Point robots learn to reach every cell of a
                 maze. Every episode starts at S in the same maze, so{" "}
                 <strong>each cell is one task configuration</strong>: the same s
-                <sub>0</sub> and e, a different goal g.
+                <sub>0</sub> and e, a different {"goal\u00a0g."}
               </p>
               <p>
                 <WeightingText />
@@ -164,9 +166,9 @@ export default function MethodFlow2({
             <p>
               Each time a robot finishes an episode, its next task configuration
               is <strong>drawn at random in proportion to these weights</strong>
-              ; here, rounds of {LIVE.robots} draws, one per robot. Only {s.n}{" "}
+              . Here, rounds of {LIVE.robots} draws, one per robot. Only {s.n}{" "}
               of the {s.of} task configurations are reached some of the time,
-              yet they get <strong>about {s.sgs}% of the draws</strong>; uniform
+              yet they get <strong>about {s.sgs}% of the draws</strong>. Uniform
               sampling would give them {s.uniform}%. The others still get some,
               so none is ruled out.
             </p>
@@ -186,7 +188,7 @@ export default function MethodFlow2({
             <>
               <p>
                 During training the loop runs continuously. {LIVE.robots} robots
-                train one policy; whenever one finishes an episode, SGS{" "}
+                train one policy. Whenever one finishes an episode, SGS{" "}
                 <strong>records whether it succeeded</strong>, updates that task
                 configuration’s success rate and draws its next one. As the
                 robots improve, the grey region grows and{" "}
