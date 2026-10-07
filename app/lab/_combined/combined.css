@@ -856,9 +856,10 @@
 .cb-step-num {
   min-width: 2.2em;
 }
-/* Text across the page, thin throughout, no bold key phrases (owner,
-   2026-10-07: "can we try just thin for now?"). w1: the summary's next
-   size down (F2). w2: the summary's own size (F1). */
+/* Text across the page in the summary's stroke: thin, key phrases bold
+   (owner, 2026-10-07: thin only was tried, then "let's bring back light
+   and bold"). w1: the summary's next size down (F2). w2: the summary's
+   own size (F1). */
 .cb-flow-text {
   display: flex;
   flex-direction: column;
@@ -866,7 +867,7 @@
   font-weight: 200;
 }
 .cb-flow-text strong {
-  font-weight: inherit;
+  font-weight: 500;
 }
 .cb-flow-w1 {
   font-size: clamp(1.2rem, 2.1vw, 1.75rem);

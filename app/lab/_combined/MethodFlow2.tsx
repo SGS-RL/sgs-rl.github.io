@@ -10,8 +10,8 @@ import SamplingFigure from "./SamplingFigure";
 // "task configurations" always in full; the parts numbered 01–05 in their
 // bands instead of repeating "Method", the numbers as large as the titles; the text across the full width,
 // above each figure, with the mazes wider; no semicolons; the text thin
-// throughout, without bold key phrases (the <strong> marks stay in the
-// markup, drawn at the text's weight). Two sizes, compared on
+// with its key phrases bold, the summary's stroke (thin only was tried and
+// dropped). Two sizes, compared on
 // /lab/method-flow-2/:
 //   w1  the summary's next size down (F2)
 //   w2  the summary's own size (F1)

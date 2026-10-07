@@ -79,11 +79,13 @@ project site. Branch: `claude/website-redesign-brainstorm-hz3x4c`.
   text, which the draft imports from `_poster3` and is fixed when that
   section is copied in) and "do we need this mix of thin and bold
   everywhere? can we try just thin for now?": the Method's text is now
-  thin throughout in both sizes, with no bold key phrases. The summary on
-  `/lab/combined/` still has its bold key phrases (F1 thin + bold, as
-  approved). In JSX, a line whose text holds `&nbsp;` lost its leading
+  thin throughout in both sizes, with no bold key phrases (reverted, see
+  below). In JSX, a line whose text holds `&nbsp;` lost its leading
   space ("s₀and"); write the no-break space as a string,
   `{"goal\u00a0g."}`.
+  Then: "i don't like just light actually, let's bring back light and
+  bold". Both sizes (W1, W2) are now thin with bold key phrases (weights
+  200 and 500), the approved summary's stroke. Thin only is dropped.
 - **Netlify from a cloud session (checked 2026-10-07).** Not possible yet:
   no `NETLIFY_AUTH_TOKEN` in the environment, and the network policy
   blocks `api.netlify.com`, `app.netlify.com` and
