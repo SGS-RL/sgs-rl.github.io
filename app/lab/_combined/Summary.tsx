@@ -13,7 +13,7 @@ export default function Summary({ id = "summary" }: { id?: string }) {
       <p className="cb-sum col-span-6 md:col-span-9">
         Success-Guided Sampling (SGS) spends parallel simulation on the task
         configurations a policy solves only some of the time. With it,
-        reinforcement learning keeps improving past one million parallel
+        reinforcement learning keeps improving up to one million parallel
         environments, in legged locomotion and contact-rich manipulation.
       </p>
     </section>

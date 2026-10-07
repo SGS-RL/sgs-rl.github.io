@@ -5,7 +5,7 @@ import "./lab.css";
 const interTight = Inter_Tight({
   variable: "--font-swiss-display",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["200", "300", "400", "500", "600", "700"],
 });
 
 // Unlisted design studies: reachable by URL only, kept out of search.

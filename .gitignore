@@ -48,3 +48,6 @@ next-env.d.ts
 
 # The owner's footage, encoded by scripts/lab/encode_library.py; kept out of git.
 /public/lab/media/library/
+
+# Netlify CLI link state (lab previews deployed from this machine).
+.netlify

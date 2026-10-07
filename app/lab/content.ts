@@ -13,25 +13,24 @@ export const SUBTITLE_PARTS = {
 };
 export const FULL_SUBTITLE = `${SUBTITLE_PARTS.pre} ${SUBTITLE_PARTS.focus} ${SUBTITLE_PARTS.post}`;
 
-// [name, affiliation numbers]; * marks co-first authors.
+// [name, affiliation numbers]; * marks co-first authors, † equal advising.
+// UW is 1, NVIDIA 2; Octi Zhang is at both (owner, 2026-10-07).
 export const AUTHORS: [string, string][] = [
-  ["Octi Zhang", "1*"],
-  ["Mateo Guaman Castro", "2*"],
-  ["Patrick Yin", "2*"],
-  ["Ignacio Dagnigo", "3"],
-  ["Abhishek Gupta", "2"],
-  ["Rosario Scalise", "2"],
-  ["Byron Boots", "2"],
+  ["Octi Zhang", "1,2*"],
+  ["Mateo Guaman Castro", "1*"],
+  ["Patrick Yin", "1*"],
+  ["Ignacio Dagnigo", "1"],
+  ["Abhishek Gupta", "1"],
+  ["Rosario Scalise", "1†"],
+  ["Byron Boots", "1†"],
 ];
-export const AFFILIATIONS = [
-  "NVIDIA",
-  "University of Washington",
-  "Independent Researcher",
-];
+export const AFFILIATIONS = ["University of Washington", "NVIDIA"];
 export const EQUAL = "*Equal contribution";
-// Co-first authors keep their asterisk wherever names appear.
+export const ADVISING = "†Equal advising";
+// Co-first authors keep their asterisk, and the equal advisors their
+// dagger, wherever names appear.
 export const AUTHOR_LINE = AUTHORS.map(
-  ([name, aff]) => name + (aff.includes("*") ? "*" : ""),
+  ([name, aff]) => name + aff.replace(/[^*†]/g, ""),
 ).join(", ");
 // "Mateo Guaman Castro" -> "Guaman Castro, Mateo"; three names per line
 // so the BibTeX fits its box.

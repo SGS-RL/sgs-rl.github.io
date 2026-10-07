@@ -54,6 +54,11 @@ REAL = [("rod", n) for n in range(1, 7)] + [("nut", 1), ("nut", 3)] + [("gear_me
 # Excerpts of the Franka run (cuts at 12.8 s and 18.36 s): (id, start, end).
 FRANKA = [("franka-sim-nut-1", 0.5, 6.5), ("franka-sim-nut-2", 12.9, 18.3), ("franka-sim-nut-3", 21.0, 27.0)]
 
+# Excerpts of continuous runs, at 1x, for rows of clips: (id, run, start, end).
+RUN_EXCERPTS = [
+    ("anymal-c-terrains", "Anymal-C/conitnuous_one_min_run/anymal_c_1min_continuous_run.mp4", 14.0, 20.0),
+]
+
 RUNS = [
     ("run-anymal-c", "Anymal-C/conitnuous_one_min_run/anymal_c_1min_continuous_run.mp4", 6),
     ("run-ur5e-real-gear-mesh", "UR5e Real/gear_mesh/one_min_continuous_run/ur5e_gear_mesh_continuous.novoice.mp4", 6),
@@ -61,11 +66,12 @@ RUNS = [
 ]
 
 # Mock reel: (source, start, end, speed). Real robot first, then UR5e sim,
-# Franka, ANYmal-D. Order and picks from the owner's message of 2026-10-05.
+# Franka, ANYmal-D. Order and picks from the owner's message of 2026-10-05;
+# every segment at 1x since 2026-10-07 ("All the videos will be 1x").
 REEL = [
     ("UR5e Real/rod/clip5/ur5e_rod_clip5.novoice.mp4", 1.0, 5.0, 1),
-    ("UR5e Real/nut/clip3/ur5e_nut_clip3.mp4", 2.0, 15.5, 3),
-    ("UR5e Real/gear_mesh/clip1/ur5e_gear_mesh_clip1.novoice.mp4", 3.5, 11.5, 2),
+    ("UR5e Real/nut/clip3/ur5e_nut_clip3.mp4", 9.0, 13.5, 1),
+    ("UR5e Real/gear_mesh/clip1/ur5e_gear_mesh_clip1.novoice.mp4", 5.0, 9.5, 1),
     ("UR5e Sim/rod/clip1/rod_clip1_static_closeup.mp4", 0, 2.2, 1),
     ("UR5e Sim/bnc/clip5/bnc_clip5_static_closeup.mp4", 1.0, 4.1, 1),
     ("Franka Sim/one_min_continuous_run/franka_nut_continuous_run.mp4", 13.0, 16.0, 1),
@@ -92,6 +98,10 @@ STANDIN = [
 
 # Stand-in clips for the same reason: single UR5e sim runs (static
 # close-up) where the pages show pairs. Items: STANDIN_CLIPS in library.ts.
+# Single UR5e sim runs (static close-up) for rows that show one run per
+# task (the combined page's Overview): (task, clip).
+SINGLES = [("rod", 1), ("bnc", 5), ("gear_mesh", 3)]
+
 STANDIN_CLIPS = [("rod", 1), ("nut", 3), ("gear_mesh", 3), ("waterproof", 2), ("rectangular_peg", 1)]
 
 # ANYmal-D renders are 1920 x 1088; crop to 16:9 before scaling.
@@ -201,12 +211,17 @@ def main():
     franka = os.path.join(o.root, "Franka Sim/one_min_continuous_run/franka_nut_continuous_run.mp4")
     for ident, a, b in FRANKA:
         jobs += clip_jobs(franka, ident, (a, b))
+    for ident, rel, a, b in RUN_EXCERPTS:
+        jobs += clip_jobs(os.path.join(o.root, rel), ident, (a, b))
     for task, a, b in PAIRS:
         jobs += pair_jobs(o.root, task, a, b)
     for ident, rel, speed in RUNS:
         jobs += run_jobs(o.root, ident, rel, speed)
     jobs += reel_jobs(o.root)
     jobs += reel_jobs(o.root, STANDIN, "standin-reel")
+    for task, n in SINGLES:
+        src = os.path.join(o.root, "UR5e Sim", task, f"clip{n}", f"{task}_clip{n}_static_closeup.mp4")
+        jobs += clip_jobs(src, f"ur5e-sim-{task.replace('_', '-')}-{n}")
     for task, n in STANDIN_CLIPS:
         src = os.path.join(o.root, "UR5e Sim", task, f"clip{n}", f"{task}_clip{n}_static_closeup.mp4")
         jobs += clip_jobs(src, f"standin-ur5e-sim-{task.replace('_', '-')}")

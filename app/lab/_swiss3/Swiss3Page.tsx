@@ -5,6 +5,7 @@ import {
   TITLE,
   AFFILIATIONS,
   AUTHORS,
+  ADVISING,
   EQUAL,
   BIBTEX,
   VENUE,
@@ -69,6 +70,9 @@ function Opening() {
               </span>
             ))}
             <span className="inline-block whitespace-nowrap pr-4">{EQUAL}</span>
+            <span className="inline-block whitespace-nowrap pr-4">
+              {ADVISING}
+            </span>
             <span className="inline-block whitespace-nowrap">{VENUE}</span>
           </p>
         </div>
@@ -107,7 +111,7 @@ export default function Swiss3Page() {
           <p className="sw-lead col-span-full">
             Success-Guided Sampling (SGS) spends parallel simulation on the task
             configurations a policy solves only some of the time. With it,
-            reinforcement learning keeps improving past one million parallel
+            reinforcement learning keeps improving up to one million parallel
             environments, in legged locomotion and contact-rich manipulation.
           </p>
         </Section>

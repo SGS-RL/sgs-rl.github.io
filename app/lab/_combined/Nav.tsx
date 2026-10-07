@@ -2,20 +2,23 @@
 
 import { useEffect, useState } from "react";
 import { LINKS } from "../content";
-
-export const SECTIONS: [string, string][] = [];
+import { SECTIONS } from "./sections";
 
 // A copy of _site3/Nav. SECTIONS grows as sections are approved and added
 // to the page. Black bar as on the NOF website. Marks the section in view; on
 // phones the links move into a full-screen menu.
-export default function Nav() {
+export default function Nav({
+  sections = SECTIONS,
+}: {
+  sections?: [string, string][];
+}) {
   const [active, setActive] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const els = SECTIONS.map(([id]) => document.getElementById(id)).filter(
-      (el): el is HTMLElement => el !== null,
-    );
+    const els = sections
+      .map(([id]) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
     const io = new IntersectionObserver(
       (entries) => {
         const hit = entries
@@ -29,7 +32,7 @@ export default function Nav() {
     );
     els.forEach((el) => io.observe(el));
     return () => io.disconnect();
-  }, []);
+  }, [sections]);
 
   useEffect(() => {
     if (!open) return;
@@ -53,7 +56,7 @@ export default function Nav() {
           aria-label="Sections"
           className="hidden gap-4 md:col-span-8 md:flex lg:col-span-6 lg:gap-5"
         >
-          {SECTIONS.map(([id, label]) => (
+          {sections.map(([id, label]) => (
             <a
               key={id}
               href={`#${id}`}
@@ -108,7 +111,7 @@ export default function Nav() {
             aria-label="Sections"
             className="flex flex-1 flex-col px-[var(--m)] pt-4"
           >
-            {SECTIONS.map(([id, label]) => (
+            {sections.map(([id, label]) => (
               <a
                 key={id}
                 href={`#${id}`}

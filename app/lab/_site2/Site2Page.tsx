@@ -6,6 +6,7 @@ import {
   TITLE,
   AFFILIATIONS,
   AUTHORS,
+  ADVISING,
   EQUAL,
   BIBTEX,
 } from "../content";
@@ -122,6 +123,9 @@ export default function Site2Page() {
                 ))}
                 <span className="inline-block whitespace-nowrap pr-3">
                   {EQUAL}
+                </span>
+                <span className="inline-block whitespace-nowrap pr-3">
+                  {ADVISING}
                 </span>
               </p>
               <p className="flex gap-4">

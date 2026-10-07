@@ -105,7 +105,7 @@ export default function PosterPage2() {
             <p className="pz-mid col-span-6 md:col-span-8">
               allocates parallel simulation across task configurations by the
               policy&apos;s current success rate. With it, reinforcement
-              learning keeps improving past one million parallel environments,
+              learning keeps improving up to one million parallel environments,
               for legged locomotion and contact-rich manipulation.
             </p>
           </div>

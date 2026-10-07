@@ -23,10 +23,19 @@ const BLACK = "#111111";
 const MUTE = "rgb(0 0 0 / 0.6)";
 const WHITE_MUTE = "rgb(255 255 255 / 0.78)";
 
-// What the combined page uses (H1, the Site 2/3 header).
-export const HEADER_INKS: Inks = {
+// H1, the Site 2/3 header.
+const CORAL: Inks = {
   ground: "#ffffff",
   mark: "#ff6464",
+  type: BLACK,
+  mute: MUTE,
+};
+
+// H4, picked by the owner for the combined page (2026-10-06).
+export const HEADER_INKS: Inks = {
+  ground: "#ffffff",
+  mark: BLACK,
+  words: "#e4321b",
   type: BLACK,
   mute: MUTE,
 };
@@ -36,8 +45,8 @@ export const SCHEMES: Scheme[] = [
     id: "h1",
     group: "On white",
     name: "Coral on white",
-    note: "The current header (Site 2/3)",
-    inks: HEADER_INKS,
+    note: "The Site 2/3 header",
+    inks: CORAL,
   },
   {
     id: "h2",
@@ -57,13 +66,8 @@ export const SCHEMES: Scheme[] = [
     id: "h4",
     group: "On white",
     name: "Black on white, red words",
-    inks: {
-      ground: "#ffffff",
-      mark: BLACK,
-      words: "#e4321b",
-      type: BLACK,
-      mute: MUTE,
-    },
+    note: "The combined page's header",
+    inks: HEADER_INKS,
   },
   {
     id: "h5",

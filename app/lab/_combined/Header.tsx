@@ -1,7 +1,13 @@
 import { HEADER_CAP } from "../_cover/SiteHeader";
-import { EQUAL, FULL_SUBTITLE, LINKS, TITLE, VENUE } from "../content";
+import {
+  ADVISING,
+  EQUAL,
+  FULL_SUBTITLE,
+  LINKS,
+  TITLE,
+  VENUE,
+} from "../content";
 import { AFFILIATIONS, AUTHORS } from "./content";
-import CopyTitle from "./CopyTitle";
 import { HEADER_INKS, type Inks } from "./inks";
 import Wordmark from "./Wordmark";
 
@@ -11,7 +17,8 @@ import Wordmark from "./Wordmark";
 // links (4 columns). HEADER_CAP keeps it all on the first screen of a short,
 // wide screen. Changed here: the paper's full title, which copies as one
 // line (the break after the colon is drawn by CSS, so it is not copied),
-// a "Copy title" button, Ignacio's affiliation, and Guided centred in the G.
+// Ignacio's affiliation, and Guided centred in the G. A "Copy title"
+// button was tried and dropped (owner, 2026-10-06).
 // Its parts (Mark, Title, Meta) are exported for the layouts compared on
 // /lab/highlights/.
 
@@ -76,6 +83,7 @@ export function Meta({
           </span>
         ))}
         <span className="inline-block whitespace-nowrap pr-3">{EQUAL}</span>
+        <span className="inline-block whitespace-nowrap pr-3">{ADVISING}</span>
       </p>
       <p className="flex flex-wrap gap-x-4">
         <span>{VENUE}</span>
@@ -85,7 +93,6 @@ export function Meta({
         <a href={LINKS.code} className="st-link">
           Code ↗
         </a>
-        <CopyTitle />
       </p>
     </div>
   );

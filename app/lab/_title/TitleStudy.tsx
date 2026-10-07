@@ -3,6 +3,7 @@ import {
   AFFILIATIONS,
   AUTHOR_LINE,
   AUTHORS,
+  ADVISING,
   EQUAL,
   LINKS,
   SUBTITLE_PARTS as S,
@@ -93,6 +94,7 @@ function SwissAuthors() {
           </span>
         ))}
         <span className="inline-block whitespace-nowrap pr-4">{EQUAL}</span>
+        <span className="inline-block whitespace-nowrap pr-4">{ADVISING}</span>
         <span className="inline-block whitespace-nowrap">{VENUE}</span>
       </p>
     </div>
@@ -324,6 +326,9 @@ export default function TitleStudy() {
                   </span>
                 ))}
                 <span className="inline-block whitespace-nowrap">{EQUAL}</span>
+                <span className="inline-block whitespace-nowrap">
+                  {ADVISING}
+                </span>
               </p>
               <p className="flex gap-4">
                 <a href={LINKS.paper} className="pz-u">

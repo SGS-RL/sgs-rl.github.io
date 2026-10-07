@@ -7,15 +7,16 @@ import { FULL_SUBTITLE, TITLE } from "../content";
 // The paper's full title, in one line, as it is copied.
 export const FULL_TITLE = `${TITLE}: ${FULL_SUBTITLE}`;
 
-// [name, affiliation numbers]; * marks co-first authors. Ignacio Dagnigo
-// is at the University of Washington (owner, 2026-10-06).
+// [name, affiliation numbers]; * marks co-first authors, † equal advising.
+// Ignacio Dagnigo is at the University of Washington (owner, 2026-10-06);
+// Octi Zhang at UW and NVIDIA, with UW numbered first (owner, 2026-10-07).
 export const AUTHORS: [string, string][] = [
-  ["Octi Zhang", "1*"],
-  ["Mateo Guaman Castro", "2*"],
-  ["Patrick Yin", "2*"],
-  ["Ignacio Dagnigo", "2"],
-  ["Abhishek Gupta", "2"],
-  ["Rosario Scalise", "2"],
-  ["Byron Boots", "2"],
+  ["Octi Zhang", "1,2*"],
+  ["Mateo Guaman Castro", "1*"],
+  ["Patrick Yin", "1*"],
+  ["Ignacio Dagnigo", "1"],
+  ["Abhishek Gupta", "1"],
+  ["Rosario Scalise", "1†"],
+  ["Byron Boots", "1†"],
 ];
-export const AFFILIATIONS = ["NVIDIA", "University of Washington"];
+export const AFFILIATIONS = ["University of Washington", "NVIDIA"];

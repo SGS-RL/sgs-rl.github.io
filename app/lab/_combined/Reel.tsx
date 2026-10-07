@@ -38,7 +38,7 @@ function Glyph({ kind }: { kind: "play" | "pause" | "full" | "exit" }) {
 }
 
 // The bar and, at its right end, play/pause and full screen as icons.
-function BarRow() {
+export function BarRow() {
   const { playing, fullscreen, toggle, toggleFullscreen } = useReel();
   return (
     <div className="cb-reel-row">
@@ -66,7 +66,7 @@ function BarRow() {
 // Chapters grouped by robot and by simulation or hardware ("UR5e,
 // hardware", "UR5e, simulation"), for the labels in "under" and "list".
 type Run = { key: string; label: string; from: number; to: number };
-function runs(chapters: readonly Chapter[]): Run[] {
+export function runs(chapters: readonly Chapter[]): Run[] {
   const out: Run[] = [];
   for (const c of chapters) {
     const key = `${c.robot}|${where(c)}`;
@@ -78,11 +78,11 @@ function runs(chapters: readonly Chapter[]): Run[] {
   return out;
 }
 
-const title = (c: Chapter) => c.title + (fast(c) ? `, ${fast(c)}` : "");
+export const title = (c: Chapter) => c.title + (fast(c) ? `, ${fast(c)}` : "");
 
 // "UR5e, Rod" on the left; "Simulation" or "Hardware, 3×" on the right,
 // quieter.
-function Now({ className = "" }: { className?: string }) {
+export function Now({ className = "" }: { className?: string }) {
   const { chapters, idx } = useReel();
   const c = chapters[idx];
   const w = where(c);
@@ -103,7 +103,7 @@ function Now({ className = "" }: { className?: string }) {
 // every title under its own segment; the grid stops short of the icons,
 // as the bar does), and under them each robot and domain across its
 // chapters.
-function Under() {
+export function Under() {
   const { chapters, idx, goTo } = useReel();
   const tpl = useMemo(() => tracks(chapters), [chapters]);
   const groups = useMemo(() => runs(chapters), [chapters]);

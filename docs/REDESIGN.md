@@ -5,6 +5,25 @@ project site. Branch: `claude/website-redesign-brainstorm-hz3x4c`.
 
 ## Start here
 
+- **Where we're at (end of 2026-10-07, for picking up remotely).**
+  `/lab/combined/` is the site being assembled; it is live at
+  https://sgs-rl-lab.netlify.app/lab/combined/. Approved so far: header
+  (H4 colours, S4 layout, S6 switchable), Highlights (R1), Summary (F1,
+  full width, thin + bold), Overview (O1, one sentence and one row of
+  clips per band), Method (version B of `/lab/method-nav` plus the Beta
+  explorer; the owner is still choosing how the live maze shows sampling
+  chances: `?chance=dots|heat|trail|bar`, `?floor=1e-6|1e-8`, and may want
+  a broader κ). Set up but not yet reviewed: Task configurations, Just
+  PPO, Over training, the quilt divider, Results, Footage, Clips (see
+  Decisions, "Sections 6–12", for what is still "To come"). Not yet on
+  the page: Cite and the footer.
+- **Footage on a new machine.** The encoded videos are git-ignored. Run
+  `scripts/lab/fetch_library.sh` to download them from the Netlify
+  preview (list in `scripts/lab/library-files.txt`), or encode them from
+  the owner's Google Drive folder "SGS" with
+  `scripts/lab/encode_library.py`. Deploying to Netlify from a cloud
+  session needs a `NETLIFY_AUTH_TOKEN` in the environment.
+
 - **Where things stand (2026-10-06).** The owner is assembling one site
   from the parts they like, at `/lab/combined/` (`app/lab/_combined/`),
   one section at a time: they describe a section, it is built and
@@ -206,7 +225,9 @@ For reference, round 1's `/lab/site/` contains, top to bottom:
   existing pages show. The paper's full subtitle is `FULL_SUBTITLE` (parts
   in `SUBTITLE_PARTS`); only `/lab/title/` uses it, so it can be compared
   without changing the other pages. `BIBTEX` cites the full title.
-  `AUTHOR_LINE` adds the co-first asterisk to names.
+  `AUTHOR_LINE` adds the co-first asterisk to names, and the equal-advising
+  dagger (Rosario Scalise, Byron Boots; legend `ADVISING`, owner,
+  2026-10-06), on every page.
 - **Method facts.** Taken from the explainer by Rosario Scalise (a
   co-author; see References), not yet checked against the paper text: a fixed set of
   N task configurations (N = 32,768), a sliding window of the last H = 100
@@ -323,8 +344,163 @@ folder>` turns it into `public/lab/media/library/` (27 MB); the
   `poster.css`, `site.css`) are imported. When a shared piece needs a
   change for this page, copy it into `_combined/` first. The nav bar
   (`_combined/Nav.tsx`) lists only the sections already on the page
-  (`SECTIONS`); add each new section there. Sections so far:
-  1. Header, from Site 2 and Site 3 (identical in both): wordmark,
+  (`SECTIONS`); add each new section there. Sections so far: 0. Current state (2026-10-06, later): header in colour scheme H4
+  (black mark, red words) and layout S4 from `/lab/header-sizes/`
+  (`_combined/Top.tsx`; the "Copy title" button is gone, "that is
+  stupid"); then the highlight reel as placement A with controls 2
+  (`_combined/Highlights.tsx`), with REEL3 when the encoded library is
+  present. Rosario Scalise and Byron Boots carry a dagger for equal
+  advising everywhere.
+  Then (2026-10-07): the owner also likes S6, so both stay: a switch at
+  the bottom left of the page flips the header between S4 (the default
+  since 2026-10-07: "this one actually works better") and S6 (`_combined/HeaderChoice.tsx`, remembered in the browser), on the
+  combined page and on every comparison page from now on. On the reel:
+  in S4 the first screen showed only half the video; the video should
+  not sit alone on one side; liked the numbered chapter list of
+  `/lab/swiss` and reel A of `/lab/reel` but on the right, so the video
+  shows first; reel C's colour band and big "Highlights" title ("a big
+  fan of these big titles"); the Clips index of `/lab/site`. Five
+  layouts at `/lab/reel-layouts/` (`_combined/HighlightsLayouts.tsx`,
+  `reels.css`): R1 list on the right, R2 the same on a mint band, R3 the
+  chapters as a Clips-style index with the current row yellow, R4
+  centred with titles under the bar, R5 the big title and list beside
+  the video. Picked (2026-10-07): S4 with R1 ("I really like s4 r1 and
+  s4 r5, let's proceed with s4 r1 for now"); S4 is the default header.
+  Highlights reel at 1× throughout ("All the videos will be 1x"): the
+  nut and gear mesh chapters are now 4.5 s at real time, no speed labels.
+  Summary: `/lab/summaries/` (`_combined/SummaryStudy.tsx`). A (Serious
+  3's, Swiss) and B (single weight, label column) were not liked: "I like
+  the text of B better, but I don't like the sidebar thing". C–F set B's
+  paragraph across the page with no label column: C plain, D under a
+  rule, E larger, F under a big "Summary" title band. C, D and F are also
+  shown as full pages after the header and reel: `/lab/combined-c/`,
+  `-d/`, `-f/` (`CombinedPage` takes `summary`; the nav's sections live in
+  `_combined/sections.ts`, since a server page cannot read a constant
+  from the client `Nav.tsx`). The owner liked F and asked for a smaller
+  paragraph: `/lab/combined-f-sizes/` switches it between F (as it was),
+  F1 and F2 (one and two steps down), F3 (the chapter list's size) and F4
+  (that size in two columns); switches are built on `_combined/choice.ts`.
+  Then (owner: "the only good options are F, F1, F2, and F3"): F4 dropped;
+  two more switches, width (capped at a reading measure, full width, or
+  as wide as the R1 video above, which keeps its edge on ultrawide) and
+  stroke (regular 400, light 300, light with key phrases at 600, thin 200
+  with key phrases at 500; the lab now loads Inter Tight 200 and 300).
+  Every switch can be set in the address, e.g.
+  `/lab/combined-f-sizes/?size=f2&width=video&stroke=light-key`;
+  `previews/summary-matrix/sheet-*.png` are the renders (git-ignored).
+  Picked (2026-10-07): F1, full width, thin + bold ("it doesn't bother me
+  for ultrawide so far", where it runs to two long lines). It is section
+  3 of `/lab/combined/`, and "Summary" is in the nav.
+  Overview (2026-10-07), section 4 (`_combined/OverviewPanes.tsx`), copy
+  drawn from the paper with the owner ("I don't want to have a bunch of
+  stats ... the simplest and most concise description of the most
+  important facts about our setup"): four colour bands, each a name, a
+  headline and a short table (robots; task; what it does without, or what
+  is notable), then clips at 1×. Locomotion: one policy for every
+  terrain, ANYmal C and D, no per-terrain experts, distillation or
+  demonstrations. Manipulation: contact-rich assembly from the NIST
+  Assembly Task Board 1, UR5e and Franka Panda, one reward. Real world:
+  zero-shot to a UR5e from camera images, with emergent recoveries.
+  Scale: up to a million parallel environments. ANYmal C appears through a
+  6 s excerpt of its run (`anymal-c-terrains`, `RUN_EXCERPTS` in the
+  encoder). Paper facts used: 13 terrains, ANYmal-D in the paper's
+  locomotion experiments, six UR5e ATB1 tasks plus Franka Panda
+  nut-and-bolt, RGB distillation with DAgger, zero-shot hardware on three
+  tasks, up to 2^20 environments. The summary's "past one million" was
+  corrected to "up to one million" on every page.
+  Then: "I don't like the right-most columns, too much text and too
+  small. Let's assume that we have about 1 sentence per color that the
+  reader will actually read." The owner rewrote the four sentences
+  (italic "single", key phrases bold); the panes now carry one sentence
+  each, in four layouts switched on the page (`?overview=o1`…`o4`,
+  `_combined/OverviewChosen.tsx`): O1 name beside the sentence, O2 the
+  summary's thin stroke across the page, O3 a large statement, O4 the
+  clips left and the text right. Picked: O1 ("I like O1 the most"); the switch is gone
+  from the page, the others stay reachable by `?overview=`. Each band
+  now has one row of clips captioned with robot and task only ("a single
+  row of videos for each of these colors ... the pink one has too much
+  going on"): Manipulation shows single runs, the interesting rod (clip
+  1. and BNC (clip 5) runs and the nominal gear mesh run (clip 3),
+     encoded as `ur5e-sim-{task}-{n}` (`SINGLES` in the encoder), plus the
+     Franka wide shot. On phones the rows wrap two to a line.
+     Method (2026-10-07), section 5 (`_combined/Method.tsx`). Three layouts
+     were tried and dropped the same day; the owner asked instead for "B
+     from /lab/method-nav/, plus an explanation of the beta weighting ...
+     maybe even interactive and to show how the parameters of it affect
+     where the samples get sampled from". So: version B's text and the live
+     maze (../_nav TrainFigure) beside it, with the explainer link; then
+     `_combined/BetaExplorer.tsx`, sliders for t, κ, T and the floor ε (log
+     scale) with presets (paper locomotion, paper manipulation, the maze's
+     sharp setting, uniform), the curve of the chance of being picked, the
+     maze partway through training with a red dot per goal sized by that
+     chance, and a bar of where the picks go. The floor matters: with a
+     large κ the weight's peak is tiny, so the paper's ε = 1e-4 flattens a
+     sharp κ. The paper settles several open facts: T = 2 and ε = 1e-4
+     throughout; t = 0.66, κ = 5 for locomotion and t = 0.5, κ = 1 for
+     manipulation; N = 104,000 configurations for locomotion and 32,768 for
+     manipulation; H = 100. The maze figures draw with the `--sw-*` tokens,
+     so `.cb-method` defines them in this page's inks.
+     Revised the same day: a plain definition of a task configuration (where
+     an episode starts, the goal, and the terrain or object), tied to the
+     maze, where each cell is one and the red squares are the
+     configurations being tried; "toy example", never "toy"; "success rate",
+     no p̂; no average-success readout (`TrainFigure` gained `labels` and
+     `average` props, defaults unchanged for /lab/method-nav); in the Beta
+     figure, T fixed at 2 (it rescales the log weights like κ) and no
+     presets named after the paper (left: the maze's setting, uniform).
+     Apostrophes in `_combined` JSX are typographic (’): an escaped
+     `&apos;` makes the compiler drop spaces elsewhere in the paragraph.
+     Then the owner pointed out that the red squares looked drawn almost
+     uniformly, since the chances behind them were not shown. The live maze
+     now shows each configuration's chance in one of four styles, switched
+     at the bottom left (`_combined/MethodMaze.tsx`, `?chance=`): dots (a
+     faint red dot, its area the chance), tint (the cell tinted red), trail
+     (each pick lights its cell, fading over a few seconds) and dots with a
+     live bar of where the picks go. A second row sets the maze's floor ε
+     (`?floor=1e-6`, the toy example's value so far, or `1e-8`). Even at
+     1e-8 about a third of the picks land on configurations with success
+     rate 0: κ = 10 is narrow for an 8-outcome window, whose rates step by
+     1/8, so few configurations sit near the target. A broader κ (about 5)
+     would concentrate the picks; not changed yet.
+     Sections 6–12 (2026-10-07, the owner's list before stopping for the
+     day: "If the content already exists, populate it ... Otherwise ...
+     placeholders"), all on `/lab/combined/` in this order:
+  2. Task configurations (`_combined/MoreSections.tsx`): what one is in
+     real training, the counts from the paper, paper Figure 2 (cropped
+     from the PDF into `public/lab/media/paper/`). To come: a video of
+     the configurations sampled in a real run.
+  3. Just PPO: PPO next to PPO with SGS as pseudocode, the two added and
+     one changed lines marked.
+  4. Over training: paper Figure 7 (floating islands, early, mid and late
+     sampling). To come: the same as a video.
+  5. A divider: the Index quilt of `/lab/poster-3` (`_poster3/Quilt.tsx`),
+     not interactive, before the results.
+  6. Results: the scaling chart with a policy clip per scale
+     (`_scaling/ScaleCompare`, poster skin, pink). To come: the paper's
+     values (the chart still uses `SCALING` in `content.ts`, read off an
+     earlier figure: the paper reports 0.73 for SGS and 0.54 for PLR in
+     locomotion at 1M, 0.70 for SGS, 0.06 uniform and 0.05 PLR on Franka
+     nut-and-bolt) and the clips at each scale.
+  7. Footage, in the owner's order: continuous runs (`_poster3/Runs`),
+     real world, UR5e simulation (pairs), ANYmal D (`_poster3/Locomotion`)
+     and Franka (`_combined/Footage.tsx`, split from
+     `_poster3/Manipulation`).
+  8. Clips: the clip index of `/lab/poster-3`.
+     The clips cut for the Overview (the ANYmal C excerpt and single UR5e
+     simulation runs) are `EXTRA` in `library.ts`, not `LIBRARY`, so the
+     round 3 pages keep the collection they were reviewed with.
+     Method (2026-10-07), section 5 (`_combined/Method.tsx`), three layouts
+     switched on the page (`?method=m1`…`m3`): M1 one sentence, the live
+     maze (../_nav TrainFigure) and what it shows beside it; M2 four
+     numbered steps from the paper (configurations, last 100 outcomes,
+     Beta-shaped weight with a floor, draw on every reset) and the paper's
+     weight for both domains; M3 the sentence, the maze on the left and
+     the steps on the right. The maze figure draws with the `--sw-*`
+     tokens, so `.cb-method` defines them in this page's inks. The paper
+     settles several open facts: T = 2 and ε = 1e-4 throughout; t = 0.66,
+     κ = 5 for locomotion and t = 0.5, κ = 1 for manipulation; N = 104,000
+     configurations for locomotion and 32,768 for manipulation; H = 100.
+  1) Header, from Site 2 and Site 3 (identical in both): wordmark,
      title, authors, affiliations, venue, Paper and Code. The "Cite ↓"
      link is left out until there is a Cite section. Changed in round 2
      of the section, at the owner's request:
@@ -357,11 +533,11 @@ folder>` turns it into `public/lab/media/library/` (27 MB); the
        Schemes are `SCHEMES` in `_combined/inks.ts`; the page uses
        `HEADER_INKS` (H1) until the owner picks. The owner deferred the
        choice (2026-10-06) to get on with the rest of the site.
-  2. Highlights (not yet on the page). **Narrowed to A or B, with
+  2) Highlights (not yet on the page). **Narrowed to A or B, with
      controls 2 (titles under the bar)**; the owner will pick once the
      next section exists, since the choice depends on what follows
      (2026-10-06).
-  3. Overview or Summary (not yet on the page). The owner "really liked
+  3) Overview or Summary (not yet on the page). The owner "really liked
      the colorful overview from site 3" and asked for it and the serious
      summary paragraph, each after both openings. `/lab/opening/` shows
      A + Overview, A + Summary, B + Overview, B + Summary (openings in
@@ -377,7 +553,7 @@ folder>` turns it into `public/lab/media/library/` (27 MB); the
      - Summary (`_combined/Summary.tsx`): Serious 3's "01 Summary" (rule,
        small label, the lead paragraph on columns 4–12) in the page's
        single weight, without the section number.
-  4. Serious start (`/lab/serious-start/`, `_combined/SeriousStart.tsx`).
+  4) Serious start (`/lab/serious-start/`, `_combined/SeriousStart.tsx`).
      Before committing to the wordmark opening, the owner asked for a page
      that "starts off a bit more serious" and turns "more colorful and
      playful as we scroll down", with no SGS logotype but still making
@@ -479,13 +655,15 @@ Inputs only the owner can give:
 - [ ] **Pick a full-title setting** from `/lab/title/` (T1–T6), or none.
 - [ ] **Method on the site:** version A or B from `/lab/method-nav/`, the
       round 2 method, or a link to the explainer.
-- [ ] **Ignacio Dagnigo's affiliation** is fixed on `/lab/combined/` only
-      (University of Washington); the shared `content.ts` and the older
-      studies still say "Independent Researcher".
+- [x] **Affiliations** (2026-10-07, every page): University of
+      Washington is 1, NVIDIA 2; Octi Zhang is at both ("1,2*"); Ignacio
+      Dagnigo is at UW.
 - [ ] **Paper and code links** (`LINKS` in `app/lab/content.ts`, still `#`).
 - [ ] **Facts to check** (in `app/lab/content.ts` unless noted):
-  - The paper's softmax temperature T, N for each task, and κ and t for
-    manipulation (`KERNELS` in `app/lab/_method/sgs.ts`).
+  - ~~The paper's softmax temperature T, N for each task, and κ and t for
+    manipulation~~: settled from the paper (see Decisions, Method);
+    `KERNELS` in `app/lab/_method/sgs.ts` still uses ε = 1e-8 for the
+    older studies.
   - Whether the paper says anything like "signal ∝ p(1 − p)" (see
     Decisions).
   - Terrain names (`TERRAINS`) and robot names (ANYmal, Franka, "UR arm"),
@@ -715,6 +893,25 @@ https://sgs-rl.github.io/lab/). No other branch deploys. The workflow runs
 Node 20, which reached end of life in April 2026; moving
 `node-version` to `"22"` in `.github/workflows/deploy.yml` would match
 `.nvmrc`.
+
+### Sharing a preview (Netlify)
+
+The lab pages, with the encoded footage, are published from this Mac to
+https://sgs-rl-lab.netlify.app/lab/ for the owner's teammates (site
+`sgs-rl-lab`, team `mateogc`, created 2026-10-06). Anyone with the link
+can open it; it is not linked anywhere and the pages are `noindex`.
+Netlify turned on team-login protection for the new site by default;
+it was turned off so teammates need no account. To publish the current
+state after logging in once with `npx netlify-cli login`:
+
+```sh
+npm run build
+npx netlify-cli deploy --dir out --prod --site 1349f500-54b9-4215-bd8d-5aa51f7978af
+```
+
+Pass the site ID, not the name: by name the CLI reports the site as not
+found. The CLI keeps its link state in `.netlify/` (git-ignored). The footage is
+not in git, so deploy from a machine that has `public/lab/media/library/`.
 
 ### Screenshots (how designs get reviewed)
 

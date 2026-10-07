@@ -14,6 +14,41 @@ const GROUPS: [string, Study[]][] = [
         "The parts the owner picked from the studies, added one approved section at a time. So far: the Site header.",
       ],
       [
+        "/lab/combined-f-sizes/",
+        "Combined + summary F, sizes",
+        "Summary F with switches for size (F–F3), width (capped, full, as wide as the video) and stroke (regular, light, key words bold).",
+      ],
+      [
+        "/lab/combined-c/",
+        "Combined + summary C",
+        "The combined page with summary C (the paragraph alone, no label).",
+      ],
+      [
+        "/lab/combined-d/",
+        "Combined + summary D",
+        "The combined page with summary D (a rule above the paragraph).",
+      ],
+      [
+        "/lab/combined-f/",
+        "Combined + summary F",
+        "The combined page with summary F (a big Summary title band).",
+      ],
+      [
+        "/lab/summaries/",
+        "Summaries",
+        "The serious summary and the one in the combined page's style, after the S4 header and the R1 highlights.",
+      ],
+      [
+        "/lab/reel-layouts/",
+        "Highlights layouts",
+        "The Highlights section in five layouts under the S6 or S4 header: list or index beside the video, a mint band, centred, title beside.",
+      ],
+      [
+        "/lab/header-sizes/",
+        "Header sizes",
+        "The H4 header with a smaller SGS and the authors moved away from it, in six layouts.",
+      ],
+      [
         "/lab/header-colors/",
         "Header colours",
         "The combined page's header in twelve colour schemes: the mark in colour on white, light grounds, strong grounds.",

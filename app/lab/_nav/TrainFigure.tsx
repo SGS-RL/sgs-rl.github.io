@@ -2,9 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { onFrame } from "../_method/ticker";
-import { drawGoal, drawMaze, drawRobot, fit, readTheme } from "./draw";
+import { drawDot, drawGoal, drawMaze, drawRobot, fit, readTheme } from "./draw";
 import Legend from "./Legend";
+import type { Kernel } from "../_method/sgs";
 import { LIVE, robotAt, Training, TOY, WORLD as w } from "./nav";
+
+export type ChanceMode = "dots" | "heat" | "trail" | "bar";
 
 const SPEEDS = [1, 4, 16];
 
@@ -14,9 +17,33 @@ const SPEEDS = [1, 4, 16];
  * new goal drawn. Grey is each goal's tracked success rate p̂, red squares
  * the goals being tried. Starts over once the maze is mostly learned.
  */
-export default function TrainFigure({ seed = 1 }: { seed?: number }) {
+export default function TrainFigure({
+  seed = 1,
+  labels = ["Tracked success rate p̂", "Goal being tried", "Robot"],
+  average = true,
+  chance,
+  kernel = TOY,
+}: {
+  seed?: number;
+  // Legend: shading, red square, dot.
+  labels?: [string, string, string];
+  // The readout's average success over all goals (the combined page
+  // leaves it out).
+  average?: boolean;
+  // Also show each goal's current chance of being picked (the red squares
+  // are draws from these chances), labelled in the legend. Off by default.
+  //   dots   a faint red dot per goal, its area the chance
+  //   heat   the goal's cell tinted red by its chance
+  //   trail  every new pick lights its cell red, fading over a few
+  //          seconds, so often-picked goals stay red
+  //   bar    dots, and under the maze a live bar of where the picks go
+  chance?: { mode: ChanceMode; label: string };
+  // The sampler's kernel (default: the toy example's, ../_nav TOY).
+  kernel?: Kernel;
+}) {
   const ref = useRef<HTMLCanvasElement>(null);
   const readout = useRef<HTMLParagraphElement>(null);
+  const barRef = useRef<HTMLDivElement>(null);
   const state = useRef({ play: true, speed: 4, restart: false });
   const [play, setPlay] = useState(true);
   const [speed, setSpeed] = useState(4);
@@ -26,7 +53,12 @@ export default function TrainFigure({ seed = 1 }: { seed?: number }) {
     if (!canvas) return;
     const th = readTheme(canvas);
     const make = () =>
-      new Training(w, { sampler: "sgs", seed, kernel: TOY, ...LIVE });
+      new Training(w, { sampler: "sgs", seed, kernel, ...LIVE });
+    const n = w.goals.length;
+    // Trail: how recently each goal was picked (1 just now, fading to 0),
+    // and the robot each slot held last frame, to spot new picks.
+    const heat = new Float64Array(n);
+    let seen: unknown[] = [];
     let sim = make();
     let done = 0;
     let shown = -1;
@@ -51,6 +83,57 @@ export default function TrainFigure({ seed = 1 }: { seed?: number }) {
 
       const { ctx, cell, dpr } = fit(canvas, w);
       drawMaze(ctx, w, cell, dpr, th, (i) => sim.tracker.phat(i));
+      const mode = chance?.mode;
+      if (mode === "dots" || mode === "bar" || mode === "heat") {
+        let top = 0;
+        for (let i = 0; i < n; i++) top = Math.max(top, sim.tracker.prob(i));
+        for (let i = 0; i < n; i++) {
+          const v = sim.tracker.prob(i) / top;
+          if (mode === "heat") {
+            const k = w.goals[i];
+            const c = k % w.cols;
+            ctx.globalAlpha = 0.65 * Math.sqrt(v);
+            ctx.fillStyle = th.accent;
+            ctx.fillRect(c * cell, ((k - c) / w.cols) * cell, cell, cell);
+          } else {
+            ctx.globalAlpha = 0.45;
+            drawDot(ctx, w, cell, th, i, v);
+          }
+        }
+        ctx.globalAlpha = 1;
+      }
+      if (mode === "trail") {
+        const robots = sim.robots as unknown[];
+        robots.forEach((r, k) => {
+          if (seen[k] !== r) heat[sim.robots[k].goal] = 1;
+        });
+        seen = robots.slice();
+        const fade = Math.exp(-(dt * state.current.speed) / 2.5);
+        for (let i = 0; i < n; i++) {
+          if (heat[i] < 0.02) continue;
+          const k = w.goals[i];
+          const c = k % w.cols;
+          ctx.globalAlpha = 0.6 * heat[i];
+          ctx.fillStyle = th.accent;
+          ctx.fillRect(c * cell, ((k - c) / w.cols) * cell, cell, cell);
+          if (state.current.play) heat[i] *= fade;
+        }
+        ctx.globalAlpha = 1;
+      }
+      if (mode === "bar" && barRef.current) {
+        const share = [0, 0, 0];
+        for (let i = 0; i < n; i++) {
+          const p = sim.tracker.phat(i);
+          share[p < 0.1 ? 0 : p > 0.9 ? 2 : 1] += sim.tracker.prob(i);
+        }
+        const el = barRef.current;
+        el.querySelectorAll<HTMLElement>('[data-share="bar"]').forEach(
+          (b, k) => (b.style.width = `${share[k] * 100}%`),
+        );
+        el.querySelectorAll<HTMLElement>('[data-share="n"]').forEach(
+          (b, k) => (b.textContent = String(Math.round(share[k] * 100))),
+        );
+      }
       const { episode } = LIVE;
       for (const r of sim.robots) {
         const fade = Math.min(1, r.t / 0.15, (episode - r.t) / 0.25);
@@ -64,11 +147,15 @@ export default function TrainFigure({ seed = 1 }: { seed?: number }) {
 
       if (readout.current && sim.episodes !== shown) {
         shown = sim.episodes;
-        readout.current.textContent = `Episode ${sim.episodes.toLocaleString("en-US")}. Average success over all ${w.goals.length} goals: ${mean.toFixed(2)}.`;
+        readout.current.textContent =
+          `Episode ${sim.episodes.toLocaleString("en-US")}.` +
+          (average
+            ? ` Average success over all ${w.goals.length} goals: ${mean.toFixed(2)}.`
+            : "");
       }
     });
     return off;
-  }, [seed]);
+  }, [seed, average, chance?.mode, kernel]);
 
   const btn = "sw-link sw-label cursor-pointer";
   return (
@@ -87,11 +174,48 @@ export default function TrainFigure({ seed = 1 }: { seed?: number }) {
       <Legend
         className="mt-3"
         items={[
-          ["shade", "Tracked success rate p̂"],
-          ["goal", "Goal being tried"],
-          ["robot", "Robot"],
+          ["shade", labels[0]],
+          ["goal", labels[1]],
+          ["robot", labels[2]],
+          ...(chance
+            ? [
+                [
+                  chance.mode === "dots" || chance.mode === "bar"
+                    ? "dot"
+                    : "fill",
+                  chance.label,
+                ] as ["dot" | "fill", string],
+              ]
+            : []),
         ]}
       />
+      {chance?.mode === "bar" && (
+        <div ref={barRef} className="mt-3">
+          <p className="sw-label mb-1">Where the picks go now</p>
+          <div className="flex h-2.5 bg-sw-hair">
+            {["rgb(0 0 0 / 0.14)", "var(--sw-accent)", "rgb(0 0 0 / 0.5)"].map(
+              (bg) => (
+                <span
+                  key={bg}
+                  data-share="bar"
+                  style={{ background: bg, width: 0 }}
+                />
+              ),
+            )}
+          </div>
+          <p className="sw-label sw-num mt-1 flex justify-between gap-2">
+            <span>
+              Rarely reached <span data-share="n">0</span>%
+            </span>
+            <span>
+              Sometimes <span data-share="n">0</span>%
+            </span>
+            <span>
+              Almost always <span data-share="n">0</span>%
+            </span>
+          </p>
+        </div>
+      )}
       <div className="mt-4 flex flex-wrap items-baseline gap-x-5 gap-y-2 border-t border-sw-hair pt-2">
         <button
           type="button"

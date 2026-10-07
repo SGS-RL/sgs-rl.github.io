@@ -1,0 +1,188 @@
+/* Highlights layouts (HighlightsLayouts.tsx), compared on
+   /lab/reel-layouts/. Builds on the quiet reel's classes (.cb-reel). */
+
+.cb-hl-body {
+  padding: 1.25rem var(--m) 3rem;
+}
+.cb-hl-r2 .cb-hl-body {
+  background: #a3e4d7;
+}
+.cb-hl-row {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+.cb-hl-centre .cb-hl-player {
+  margin-inline: auto;
+}
+
+/* R5: the video, the big title over the list beside it; phones: title,
+   video, list. */
+.cb-hl-side {
+  display: contents;
+}
+.cb-hl-side > .pz-head {
+  order: -2;
+  margin-bottom: -0.75rem;
+}
+.cb-hl-r5 .cb-hl-player {
+  order: -1;
+}
+
+@media (min-width: 1024px) {
+  .cb-hl-row {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: calc(var(--g) * 2);
+  }
+  /* The video takes up to 70% of the row (58% beside the index), never
+     taller than --rl-max-h; the list takes the rest, so the two always
+     span the measure together. */
+  .cb-hl-row > .cb-hl-player {
+    flex: 0 0 auto;
+    width: min(70%, calc(var(--rl-max-h) * 1.7778));
+  }
+  .cb-hl-index > .cb-hl-player {
+    width: min(58%, calc(var(--rl-max-h) * 1.7778));
+  }
+  .cb-hl-row > .cb-list,
+  .cb-hl-row > .cb-index,
+  .cb-hl-row > .cb-hl-side {
+    flex: 1 1 0;
+    min-width: 15rem;
+  }
+  .cb-hl-side {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .cb-hl-side > .pz-head {
+    margin: -0.12em 0 0;
+  }
+  .cb-hl-r5 .cb-hl-player {
+    order: 0;
+  }
+  .cb-hl-side > .pz-head {
+    order: 0;
+  }
+}
+
+/* Chapter list (R1, R2, R5). */
+.cb-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  font-size: clamp(0.95rem, 1.05vw, 1.2rem);
+  line-height: 1.25;
+}
+.cb-list-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid currentColor;
+}
+.cb-list-row {
+  display: grid;
+  grid-template-columns: 2em minmax(0, 1fr) auto 3.4em;
+  column-gap: 0.6em;
+  width: 100%;
+  padding: 0.35em 0;
+  border-bottom: 1px solid rgb(0 0 0 / 0.14);
+  text-align: left;
+  color: rgb(0 0 0 / 0.5);
+  cursor: pointer;
+}
+.cb-list-row:hover,
+.cb-list-row[aria-current] {
+  color: inherit;
+}
+.cb-list-time {
+  text-align: right;
+}
+.cb-list-row[aria-current] .cb-list-time::before {
+  content: "";
+  display: inline-block;
+  width: 0.5em;
+  height: 0.5em;
+  margin-right: 0.45em;
+  background: #e4321b;
+}
+
+/* Index (R3): the Clips index of /lab/site/. */
+.cb-index {
+  font-size: clamp(1rem, 1.3vw, 1.45rem);
+  line-height: 1.2;
+}
+.cb-index-row {
+  display: grid;
+  grid-template-columns: 2.2em minmax(0, 1fr) 2.6em;
+  column-gap: 0.6em;
+  width: 100%;
+  padding: 0.3em 0.25em;
+  border-bottom: 1px solid #000;
+  text-align: left;
+  cursor: pointer;
+}
+.cb-index-cols {
+  cursor: default;
+  padding-bottom: 0.4em;
+}
+.cb-index-wide {
+  display: none;
+}
+.cb-index-row:hover {
+  background: rgb(0 0 0 / 0.05);
+}
+.cb-index-row[aria-current] {
+  background: #f6ee1f;
+}
+@media (min-width: 640px) {
+  .cb-index-row {
+    grid-template-columns: 2.2em minmax(0, 1fr) 5.5em 6.5em 2.6em;
+  }
+  .cb-index-wide {
+    display: block;
+  }
+}
+
+/* The header switch (HeaderChoice.tsx), fixed bottom left. */
+.cb-switch {
+  position: fixed;
+  left: 12px;
+  bottom: 12px;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px 3px 3px 10px;
+  background: #111;
+  color: #fff;
+}
+.cb-switch span {
+  margin-right: 6px;
+}
+.cb-switch button {
+  padding: 3px 9px;
+  cursor: pointer;
+}
+/* The summary switches (SummarySized.tsx): three rows above the header
+   switch. */
+.cb-switch-panel {
+  bottom: 48px;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 4px 4px 4px 10px;
+}
+.cb-switch-row {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.cb-switch-row > span {
+  width: 3.9em;
+}
+.cb-switch button[aria-pressed="true"] {
+  background: #fff;
+  color: #111;
+}

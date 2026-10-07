@@ -1,6 +1,6 @@
 // Keys for the maze figures, drawn to match the canvas marks.
 
-type Key = "wall" | "start" | "robot" | "goal" | "shade" | "dot";
+type Key = "wall" | "start" | "robot" | "goal" | "shade" | "dot" | "fill";
 
 function Swatch({ k }: { k: Key }) {
   return (
@@ -52,6 +52,9 @@ function Swatch({ k }: { k: Key }) {
         </>
       )}
       {k === "dot" && <circle cx="6" cy="6" r="4.5" fill="var(--sw-accent)" />}
+      {k === "fill" && (
+        <rect width="12" height="12" fill="var(--sw-accent)" opacity="0.55" />
+      )}
     </svg>
   );
 }

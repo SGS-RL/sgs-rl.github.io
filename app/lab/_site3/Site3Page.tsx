@@ -3,6 +3,7 @@ import {
   AFFILIATIONS,
   AUTHORS,
   BIBTEX,
+  ADVISING,
   EQUAL,
   LINKS,
   SUBTITLE,
@@ -154,6 +155,9 @@ export default function Site3Page() {
                 ))}
                 <span className="inline-block whitespace-nowrap pr-3">
                   {EQUAL}
+                </span>
+                <span className="inline-block whitespace-nowrap pr-3">
+                  {ADVISING}
                 </span>
               </p>
               <p className="flex flex-wrap gap-x-4">

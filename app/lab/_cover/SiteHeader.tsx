@@ -4,6 +4,7 @@ import {
   TITLE,
   AFFILIATIONS,
   AUTHORS,
+  ADVISING,
   EQUAL,
 } from "../content";
 import Wordmark, { type WordmarkVariant } from "./Wordmark";
@@ -53,6 +54,9 @@ export function SiteHeader({
               </span>
             ))}
             <span className="inline-block whitespace-nowrap pr-3">{EQUAL}</span>
+            <span className="inline-block whitespace-nowrap pr-3">
+              {ADVISING}
+            </span>
           </p>
           <p className="flex gap-4">
             <a href={LINKS.paper} className="cv-link">

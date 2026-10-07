@@ -10,6 +10,8 @@ const eslintConfig = defineConfig([
     // Default ignores of eslint-config-next:
     ".next/**",
     "out/**",
+    // Netlify CLI state and its copy of the build (lab previews).
+    ".netlify/**",
     "build/**",
     "next-env.d.ts",
   ]),

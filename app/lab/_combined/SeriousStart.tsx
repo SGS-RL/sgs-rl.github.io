@@ -2,9 +2,15 @@ import type { ReactNode } from "react";
 import "../_poster/poster.css";
 import "../_site/site.css";
 import Gallery from "../_site3/Gallery";
-import { EQUAL, FULL_SUBTITLE, LINKS, TITLE, VENUE } from "../content";
+import {
+  ADVISING,
+  EQUAL,
+  FULL_SUBTITLE,
+  LINKS,
+  TITLE,
+  VENUE,
+} from "../content";
 import { AFFILIATIONS, AUTHORS } from "./content";
-import CopyTitle from "./CopyTitle";
 import { REEL } from "./Opening";
 import Overview, { OVERVIEW_CLIPS } from "./Overview";
 import QuietReel from "./Reel";
@@ -74,6 +80,7 @@ function SwissMeta({ className = "" }: { className?: string }) {
           </span>
         ))}
         <span className="inline-block whitespace-nowrap pr-4">{EQUAL}</span>
+        <span className="inline-block whitespace-nowrap pr-4">{ADVISING}</span>
         <span className="inline-block whitespace-nowrap">{VENUE}</span>
       </p>
       <p className="mt-2 flex flex-wrap gap-x-5 text-base md:text-lg">
@@ -83,7 +90,6 @@ function SwissMeta({ className = "" }: { className?: string }) {
         <a href={LINKS.code} className="sw-link">
           Code ↗
         </a>
-        <CopyTitle className="sw-link" />
       </p>
     </div>
   );
@@ -230,7 +236,7 @@ function Rest({ id }: { id: string }) {
         <p className="sw-lead">
           Success-Guided Sampling (SGS) spends parallel simulation on the task
           configurations a policy solves only some of the time. With it,
-          reinforcement learning keeps improving past one million parallel
+          reinforcement learning keeps improving up to one million parallel
           environments, in legged locomotion and contact-rich manipulation.
         </p>
       </SwissSection>
