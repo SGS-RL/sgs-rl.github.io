@@ -101,8 +101,7 @@ export default function MethodFlow2({
             <p>
               SGS is <strong>standard PPO with a small outer loop</strong>. It
               changes only which <strong>task configuration</strong> an
-              environment resets to. The policy, the reward and the PPO update
-              stay as they are.
+              environment resets to. The PPO policy update stays the same.
             </p>
           }
         >

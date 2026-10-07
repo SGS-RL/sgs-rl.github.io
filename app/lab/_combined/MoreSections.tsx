@@ -80,12 +80,18 @@ const PPO: Line[] = [
 ];
 const SGS: Line[] = [
   ["initialize policy π"],
-  ["fix N task configurations, each with an empty window", "+"],
+  ["fix N task configurations, each with an empty history buffer", "+"],
   ["for each iteration:"],
   ["    for each environment, in parallel:"],
   ["        if its episode ended:"],
-  ["            record its success in that task configuration’s window", "+"],
-  ["            reset to a task configuration drawn by success rate", "~"],
+  [
+    "            record its success in that task configuration’s history buffer",
+    "+",
+  ],
+  [
+    "            reset to a task configuration drawn weighted by success rate (SGS)",
+    "~",
+  ],
   ["        step π, store the transition"],
   ["    update π with PPO"],
 ];
