@@ -70,6 +70,9 @@ project site. Branch: `claude/website-redesign-brainstorm-hz3x4c`.
   key phrases bold). The weighting's paragraph moves from beside the
   curve to the full-width text (`BetaExplorer` `withText={false}`); the
   sampling and training mazes are as wide as the screen height allows.
+  Then: "use big numbers for the subtitles, then we'll decide on size":
+  the numbers are now set at the titles' size ("01 The change to PPO"),
+  in a fixed column so the titles line up. W1 or W2 still to pick.
 - **Netlify from a cloud session (checked 2026-10-07).** Not possible yet:
   no `NETLIFY_AUTH_TOKEN` in the environment, and the network policy
   blocks `api.netlify.com`, `app.netlify.com` and

@@ -851,9 +851,10 @@
 }
 
 /* ---- The Method in order, second version (MethodFlow2.tsx) ----------- */
-/* The part's number where "Method" was. */
+/* The part's number where "Method" was, as large as the title; a fixed
+   column so the titles line up. */
 .cb-step-num {
-  color: #111;
+  min-width: 2.2em;
 }
 /* Text across the page. w1: the summary's next size down (F2), regular,
    key phrases bold. w2: the summary's own size and stroke (F1, thin, key

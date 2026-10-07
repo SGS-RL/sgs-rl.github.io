@@ -8,7 +8,7 @@ import SamplingFigure from "./SamplingFigure";
 
 // The Method in the owner's order, second version (owner, 2026-10-07):
 // "task configurations" always in full; the parts numbered 01–05 in their
-// bands instead of repeating "Method"; the text across the full width,
+// bands instead of repeating "Method", the numbers as large as the titles; the text across the full width,
 // above each figure, with the mazes wider. Two text styles, compared on
 // /lab/method-flow-2/:
 //   w1  the summary's next size down (F2), regular with bold key phrases
@@ -59,11 +59,9 @@ function Step({
 }) {
   return (
     <div id={id} className="cb-part scroll-mt-[calc(var(--bar)+6rem)]">
-      <h3 className="cb-part-band">
-        <span className="cb-part-kicker cb-step-num pz-small pz-num">
-          {String(n).padStart(2, "0")}
-        </span>
-        <span className="pz-mid">{title}</span>
+      <h3 className="cb-part-band pz-mid">
+        <span className="cb-step-num pz-num">{String(n).padStart(2, "0")}</span>
+        <span>{title}</span>
       </h3>
       <div className="cb-part-in-band">
         <div className={`cb-flow-text cb-flow-${style}`}>{text}</div>
