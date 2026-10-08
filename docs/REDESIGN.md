@@ -293,6 +293,25 @@ project site. Branch: `claude/website-redesign-brainstorm-hz3x4c`.
   block's mono face, with Copy; then the mark across a full black screen,
   white with the words in red, as the header inverted
   (`_combined/Closing.tsx`, `.cb-bib`, `.cb-end`).
+  **Live (2026-10-09).** The combined page is the site: `app/page.tsx`
+  renders `CombinedPage` at https://sgs-rl.github.io/ (with Inter Tight and
+  the lab styles, as the lab layout gives the lab pages, and
+  `shareMetadata("/")`); `main` was fast-forwarded to this branch and the
+  Pages workflow deployed it. The earlier site's `app/components` are
+  unused. The lab studies are published too, under /lab/ (unlisted,
+  noindex). Videos are not in git: they are assets of the GitHub release
+  `media-v1` (https://github.com/SGS-RL/sgs-rl.github.io/releases/tag/media-v1):
+  `sgs-media-library.tar` (the library without downloads, 72 MB), which
+  `.github/workflows/deploy.yml` unpacks into `public/lab/media/` before
+  building, and the 56 downloads as `{id}.mp4`, which the Download buttons
+  link to (`NEXT_PUBLIC_DOWNLOAD_BASE`, set by the workflow; GitHub serves
+  them as attachments). To change footage: encode it
+  (`encode_library.py`, `encode_downloads.py`), run
+  `scripts/lab/release_media.sh` (replaces the assets of `media-v1`), then
+  re-run the workflow (`gh workflow run deploy.yml`) or push to `main`. The
+  workflow retries the build (flaky Google Fonts fetch). Its actions run on
+  Node 20, which GitHub has deprecated: move them to newer majors when it
+  becomes an error.
   Before Clips, `/lab/combined-draft/` was the whole-site mock-up: the same
   page, then Over training (paper Figure 7), the quilt divider, Results,
   Footage and Clips; the parked "Just PPO" and "Task configurations"
