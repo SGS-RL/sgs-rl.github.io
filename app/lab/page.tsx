@@ -54,6 +54,16 @@ const GROUPS: [string, Study[]][] = [
         "The combined page with summary F (a big Summary title band).",
       ],
       [
+        "/lab/method-toy/",
+        "Method, toy example (parked)",
+        "Method parts 03 and 04, the navigation toy example, as they were on the combined page with the edited copy.",
+      ],
+      [
+        "/lab/ppo-styles/",
+        "PPO block styles",
+        "Method part 01 set six ways: as now, typeset, JetBrains Mono, one diff, a panel, steps.",
+      ],
+      [
         "/lab/summaries/",
         "Summaries",
         "The serious summary and the one in the combined page's style, after the S4 header and the R1 highlights.",

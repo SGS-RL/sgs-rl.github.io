@@ -1,0 +1,175 @@
+/* Method part 03, Sampling during training (LearningProgress.tsx). */
+.lp {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+/* The six tasks, as names: the current one in ink, the others grey. */
+.lp-tasks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 1.25rem;
+  border-top: 1px solid #111;
+  padding-top: 0.6rem;
+}
+.lp-task {
+  font-size: clamp(1.15rem, 2vw, 1.75rem);
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  color: rgb(0 0 0 / 0.32);
+  cursor: pointer;
+}
+.lp-task:hover,
+.lp-task:focus-visible {
+  color: rgb(0 0 0 / 0.6);
+}
+.lp-task[aria-pressed="true"] {
+  color: #111;
+}
+
+/* Video and chart: one above the other on phones, side by side from
+   1024 px. */
+.lp-main {
+  display: grid;
+  gap: 1.75rem var(--g);
+}
+@media (min-width: 1024px) {
+  .lp-main {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    align-items: start;
+  }
+}
+.lp-left {
+  min-width: 0;
+}
+.lp-frame {
+  position: relative;
+  aspect-ratio: 1280 / 1080;
+  background: #e9e9e6;
+  overflow: hidden;
+}
+.lp-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* The bar, split by checkpoint (as the Highlights reel's). */
+.lp-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 2px;
+}
+.lp-track {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+  height: 22px;
+  align-items: center;
+  column-gap: 3px;
+  cursor: pointer;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+@media (pointer: coarse) {
+  .lp-track {
+    height: 30px;
+  }
+}
+.lp-seg {
+  position: relative;
+  height: 2px;
+  background: rgb(17 17 17 / 0.16);
+  overflow: hidden;
+  transition: height 0.12s ease;
+}
+.lp-track:hover .lp-seg,
+.lp-track:focus-visible .lp-seg,
+.lp-track[data-scrub] .lp-seg {
+  height: 6px;
+}
+.lp-fill {
+  position: absolute;
+  inset: 0;
+  background: #111;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+.lp-fill[data-now] {
+  background: #e4321b;
+}
+.lp-icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  color: rgb(0 0 0 / 0.55);
+  cursor: pointer;
+}
+@media (pointer: coarse) {
+  .lp-icon {
+    width: 40px;
+    height: 40px;
+  }
+}
+.lp-icon:hover,
+.lp-icon:focus-visible {
+  color: #111;
+}
+.lp-glyph {
+  width: 11px;
+  height: 11px;
+  fill: currentColor;
+}
+.lp-now {
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+}
+
+/* The chart (as the scaling charts). */
+.lp-chart {
+  margin: 0;
+  min-width: 0;
+}
+.lp-tick {
+  font-size: 12px;
+  fill: rgb(0 0 0 / 0.55);
+  font-variant-numeric: tabular-nums;
+}
+.lp-axis {
+  font-size: 13px;
+  fill: #111;
+}
+.lp-val {
+  font-size: 13px;
+  fill: #111;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.lp-tip {
+  position: absolute;
+  z-index: 2;
+  transform: translate(-50%, -100%);
+  min-width: 11rem;
+  padding: 0.45rem 0.6rem;
+  background: #fff;
+  border: 1px solid #111;
+  pointer-events: none;
+  font-variant-numeric: tabular-nums;
+}
+.lp-tip-h {
+  font-weight: 600;
+}
+.lp-band {
+  font-size: 12px;
+  fill: #111;
+}

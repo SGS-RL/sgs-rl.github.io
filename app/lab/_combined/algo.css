@@ -1,0 +1,171 @@
+/* PPO block styles (AlgoStyles.tsx), compared on /lab/ppo-styles/. */
+.al-pair {
+  display: grid;
+  gap: 1.5rem;
+}
+@media (min-width: 1024px) {
+  .al-pair {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.al {
+  min-width: 0;
+  border-top: 1px solid #111;
+}
+.al-title {
+  padding: 0.5rem 0 0.75rem;
+  font-size: clamp(1.15rem, 2vw, 1.75rem);
+  letter-spacing: -0.025em;
+}
+.al-code {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.al-line {
+  display: grid;
+  grid-template-columns: 2em minmax(0, 1fr);
+  column-gap: 0.6em;
+  padding: 0.05em 0;
+}
+.al-line[data-blank] {
+  min-height: 1.6em;
+}
+.al-n {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: rgb(0 0 0 / 0.35);
+}
+.al-t {
+  padding-left: calc(var(--i) * 1.6em);
+  text-indent: 0;
+}
+.al strong {
+  font-weight: 600;
+}
+
+/* B: typeset in the page's face, like a paper's algorithm box. */
+.al-b {
+  border-bottom: 1px solid #111;
+  padding-bottom: 0.5rem;
+}
+.al-b .al-code {
+  font-size: clamp(0.98rem, 1.2vw, 1.2rem);
+  line-height: 1.65;
+  letter-spacing: -0.01em;
+}
+.al-b .al-line[data-mark] {
+  color: #e4321b;
+}
+.al-b .al-line[data-mark] .al-n {
+  color: #e4321b;
+}
+
+/* C: JetBrains Mono, a solid bar on changed lines. */
+.al-c .al-code {
+  font-family: var(--font-mono-display), ui-monospace, monospace;
+  font-size: clamp(0.78rem, 0.95vw, 0.95rem);
+  line-height: 1.85;
+}
+.al-c .al-line[data-mark] {
+  background: rgb(228 50 27 / 0.09);
+  box-shadow: inset 3px 0 0 #e4321b;
+}
+.al-c .al-line[data-mark="~"] {
+  background: rgb(228 50 27 / 0.04);
+}
+
+/* D: one block, as a diff, in IBM Plex Mono. */
+.al-d .al-code {
+  font-family: var(--font-plex-mono), ui-monospace, monospace;
+  font-size: clamp(0.8rem, 1vw, 1rem);
+  line-height: 1.85;
+}
+.al-d .al-line[data-k="del"] {
+  color: rgb(0 0 0 / 0.4);
+}
+.al-d .al-line[data-k="del"] .al-t {
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+.al-d .al-line[data-k="add"],
+.al-d .al-line[data-k="add"] .al-n {
+  color: #e4321b;
+}
+.al-d .al-line[data-k="add"] .al-n,
+.al-d .al-line[data-k="del"] .al-n {
+  font-weight: 600;
+}
+
+/* E: Geist Mono on a light panel. */
+.al-e {
+  border-top: 0;
+}
+.al-e .al-title {
+  padding-top: 0;
+}
+.al-e .al-code {
+  background: #f1f1ee;
+  padding: 1rem 1rem 1rem 0.5rem;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: clamp(0.78rem, 0.95vw, 0.95rem);
+  line-height: 1.85;
+}
+.al-e .al-line[data-mark] {
+  color: #e4321b;
+}
+.al-e .al-line[data-mark] strong {
+  font-weight: 600;
+}
+
+/* Key for B, C, E. */
+.al-key {
+  display: inline-block;
+  width: 0.9em;
+  height: 0.9em;
+  margin-right: 0.35em;
+  vertical-align: -0.1em;
+  background: rgb(228 50 27 / 0.12);
+  border-left: 3px solid #e4321b;
+}
+.al-key[data-mark="~"] {
+  background: rgb(228 50 27 / 0.05);
+  border-left-style: dotted;
+}
+
+/* F: the loop as a row of steps. */
+.al-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.al-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 0.5rem 1.6rem;
+}
+.al-step {
+  position: relative;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #111;
+  font-size: clamp(0.95rem, 1.2vw, 1.2rem);
+  line-height: 1.25;
+  max-width: 17em;
+}
+.al-step[data-sgs] {
+  background: #e4321b;
+  border-color: #e4321b;
+  color: #fff;
+}
+.al-step:not(:last-child)::after {
+  content: "→";
+  position: absolute;
+  right: -1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #111;
+}

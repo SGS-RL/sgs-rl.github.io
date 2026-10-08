@@ -1,0 +1,187 @@
+/* Link-preview cards and icons (OgCards.tsx). */
+.og-page {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  padding: 40px;
+  background: #d9d9d4;
+  font-family: var(--font-swiss-display), system-ui, sans-serif;
+  color: #111;
+}
+.og-wrap {
+  margin: 0;
+}
+.og-label {
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+.og-card {
+  position: relative;
+  width: 1200px;
+  height: 630px;
+  overflow: hidden;
+  background: #fff;
+}
+.og-title {
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  margin: 0;
+}
+.og-venue {
+  margin: 0;
+  font-size: 22px;
+  letter-spacing: -0.01em;
+}
+
+/* o1: the header, mark left, title right. */
+.og-o1 {
+  display: flex;
+  align-items: center;
+  gap: 44px;
+  padding: 0 56px;
+}
+.og-o1-mark {
+  flex: none;
+  width: 600px;
+}
+.og-o1-text {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* o2: the frame left, mark and title right. */
+.og-o2 {
+  display: grid;
+  grid-template-columns: 640px 1fr;
+}
+.og-o2-photo {
+  width: 640px;
+  height: 630px;
+  object-fit: cover;
+  object-position: 42% 50%;
+}
+.og-o2-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 30px;
+  padding: 0 48px 0 52px;
+}
+
+/* o3: the frame across, a white band at the foot; the frame fills the
+   space above the band, showing its lower part (the nut and the board). */
+.og-o3 {
+  display: flex;
+  flex-direction: column;
+}
+.og-o3-photo {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  object-fit: cover;
+  object-position: 50% 88%;
+}
+.og-o3-band {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  padding: 26px 48px;
+  background: #fff;
+}
+.og-o3-band > :first-child {
+  flex: none;
+  width: 330px;
+}
+
+/* o4: a 3 × 2 quilt, the mark in the first cell. */
+.og-o4-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 4px;
+  width: 100%;
+  height: 100%;
+  background: #111;
+}
+.og-o4-cell {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  min-width: 0;
+  min-height: 0;
+}
+.og-o4-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+}
+
+/* Icons, 512 × 512. */
+.og-icons {
+  display: flex;
+  gap: 40px;
+}
+.og-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 512px;
+  height: 512px;
+  font-weight: 500;
+  letter-spacing: -0.06em;
+  line-height: 1;
+}
+.og-i1 {
+  background: #fff;
+  color: #111;
+  font-size: 470px;
+  padding-bottom: 40px;
+}
+.og-i2 {
+  background: #111;
+  color: #fff;
+  font-size: 236px;
+  padding-bottom: 20px;
+}
+.og-i3 {
+  position: relative;
+  background: #fff;
+  color: #111;
+  font-size: 470px;
+  padding-bottom: 40px;
+}
+.og-i3-dot {
+  position: absolute;
+  right: 62px;
+  bottom: 70px;
+  width: 64px;
+  height: 64px;
+  background: #e4321b;
+}
+/* I4: "SGS", white on black, sized to the tile at every size: the tile is
+   the container, the word inside is set in its units (so 16 px is set as
+   16 px text, not shrunk). */
+.og-i4-set {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+}
+.og-i4 {
+  container-type: size;
+  flex: none;
+  padding: 0;
+  background: #111;
+  color: #fff;
+}
+.og-i4 > span {
+  font-size: 54cqw;
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 1;
+  padding-bottom: 4cqw;
+  /* The tight tracking leaves the word right of centre; bring it back. */
+  transform: translateX(-1cqw);
+}

@@ -1,21 +1,24 @@
-import Header from "./components/Header";
-import VideoNarrative from "./components/VideoNarrative";
-import Manipulation from "./components/Manipulation";
-import Method from "./components/Method";
-import Scaling from "./components/Scaling";
-import RealWorld from "./components/RealWorld";
-import SkipIntro from "./components/SkipIntro";
+import { Inter_Tight } from "next/font/google";
+import CombinedPage from "./lab/_combined/CombinedPage";
+import { shareMetadata } from "./lab/_combined/share";
+import "./lab/lab.css";
+
+// The site (owner, 2026-10-09): the combined page, built and reviewed at
+// /lab/combined/, now at the root. As under the lab layout, it needs Inter
+// Tight (the page's face) and the lab styles. The earlier site's
+// components stay in ./components, unused.
+const interTight = Inter_Tight({
+  variable: "--font-swiss-display",
+  subsets: ["latin"],
+  weight: ["200", "300", "400", "500", "600", "700"],
+});
+
+export const metadata = shareMetadata("/");
 
 export default function Home() {
   return (
-    <main className="relative">
-      <Header />
-      <SkipIntro />
-      <VideoNarrative />
-      <Manipulation />
-      <Method />
-      <Scaling />
-      <RealWorld />
-    </main>
+    <div className={interTight.variable}>
+      <CombinedPage />
+    </div>
   );
 }

@@ -1,0 +1,20 @@
+// Cloudflare deploy of the built lab pages (owner's preview link,
+// https://sgs-rl-lab.mateogc.workers.dev). Run from this folder after
+// `npm run build`:
+//   cd scripts/lab/cloudflare && npx wrangler deploy
+// Running Wrangler at the repo root instead makes it try to turn the
+// Next.js app into a Cloudflare app (and edit package.json).
+{
+  "name": "sgs-rl-lab",
+  "main": "worker.js",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "../../../out",
+    "binding": "ASSETS",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page",
+    // Videos go through worker.js, which answers byte-range requests
+    // (Safari on iPhone will not play a video without them).
+    "run_worker_first": ["/lab/media/*", "/*.mp4"],
+  },
+}

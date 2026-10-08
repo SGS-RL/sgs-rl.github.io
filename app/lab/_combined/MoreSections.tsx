@@ -66,8 +66,8 @@ export function Configurations() {
 
 // 7. PPO with an outer loop: the same algorithm with two lines added and
 // one changed.
-type Line = [text: string, mark?: "+" | "~"];
-const PPO: Line[] = [
+export type Line = [text: string, mark?: "+" | "~"];
+export const PPO: Line[] = [
   ["initialize policy π"],
   [""],
   ["for each iteration:"],
@@ -78,7 +78,7 @@ const PPO: Line[] = [
   ["        step π, store the transition"],
   ["    update π with PPO"],
 ];
-const SGS: Line[] = [
+export const SGS: Line[] = [
   ["initialize policy π"],
   ["fix N task configurations, each with an empty history buffer", "+"],
   ["for each iteration:"],
@@ -156,31 +156,40 @@ export function Algorithm() {
 }
 
 // 8. What SGS samples over a real training run.
+// Paper Figure 7 with its lead, as the draft's Method part "Sampling
+// during training" (no heading band of its own).
+export function OverTrainingBody() {
+  return (
+    <>
+      <Lead>
+        Early on, SGS samples task configurations{" "}
+        <strong>almost uniformly</strong>. Halfway, it concentrates on{" "}
+        <strong>jumps between islands</strong> at the same height. Late, on task
+        configurations that <strong>reach the high central pillar</strong>.
+      </Lead>
+      <figure>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/lab/media/paper/fig7-sampling.jpg"
+          alt="Floating islands terrain in three rows, early, mid and late training, each showing the robots at the task configurations SGS sampled."
+          className="cb-fig"
+        />
+        <figcaption className="pz-small mt-2">
+          Task configurations sampled on the floating islands, early, mid and
+          late in training. Paper, Figure 7.
+        </figcaption>
+      </figure>
+      <ToCome>The same as a video over a whole training run.</ToCome>
+    </>
+  );
+}
+
 export function OverTraining() {
   return (
     <section className="pb-16 md:pb-24">
       <Heading id="over-training">Over training</Heading>
       <div className="cb-sec-body">
-        <Lead>
-          Early on, SGS samples task configurations{" "}
-          <strong>almost uniformly</strong>. Halfway, it concentrates on{" "}
-          <strong>jumps between islands</strong> at the same height. Late, on
-          task configurations that{" "}
-          <strong>reach the high central pillar</strong>.
-        </Lead>
-        <figure>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/lab/media/paper/fig7-sampling.jpg"
-            alt="Floating islands terrain in three rows, early, mid and late training, each showing the robots at the task configurations SGS sampled."
-            className="cb-fig"
-          />
-          <figcaption className="pz-small mt-2">
-            Task configurations sampled on the floating islands, early, mid and
-            late in training. Paper, Figure 7.
-          </figcaption>
-        </figure>
-        <ToCome>The same as a video over a whole training run.</ToCome>
+        <OverTrainingBody />
       </div>
     </section>
   );
@@ -188,10 +197,12 @@ export function OverTraining() {
 
 // 10. Results: success rate against parallel environments, with the
 // policy at each scale (the chart of /lab/scaling, poster skin, pink).
-export function Results() {
+// heading: false when the "Results" quilt divider stands in for the band
+// (the divider then carries the id the nav links to).
+export function Results({ heading = true }: { heading?: boolean }) {
   return (
     <section className="pb-16 md:pb-24">
-      <Heading id="results">Results</Heading>
+      {heading && <Heading id="results">Results</Heading>}
       <div
         className="pz-poster px-[var(--m)] pb-16 pt-6 md:pb-24"
         style={{ background: P.scaling.ground, color: P.scaling.type }}

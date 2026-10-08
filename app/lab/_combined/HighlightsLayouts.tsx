@@ -5,6 +5,7 @@ import { Reel, useReel } from "../_reel/engine";
 import { ReelPlayer } from "../_reel/parts";
 import { mss, pad2, type Chapter, type ReelData } from "../_reel/reel";
 import { BarRow, Now, runs, Under } from "./Reel";
+import { SPEED_TEXT, useSpeedNote } from "./speedNote";
 
 // Layouts for the Highlights section, compared on /lab/reel-layouts/
 // (owner, 2026-10-07): the video should not sit alone on one side of the
@@ -25,11 +26,20 @@ export type ReelLayout = "r1" | "r2" | "r3" | "r4" | "r5";
 const where = (c: Chapter) => (c.domain === "Real" ? "Hardware" : "Simulation");
 const fast = (c: Chapter) => (c.speed && c.speed !== "1×" ? c.speed : "");
 
-function Heading({ children }: { children: ReactNode }) {
+function Heading({ children, note }: { children: ReactNode; note?: string }) {
+  if (!note)
+    return (
+      <h2 className="pz-head border-y border-black bg-white px-[var(--m)] pb-[0.08em] pt-[0.04em] text-black">
+        {children}
+      </h2>
+    );
+  // With the 1× note (s1, ./speedNote.tsx): the title, and the note at the
+  // band's right end on its baseline.
   return (
-    <h2 className="pz-head border-y border-black bg-white px-[var(--m)] pb-[0.08em] pt-[0.04em] text-black">
-      {children}
-    </h2>
+    <div className="cb-hl-band border-y border-black bg-white px-[var(--m)] pb-[0.08em] pt-[0.04em] text-black">
+      <h2 className="pz-head">{children}</h2>
+      <p className="cb-hl-note pz-mid">{note}</p>
+    </div>
   );
 }
 
@@ -107,10 +117,16 @@ function Index() {
   );
 }
 
-function Player({ under = false }: { under?: boolean }) {
+function Player({
+  under = false,
+  speed = false,
+}: {
+  under?: boolean;
+  speed?: boolean;
+}) {
   return (
     <ReelPlayer className="cb-reel-player cb-hl-player">
-      <BarRow />
+      <BarRow speed={speed} />
       {under ? <Under /> : <Now />}
     </ReelPlayer>
   );
@@ -130,15 +146,20 @@ export default function HighlightsLayout({
   reel,
   layout,
   id = "highlights",
+  speedNote = false,
 }: {
   reel: ReelData;
   layout: ReelLayout;
   id?: string;
+  // The combined page: say that every video plays at 1×, where the switch
+  // in ./speedNote.tsx puts it (R1 only). The studies leave it off.
+  speedNote?: boolean;
 }) {
+  const note = useSpeedNote();
   const body = {
     r1: (
       <div className="cb-hl-row">
-        <Player />
+        <Player speed={speedNote && note === "s3"} />
         <ChapterList />
       </div>
     ),
@@ -175,7 +196,11 @@ export default function HighlightsLayout({
       aria-label="Highlights"
       className={`cb-hl cb-hl-${layout}`}
     >
-      {layout !== "r5" && <Heading>Highlights</Heading>}
+      {layout !== "r5" && (
+        <Heading note={speedNote && note === "s1" ? SPEED_TEXT : undefined}>
+          Highlights
+        </Heading>
+      )}
       <Reel
         reel={reel}
         skin="pz"

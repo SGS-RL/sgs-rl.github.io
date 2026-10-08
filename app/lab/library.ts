@@ -3,8 +3,9 @@
 // pages use this; the earlier studies keep the placeholder CLIPS and
 // HIGHLIGHTS in content.ts, so they look as they did when reviewed.
 //
-// Still to come from the owner: ANYmal-D "random jump box", ANYmal-C per-
-// terrain clips. Task and terrain names follow the folder names (check).
+// ANYmal C and D per terrain arrived 2026-10-08 (LIMITS below; the round 3
+// pages keep the earlier ANYmal D clips in LIBRARY). Task and terrain names
+// follow the folder names (check).
 // Hardware clips are assumed to be real time (check).
 
 import type { Clip } from "./content";
@@ -193,6 +194,108 @@ export const EXTRA: Item[] = [
   })),
 ];
 
+/**
+ * ANYmal C and D, one clip per terrain at the hardest setting the policy
+ * crosses (the owner's limit renders and picks, 2026-10-08): from the
+ * first marker jump to the second, or from the start where the run begins
+ * at the bottom (stairs, pit, inverted slope). Radiating beam is the offset
+ * (rotated) layout on both robots. Cut by scripts/lab/trim_anymal_limits.py,
+ * encoded from its output (LIMITS in scripts/lab/encode_library.py). Kept
+ * out of LIBRARY so the round 3 pages keep their ANYmal D clips.
+ * [terrain id, title, seconds on C, seconds on D]
+ */
+const LIMIT_TERRAINS: [string, string, number, number][] = [
+  ["balancing-beam", "Balancing beam", 6.1, 5.7],
+  ["climbing-box", "Climbing box", 9.2, 9.4],
+  ["contour", "Contour", 7.4, 7.4],
+  ["floating-island", "Floating island", 6.0, 5.8],
+  ["gap", "Gap", 6.0, 4.9],
+  ["inverted-slope", "Inverted slope", 3.4, 3.1],
+  ["jump-box", "Jump box", 6.0, 4.7],
+  ["pit", "Pit", 3.0, 3.9],
+  ["radiating-beam-offset", "Radiating beam", 6.6, 6.7],
+  ["random-parallel-box", "Parallel boxes", 5.9, 5.4],
+  ["stairs", "Stairs", 4.0, 4.1],
+  ["stepping-stones", "Stepping stones", 8.5, 5.0],
+];
+
+export const LIMITS: Item[] = (["c", "d"] as const).flatMap((r) =>
+  LIMIT_TERRAINS.map(([terrain, title, c, d]): Item => ({
+    id: `anymal-${r}-limit-${terrain}`,
+    title,
+    robot: r === "c" ? "ANYmal C" : "ANYmal D",
+    category: "Locomotion",
+    domain: "Sim",
+    speed: "1×",
+    kind: "clip",
+    aspect: 16 / 9,
+    duration: r === "c" ? c : d,
+    ...media(`anymal-${r}-limit-${terrain}`),
+  })),
+);
+
+/**
+ * Footage added with REEL5 (owner, 2026-10-08; in the drive folder SGS),
+ * as single clips for the combined page's Results and Clips: the two new
+ * hardware nut runs (drive clip4 and clip5), the gear spin, and the first
+ * 16 s of the one-minute Franka nut run (ADDED in encode_library.py). Kept
+ * out of LIBRARY so the round 3 pages stay as reviewed.
+ */
+const added = (
+  id: string,
+  title: string,
+  robot: string,
+  domain: Clip["domain"],
+  duration: number,
+): Item => ({
+  id,
+  title,
+  robot,
+  category: "Manipulation",
+  domain,
+  speed: "1×",
+  kind: "clip",
+  aspect: 16 / 9,
+  duration,
+  ...media(id),
+});
+export const ADDED: Item[] = [
+  added("ur5e-real-nut-4", "Nut, run 4", "UR5e", "Real", 13.8),
+  added("ur5e-real-nut-5", "Nut, run 5", "UR5e", "Real", 17.0),
+  added("ur5e-real-gear-spin", "Gear spin", "UR5e", "Real", 7.2),
+  added("franka-sim-nut-1m", "Nut, one minute run", "Franka", "Sim", 16.0),
+  // The whole one-minute run (Clips, owner 2026-10-08).
+  added("franka-sim-nut-1m-full", "Nut on bolt", "Franka", "Sim", 58.4),
+];
+
+/**
+ * UR5e simulation for the Clips section (owner, 2026-10-08): per task, the
+ * same two static close-up runs as the pairs, played one after the other
+ * as one clip, the more interesting run first and then the nominal one.
+ * No labels on either run. Nut on bolt first.
+ */
+export const SIM_SEQ: Item[] = (
+  [
+    ["nut", "Nut on bolt", 8.5],
+    ["rod", "Rod in hole", 6.5],
+    ["gear-mesh", "Gear mesh", 5.8],
+    ["bnc", "BNC connector", 7.5],
+    ["waterproof", "Waterproof connector", 7.0],
+    ["rectangular-peg", "Rectangular peg", 5.6],
+  ] as const
+).map(([task, title, duration]): Item => ({
+  id: `ur5e-sim-${task}-seq`,
+  title,
+  robot: "UR5e",
+  category: "Manipulation",
+  domain: "Sim",
+  speed: "1×",
+  kind: "clip",
+  aspect: 16 / 9,
+  duration,
+  ...media(`ur5e-sim-${task}-seq`),
+}));
+
 /** Continuous runs: shown in full, but only when the reader asks. */
 export const RUNS: Item[] = [
   run(
@@ -307,6 +410,96 @@ export const REEL3: ReelData = {
       speed: "1×",
     },
   ],
+};
+
+/**
+ * The combined page's reel (53.1 s; owner, 2026-10-08, from labmates'
+ * feedback): nut first, then gear mesh, then the rod, each hardware clip
+ * whole at 1×, so the nut is picked up on screen. The simulation chapters
+ * as in REEL3. Chapter starts from frame counts at 30 fps. REEL3 stays for
+ * the pages already reviewed with it.
+ */
+const REEL4_CHAPTERS: [number, string, string, string, Clip["domain"]][] = [
+  [0, "UR5e", "Nut", "ur5e-real-nut-3", "Real"],
+  [593 / 30, "UR5e", "Gear mesh", "ur5e-real-gear-mesh-1", "Real"],
+  [942 / 30, "UR5e", "Rod", "ur5e-real-rod-5", "Real"],
+  [1120 / 30, "UR5e", "Rod", "ur5e-sim-rod", "Sim"],
+  [1186 / 30, "UR5e", "BNC connector", "ur5e-sim-bnc", "Sim"],
+  [1279 / 30, "Franka", "Nut", "franka-sim-nut-2", "Sim"],
+  [1369 / 30, "ANYmal D", "Climbing box", "anymal-d-climbing-box", "Sim"],
+  [1444 / 30, "ANYmal D", "Stepping stones", "anymal-d-stepping-stones", "Sim"],
+  [1519 / 30, "ANYmal D", "Gap", "anymal-d-gap", "Sim"],
+];
+
+export const REEL4: ReelData = {
+  src: `${BASE}/reel4.mp4`,
+  poster: `${BASE}/reel4.jpg`,
+  duration: 1594 / 30,
+  chapters: REEL4_CHAPTERS.map(([start, robot, title, clip, domain]) => ({
+    start,
+    robot,
+    title,
+    clip,
+    domain,
+    speed: "1×",
+  })),
+};
+
+/**
+ * The combined page's reel, third cut (124 s; owner, 2026-10-08): two new
+ * hardware nut runs, the gear spin, gear mesh 1 and rod 5, each whole; UR5e
+ * simulation rod, BNC and waterproof; Franka nut (0–16 s of the one-minute
+ * run); ANYmal C (28–50 s of its one-minute run); ANYmal D climbing box,
+ * floating island and stepping stones (the LIMITS crossings, whole).
+ * Chapter starts are the frame counts encode_library.py prints for REEL5
+ * (30 fps). REEL4 stays as it was.
+ */
+const REEL5_CHAPTERS: [
+  number,
+  string,
+  string,
+  string | undefined,
+  Clip["domain"],
+][] = [
+  [0, "UR5e", "Nut", undefined, "Real"],
+  [415, "UR5e", "Nut", undefined, "Real"],
+  [924, "UR5e", "Gear mesh", undefined, "Real"],
+  [1139, "UR5e", "Gear mesh", "ur5e-real-gear-mesh-1", "Real"],
+  [1488, "UR5e", "Rod", "ur5e-real-rod-5", "Real"],
+  [1666, "UR5e", "Rod", "ur5e-sim-rod", "Sim"],
+  [1732, "UR5e", "BNC connector", "ur5e-sim-bnc", "Sim"],
+  [1825, "UR5e", "Waterproof connector", "ur5e-sim-waterproof", "Sim"],
+  [1975, "Franka", "Nut", undefined, "Sim"],
+  [2455, "ANYmal C", "Several terrains", "run-anymal-c", "Sim"],
+  [3115, "ANYmal D", "Climbing box", "anymal-d-limit-climbing-box", "Sim"],
+  [
+    3397,
+    "ANYmal D",
+    "Floating island",
+    "anymal-d-limit-floating-island",
+    "Sim",
+  ],
+  [
+    3570,
+    "ANYmal D",
+    "Stepping stones",
+    "anymal-d-limit-stepping-stones",
+    "Sim",
+  ],
+];
+
+export const REEL5: ReelData = {
+  src: `${BASE}/reel5.mp4`,
+  poster: `${BASE}/reel5.jpg`,
+  duration: 3719 / 30,
+  chapters: REEL5_CHAPTERS.map(([frame, robot, title, clip, domain]) => ({
+    start: frame / 30,
+    robot,
+    title,
+    clip,
+    domain,
+    speed: "1×",
+  })),
 };
 
 /**

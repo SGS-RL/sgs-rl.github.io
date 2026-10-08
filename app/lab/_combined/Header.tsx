@@ -1,14 +1,8 @@
 import { HEADER_CAP } from "../_cover/SiteHeader";
-import {
-  ADVISING,
-  EQUAL,
-  FULL_SUBTITLE,
-  LINKS,
-  TITLE,
-  VENUE,
-} from "../content";
-import { AFFILIATIONS, AUTHORS } from "./content";
+import { ADVISING, EQUAL, FULL_SUBTITLE, TITLE, VENUE } from "../content";
+import { AFFILIATIONS, AUTHOR_PAGES, AUTHORS } from "./content";
 import { HEADER_INKS, type Inks } from "./inks";
+import { CodeLink, PaperLink } from "./PaperCode";
 import Wordmark from "./Wordmark";
 
 // The header of /lab/site-2 and /lab/site-3: the wordmark ("Success",
@@ -57,23 +51,35 @@ export function Title({ className = "st-lead" }: { className?: string }) {
   );
 }
 
-// Authors, affiliations, venue and links.
+// Authors, affiliations, venue and links. With `links`, each name links to
+// the author's page (the combined page; the studies stay as reviewed).
 export function Meta({
   inks = HEADER_INKS,
   className = "",
+  links = false,
 }: {
   inks?: Inks;
   className?: string;
+  links?: boolean;
 }) {
   return (
     <div className={`cb-hd-meta pz-small flex flex-col gap-3 ${className}`}>
       <p>
-        {AUTHORS.map(([name, aff], i) => (
-          <span key={i} className="inline-block whitespace-nowrap pr-3">
-            {name}
-            <sup>{aff}</sup>
-          </span>
-        ))}
+        {AUTHORS.map(([name, aff], i) => {
+          const href = links ? AUTHOR_PAGES[name] : undefined;
+          return (
+            <span key={i} className="inline-block whitespace-nowrap pr-3">
+              {href ? (
+                <a href={href} className="cb-author">
+                  {name}
+                </a>
+              ) : (
+                name
+              )}
+              <sup>{aff}</sup>
+            </span>
+          );
+        })}
       </p>
       <p style={{ color: inks.mute }}>
         {AFFILIATIONS.map((a, i) => (
@@ -87,12 +93,8 @@ export function Meta({
       </p>
       <p className="flex flex-wrap gap-x-4">
         <span>{VENUE}</span>
-        <a href={LINKS.paper} className="st-link">
-          Paper ↗
-        </a>
-        <a href={LINKS.code} className="st-link">
-          Code ↗
-        </a>
+        <PaperLink linkClass="st-link" />
+        <CodeLink linkClass="st-link" />
       </p>
     </div>
   );

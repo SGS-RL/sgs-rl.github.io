@@ -42,18 +42,42 @@ const PARTS: [string, boolean][] = [
 
 export const SUMMARY_TEXT = PARTS.map(([t]) => t).join("");
 
+// The combined page's copy (owner, 2026-10-08, after labmates' feedback:
+// "solves only some of the time" read as if SGS spent simulation only some
+// of the time). Wording from the paper's introduction, without "spends",
+// "parallel environments" or "parallel simulation". The studies keep PARTS.
+const PARTS_2: [string, boolean][] = [
+  ["Success-Guided Sampling (SGS) ", false],
+  [
+    "trains on the task configurations that are neither too easy nor too hard for the current policy",
+    true,
+  ],
+  [". With it, reinforcement learning ", false],
+  [
+    "scales much more effectively, to over a million simulated robots at once",
+    true,
+  ],
+  [", in legged locomotion and contact-rich manipulation.", false],
+];
+
+// The combined page's summary as plain text (the link preview's description).
+export const SUMMARY_TEXT_2 = PARTS_2.map(([t]) => t).join("");
+
 export default function SummaryPlain({
   v,
   size = "f",
   width = "cap",
   stroke = "regular",
   id = "summary",
+  copy = 1,
 }: {
   v: SummaryVariant;
   size?: SummarySize;
   width?: SummaryWidth;
   stroke?: SummaryStroke;
   id?: string;
+  // 1: as reviewed on the studies; 2: the combined page's (PARTS_2).
+  copy?: 1 | 2;
 }) {
   const type =
     v === "e"
@@ -74,7 +98,7 @@ export default function SummaryPlain({
       <div className="pz-grid pt-6 md:pt-10">
         {v === "d" && <div className="col-span-full mb-4 h-px bg-black" />}
         <p className={`col-span-full ${type} cb-stroke-${stroke}`}>
-          {PARTS.map(([t, key], i) =>
+          {(copy === 2 ? PARTS_2 : PARTS).map(([t, key], i) =>
             key && keys ? (
               <strong key={i}>{t}</strong>
             ) : (

@@ -15,6 +15,11 @@ concurrency:
   group: pages
   cancel-in-progress: false
 
+# The videos are not in git: they are assets of this release
+# (scripts/lab/release_media.sh).
+env:
+  MEDIA_TAG: media-v1
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,7 +31,20 @@ jobs:
           cache: npm
       - uses: actions/configure-pages@v5
       - run: npm ci
-      - run: npm run build
+      - name: Fetch the site's videos from the media release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download "$MEDIA_TAG" --pattern sgs-media-library.tar --dir "$RUNNER_TEMP"
+          mkdir -p public/lab/media
+          tar -xf "$RUNNER_TEMP/sgs-media-library.tar" -C public/lab/media
+          du -sh public/lab/media/library
+      - name: Build
+        env:
+          # The Download buttons link to the release's 1080p files.
+          NEXT_PUBLIC_DOWNLOAD_BASE: https://github.com/${{ github.repository }}/releases/download/${{ env.MEDIA_TAG }}
+        # The Google Fonts fetch during the build is occasionally flaky.
+        run: for i in 1 2 3; do npm run build && exit 0; sleep 10; done; exit 1
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./out

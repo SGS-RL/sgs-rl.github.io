@@ -2,7 +2,14 @@
 """Encode the owner's footage into web media for the lab pages.
 
 Usage:
-    python3 scripts/lab/encode_library.py /path/to/SGS [--only ID ...]
+    python3 scripts/lab/encode_library.py /path/to/SGS [--only ID ...] \
+        [--limits ~/Downloads/anymal_limits_trimmed] \
+        [--premiere "~/Documents/Adobe/Premiere Pro/25.0"]
+
+--limits is the output of scripts/lab/trim_anymal_limits.py, run on the
+owner's ANYmal limit renders (2026-10-08); reel5 needs it. --premiere
+takes the files of ADDED and REEL5 by name from the owner's flat Premiere
+Pro folder instead of the drive folder (same files).
 
 /path/to/SGS is the unzipped folder from the owner's drive (Anymal-C,
 Anymal-D PACE, Franka Sim, UR5e Real, UR5e Sim). Output goes to
@@ -15,11 +22,18 @@ What it makes (manifest in app/lab/library.ts must match the ids):
     UR5e sim pairs: the most interesting and a nominal run side by side
     (static close-up camera), each 640 x 360 with an 8 px white gap; the
     shorter run holds its last frame.
+    clips/ur5e-sim-{task}-seq  the same two runs one after the other, the
+    interesting run first, as one clip (the Clips section)
     runs/{id}.mp4       continuous runs in full, 960 px
     runs/{id}-fast.mp4  the same run sped up to about 10 s, 640 px
     reel.mp4, reel.jpg  the mock highlight reel, 1280 x 720
+    reel4.mp4           the combined page's earlier reel (REEL4)
+    reel5.mp4           the combined page's reel (REEL5)
     standin-reel.mp4    a stand-in reel from the smaller files (see STANDIN)
     clips/standin-*     single sim runs standing in for pairs (STANDIN_CLIPS)
+
+    clips/anymal-{c,d}-limit-*  ANYmal C and D per terrain, from the
+    trimmed limit renders (LIMITS; needs --limits, see below)
 
 Requires ffmpeg. Add new footage by adding entries below and to library.ts.
 """
@@ -80,6 +94,57 @@ REEL = [
     (f"{D}/gap/anymal_d_gap.mp4", 1.5, 4.0, 1),
 ]
 
+# The combined page's reel (owner, 2026-10-08, from labmates' feedback):
+# nut first, then gear mesh, then the rod, each hardware clip whole at 1x
+# (end None: to the end of the clip), so the nut is picked up on screen.
+# The simulation chapters as in REEL.
+REEL4 = [
+    ("UR5e Real/nut/clip3/ur5e_nut_clip3.mp4", 0, None, 1),
+    ("UR5e Real/gear_mesh/clip1/ur5e_gear_mesh_clip1.novoice.mp4", 0, None, 1),
+    ("UR5e Real/rod/clip5/ur5e_rod_clip5.novoice.mp4", 0, None, 1),
+    *REEL[3:],
+]
+
+# Footage added 2026-10-08, in the drive folder "SGS" since then, as single
+# clips for the combined page's Results and Clips: (id, path in SGS, trim).
+# The two new hardware nut runs (clip4, clip5), the gear spin, and the
+# first 16 s of the one-minute Franka nut run. Items: ADDED in library.ts.
+ADDED = [
+    ("ur5e-real-nut-4", "UR5e Real/nut/clip4/sgs_nut_real_cleanaf.novoice.mp4", None),
+    ("ur5e-real-nut-5", "UR5e Real/nut/clip5/sgs_nutreal_gentle_place_bettercolors.mp4", None),
+    ("ur5e-real-gear-spin", "UR5e Real/gear_mesh/spin_gear/gear_spin.novoice.mp4", None),
+    ("franka-sim-nut-1m", "Franka Sim/one_min_continuous_run/franka_nut_1m.mp4", (0, 16.0)),
+    # The whole one-minute run, the Franka's only clip in Clips (owner,
+    # 2026-10-08).
+    ("franka-sim-nut-1m-full", "Franka Sim/one_min_continuous_run/franka_nut_1m.mp4", None),
+]
+
+# The combined page's reel, third cut (owner, 2026-10-08): (path, start,
+# end, speed), end None for the whole clip. Paths are in the drive folder
+# "SGS", or in --limits (the ANYmal crossings in LIMITS) after "limits:".
+# Hardware: the two new nut runs, the gear spin, gear mesh clip 1 and rod
+# clip 5, each whole. UR5e sim: rod and BNC as in REEL, and waterproof clip
+# 1 whole (the interesting run of the pair). Franka: 0-16 s of the
+# one-minute nut run. ANYmal C: 28-50 s of its one-minute run. ANYmal D:
+# the picked climbing box, floating island and stepping stones crossings,
+# whole. Chapter starts in library.ts (REEL5) come from the frame counts
+# this prints.
+REEL5 = [
+    ("UR5e Real/nut/clip4/sgs_nut_real_cleanaf.novoice.mp4", 0, None, 1),
+    ("UR5e Real/nut/clip5/sgs_nutreal_gentle_place_bettercolors.mp4", 0, None, 1),
+    ("UR5e Real/gear_mesh/spin_gear/gear_spin.novoice.mp4", 0, None, 1),
+    ("UR5e Real/gear_mesh/clip1/ur5e_gear_mesh_clip1.novoice.mp4", 0, None, 1),
+    ("UR5e Real/rod/clip5/ur5e_rod_clip5.novoice.mp4", 0, None, 1),
+    ("UR5e Sim/rod/clip1/rod_clip1_static_closeup.mp4", 0, 2.2, 1),
+    ("UR5e Sim/bnc/clip5/bnc_clip5_static_closeup.mp4", 1.0, 4.1, 1),
+    ("UR5e Sim/waterproof/clip1/waterproof_clip1_static_closeup.mp4", 0, None, 1),
+    ("Franka Sim/one_min_continuous_run/franka_nut_1m.mp4", 0, 16.0, 1),
+    ("Anymal-C/conitnuous_one_min_run/anymal_c_1min_continuous_run.mp4", 28.0, 50.0, 1),
+    ("limits:anymal_d/climbing_box/climbing_box_low_d0.3_seed1.mp4", 0, None, 1),
+    ("limits:anymal_d/floating_island/floating_island_d1.0_hv2.0_seed2.mp4", 0, None, 1),
+    ("limits:anymal_d/stepping_stone/stepping_stone_d0.8_b0_seed5.mp4", 0, None, 1),
+]
+
 # Stand-in reel (about 22 s) cut only from footage the Drive connector
 # could fetch in a cloud session (files under about 6.5 MB): UR5e sim
 # close-ups, then ANYmal-D. Used by /lab/highlights while reel.mp4 cannot
@@ -104,6 +169,32 @@ SINGLES = [("rod", 1), ("bnc", 5), ("gear_mesh", 3)]
 
 STANDIN_CLIPS = [("rod", 1), ("nut", 3), ("gear_mesh", 3), ("waterproof", 2), ("rectangular_peg", 1)]
 
+# ANYmal C and D at the hardest setting each crosses (the owner's limit
+# renders, 2026-10-08), one run per terrain picked by the owner from the
+# clips that scripts/lab/trim_anymal_limits.py cut (first marker jump to
+# the second; from the start for runs that begin at the bottom). Source:
+# its output folder, passed as --limits. Radiating beam is the offset
+# (rotated) layout on both robots (owner: "replace all radiating beams with
+# the rotated ones"). Kept at their own frame rate (C 25 fps, D 20 fps).
+# Items: LIMITS in app/lab/library.ts. (terrain id, file under anymal_c/
+# and anymal_d/ for C, D.)
+LIMITS = [
+    ("balancing-beam", "balancing_beam/balancing_beam_d1.0_b0_seed2", "balancing_beam/balancing_beam_d0.9_b0_seed2"),
+    ("climbing-box", "climbing_box/climbing_box_d0.8_b0_seed3", "climbing_box/climbing_box_low_d0.3_seed1"),
+    ("contour", "contour/contour_d1.0_b0_seed4", "contour/contour_d1.0_b0_seed5"),
+    ("floating-island", "floating_island/floating_island_d1.0_hv2.0_seed2", "floating_island/floating_island_d1.0_hv2.0_seed2"),
+    ("gap", "gap/gap_d0.9_b0_seed2", "gap/gap_d0.8_b0_seed1"),
+    ("inverted-slope", "slope_inv/slope_inv_d1.0_inside_b0_seed2", "slope_inv/slope_inv_d1.0_inside_b0_seed1"),
+    ("jump-box", "random_jump_box/random_jump_box_d0.6_b0_seed1", "random_jump_box/random_jump_box_closer_d0.6_b0_seed3"),
+    ("pit", "pit/pit_d0.7_inside_b0_seed1", "pit/pit_d0.6_inside_b0_seed1"),
+    ("radiating-beam-offset", "radiating_beam_offset/radiating_beam_offset_d1.0_b0_seed1",
+     "radiating_beam_offset/radiating_beam_offset_d1.0_b0_seed4"),
+    ("random-parallel-box", "random_parallel_box/random_parallel_box_d0.6_b0_seed2",
+     "random_parallel_box/random_parallel_box_d0.6_b0_seed3"),
+    ("stairs", "extreme_stair/extreme_stair_d1.0_inside_b0_seed3", "extreme_stair/extreme_stair_d1.0_inside_b0_seed1"),
+    ("stepping-stones", "stepping_stone/stepping_stone_d0.8_b0_seed1", "stepping_stone/stepping_stone_d0.8_b0_seed5"),
+]
+
 # ANYmal-D renders are 1920 x 1088; crop to 16:9 before scaling.
 FIT = "crop=iw:min(ih\\,iw*9/16),scale={w}:-2"
 
@@ -122,15 +213,17 @@ def duration(path):
     return float(r.stdout)
 
 
-def clip_jobs(src, ident, trim=None):
-    """960 px clip, 384 px clip and poster from one source (optionally trimmed)."""
+def clip_jobs(src, ident, trim=None, fps=30):
+    """960 px clip, 384 px clip and poster from one source (optionally trimmed;
+    fps None keeps the source's frame rate)."""
     t = ["-ss", str(trim[0]), "-to", str(trim[1])] if trim else []
     big = os.path.join(OUT, "clips", f"{ident}.mp4")
     small = os.path.join(OUT, "clips-sm", f"{ident}.mp4")
     jpg = os.path.join(OUT, "clips", f"{ident}.jpg")
 
     def go():
-        run([*t, "-i", src, "-vf", FIT.format(w=960) + ",fps=30", "-crf", "27", *X264, big])
+        vf = FIT.format(w=960) + (f",fps={fps}" if fps else "")
+        run([*t, "-i", src, "-vf", vf, "-crf", "27", *X264, big])
         run(["-i", big, "-vf", "scale=384:-2", "-crf", "29", *X264, small])
         run(["-ss", str(duration(big) * 0.6), "-i", big, "-frames:v", "1", "-q:v", "4", jpg])
 
@@ -159,6 +252,27 @@ def pair_jobs(root, task, a, b):
     return [(big, go)]
 
 
+def seq_jobs(root, task, a, b):
+    """Two static close-up runs played one after the other (a, then b) as one clip."""
+    ident = f"ur5e-sim-{task.replace('_', '-')}-seq"
+    src = [os.path.join(root, "UR5e Sim", task, f"clip{n}", f"{task}_clip{n}_static_closeup.mp4") for n in (a, b)]
+    big = os.path.join(OUT, "clips", f"{ident}.mp4")
+    small = os.path.join(OUT, "clips-sm", f"{ident}.mp4")
+    jpg = os.path.join(OUT, "clips", f"{ident}.jpg")
+
+    def go():
+        f = (
+            "[0]scale=960:540,setsar=1,fps=30[a];[1]scale=960:540,setsar=1,fps=30[b];"
+            "[a][b]concat=n=2:v=1:a=0"
+        )
+        run(["-i", src[0], "-i", src[1], "-filter_complex", f, "-crf", "27", *X264, big])
+        run(["-i", big, "-vf", "scale=384:-2", "-crf", "29", *X264, small])
+        # Poster from the interesting run.
+        run(["-ss", str(duration(src[0]) * 0.6), "-i", big, "-frames:v", "1", "-q:v", "4", jpg])
+
+    return [(big, go)]
+
+
 def run_jobs(root, ident, rel, speed):
     src = os.path.join(root, rel)
     full = os.path.join(OUT, "runs", f"{ident}.mp4")
@@ -173,13 +287,39 @@ def run_jobs(root, ident, rel, speed):
     return [(full, go)]
 
 
-def reel_jobs(root, segs=REEL, name="reel"):
+def source(o, rel):
+    """A file in the drive folder "SGS" (o.root), or after "limits:" in
+    --limits. With --premiere, drive files come from that flat folder by name."""
+    if rel.startswith("limits:"):
+        return os.path.join(os.path.expanduser(o.limits), rel[len("limits:"):])
+    if o.premiere:
+        return os.path.join(os.path.expanduser(o.premiere), os.path.basename(rel))
+    return os.path.join(o.root, rel)
+
+
+def segment_frames(src, cut, speed):
+    """Frames one reel segment contributes at 30 fps (crop and scale keep the count)."""
+    r = subprocess.run(
+        ["ffmpeg", "-v", "error", *cut, "-i", src, "-vf", f"setpts=(PTS-STARTPTS)/{speed},fps=30",
+         "-an", "-f", "framecrc", "-"],
+        capture_output=True, text=True, check=True,
+    )
+    return sum(1 for line in r.stdout.splitlines() if line and not line.startswith("#"))
+
+
+def reel_jobs(root, segs=REEL, name="reel", frames=False):
+    """One reel from segments; with frames, print each chapter's start frame at 30 fps."""
     out = os.path.join(OUT, f"{name}.mp4")
 
     def go():
         args, parts = [], []
+        starts, at = [], 0
         for k, (rel, a, b, speed) in enumerate(segs):
-            args += ["-ss", str(a), "-to", str(b), "-i", os.path.join(root, rel)]
+            cut = ["-ss", str(a)] + (["-to", str(b)] if b is not None else [])
+            if frames:
+                starts.append(at)
+                at += segment_frames(os.path.join(root, rel), cut, speed)
+            args += [*cut, "-i", os.path.join(root, rel)]
             parts.append(
                 f"[{k}]crop=iw:min(ih\\,iw*9/16),scale=1280:720,setsar=1,"
                 f"setpts=(PTS-STARTPTS)/{speed},fps=30[v{k}]"
@@ -187,6 +327,8 @@ def reel_jobs(root, segs=REEL, name="reel"):
         f = ";".join(parts) + ";" + "".join(f"[v{k}]" for k in range(len(segs))) + f"concat=n={len(segs)}:v=1:a=0"
         run([*args, "-filter_complex", f, "-crf", "26", *X264, out])
         run(["-ss", "0.5", "-i", out, "-frames:v", "1", "-q:v", "3", os.path.join(OUT, f"{name}.jpg")])
+        if frames:
+            print(f"{name}: chapter start frames {starts}, {at} frames in all", flush=True)
 
     return [(out, go)]
 
@@ -197,6 +339,9 @@ def main():
     ap.add_argument("--only", nargs="*")
     ap.add_argument("--force", action="store_true")
     ap.add_argument("--jobs", type=int, default=4)
+    ap.add_argument("--limits", help="trim_anymal_limits.py's output folder (the LIMITS clips)")
+    ap.add_argument("--premiere", help="take ADDED and REEL5 files by name from this flat folder "
+                    "(the owner's Premiere Pro folder) instead of the drive folder")
     o = ap.parse_args()
     for d in ("clips", "clips-sm", "runs"):
         os.makedirs(os.path.join(OUT, d), exist_ok=True)
@@ -215,16 +360,32 @@ def main():
         jobs += clip_jobs(os.path.join(o.root, rel), ident, (a, b))
     for task, a, b in PAIRS:
         jobs += pair_jobs(o.root, task, a, b)
+        jobs += seq_jobs(o.root, task, a, b)
     for ident, rel, speed in RUNS:
         jobs += run_jobs(o.root, ident, rel, speed)
     jobs += reel_jobs(o.root)
+    jobs += reel_jobs(o.root, REEL4, "reel4")
     jobs += reel_jobs(o.root, STANDIN, "standin-reel")
+    for ident, rel, trim in ADDED:
+        jobs += clip_jobs(source(o, rel), ident, trim)
+    if o.limits:
+        segs = [(source(o, rel), a, b, speed) for rel, a, b, speed in REEL5]
+        jobs += reel_jobs("", segs, "reel5", frames=True)
+    else:
+        print("REEL5 skipped: pass --limits", flush=True)
     for task, n in SINGLES:
         src = os.path.join(o.root, "UR5e Sim", task, f"clip{n}", f"{task}_clip{n}_static_closeup.mp4")
         jobs += clip_jobs(src, f"ur5e-sim-{task.replace('_', '-')}-{n}")
     for task, n in STANDIN_CLIPS:
         src = os.path.join(o.root, "UR5e Sim", task, f"clip{n}", f"{task}_clip{n}_static_closeup.mp4")
         jobs += clip_jobs(src, f"standin-ur5e-sim-{task.replace('_', '-')}")
+    if o.limits:
+        for terrain, c, d in LIMITS:
+            for robot, rel in (("c", c), ("d", d)):
+                src = os.path.join(os.path.expanduser(o.limits), f"anymal_{robot}", f"{rel}.mp4")
+                jobs += clip_jobs(src, f"anymal-{robot}-limit-{terrain}", fps=None)
+    else:
+        print("LIMITS skipped (ANYmal C and D per terrain): pass --limits", flush=True)
 
     todo = [
         (out, go) for out, go in jobs

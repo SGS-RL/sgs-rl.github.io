@@ -1,0 +1,54 @@
+/* The Results divider's cells, sized per container step (QuiltDivider.tsx):
+   --w0…--w4 and --h0…--h4 for the steps of ../_gallery/data.ts STEPS. */
+.gq-var {
+  --w: var(--w0);
+  --h: var(--h0);
+  grid-column: span var(--w);
+  grid-row: span var(--h);
+}
+@container gal (width >= 600px) {
+  .gq-var {
+    --w: var(--w1);
+    --h: var(--h1);
+  }
+}
+@container gal (width >= 1000px) {
+  .gq-var {
+    --w: var(--w2);
+    --h: var(--h2);
+  }
+}
+@container gal (width >= 1800px) {
+  .gq-var {
+    --w: var(--w3);
+    --h: var(--h3);
+  }
+}
+@container gal (width >= 2400px) {
+  .gq-var {
+    --w: var(--w4);
+    --h: var(--h4);
+  }
+}
+/* A label two cells wide keeps the type of a one-cell label. */
+.gq-var .gq-label {
+  font-size: calc(15cqw / var(--w));
+}
+/* q3: label text and clip names at varying corners. */
+.gq-text[data-flip] {
+  flex-direction: column-reverse;
+}
+.gq-chip[data-corner="tr"] {
+  left: auto;
+  right: 0;
+  bottom: auto;
+  top: 0;
+}
+.gq-chip[data-corner="br"] {
+  left: auto;
+  right: 0;
+}
+.gq-chip[data-corner="tl"] {
+  bottom: auto;
+  top: 0;
+}

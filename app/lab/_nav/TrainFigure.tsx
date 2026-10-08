@@ -21,6 +21,7 @@ export default function TrainFigure({
   seed = 1,
   labels = ["Tracked success rate p̂", "Goal being tried", "Robot"],
   average = true,
+  counter = true,
   chance,
   kernel = TOY,
 }: {
@@ -30,6 +31,9 @@ export default function TrainFigure({
   // The readout's average success over all goals (the combined page
   // leaves it out).
   average?: boolean;
+  // The episode counter under the controls (the combined page leaves it
+  // out: "I don't care for the numbers").
+  counter?: boolean;
   // Also show each goal's current chance of being picked (the red squares
   // are draws from these chances), labelled in the legend. Off by default.
   //   dots   a faint red dot per goal, its area the chance
@@ -255,6 +259,7 @@ export default function TrainFigure({
       </div>
       <p
         ref={readout}
+        hidden={!counter}
         className="sw-label sw-num mt-1 text-sw-mute"
         aria-live="off"
       >

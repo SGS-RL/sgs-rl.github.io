@@ -3,6 +3,7 @@
 import { useMemo, type CSSProperties } from "react";
 import { Reel, useReel } from "../_reel/engine";
 import { ReelBar, ReelPlayer } from "../_reel/parts";
+import { SpeedMark } from "./speedNote";
 import { line, tracks, type Chapter, type ReelData } from "../_reel/reel";
 
 // The highlight reel with quiet controls, on the shared reel engine (plain
@@ -38,11 +39,12 @@ function Glyph({ kind }: { kind: "play" | "pause" | "full" | "exit" }) {
 }
 
 // The bar and, at its right end, play/pause and full screen as icons.
-export function BarRow() {
+export function BarRow({ speed = false }: { speed?: boolean }) {
   const { playing, fullscreen, toggle, toggleFullscreen } = useReel();
   return (
     <div className="cb-reel-row">
       <ReelBar className="min-w-0 flex-1" />
+      {speed && <SpeedMark />}
       <button
         type="button"
         className="cb-icon"

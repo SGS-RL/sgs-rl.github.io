@@ -19,7 +19,7 @@ export const AUTHORS: [string, string][] = [
   ["Octi Zhang", "1,2*"],
   ["Mateo Guaman Castro", "1*"],
   ["Patrick Yin", "1*"],
-  ["Ignacio Dagnigo", "1"],
+  ["Ignacio Dagnino", "1"],
   ["Abhishek Gupta", "1"],
   ["Rosario Scalise", "1†"],
   ["Byron Boots", "1†"],

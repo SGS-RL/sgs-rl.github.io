@@ -1,0 +1,317 @@
+/* Clips, ways to watch a clip large (ClipsViews.tsx). */
+
+/* The clip large: the video, a row of controls, the name. */
+.kv-stage {
+  min-width: 0;
+}
+.kv-frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: #e9e9e6;
+  overflow: hidden;
+}
+.kv-frame:fullscreen {
+  aspect-ratio: auto;
+  background: #000;
+}
+.kv-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.kv-bar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-top: 2px;
+}
+/* The bar, as the Highlights reel's: a 2 px line per clip of the group,
+   thicker under the pointer; the current clip's fill in red. */
+.kv-track {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+  height: 22px;
+  align-items: center;
+  column-gap: 3px;
+  cursor: pointer;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+@media (pointer: coarse) {
+  .kv-track {
+    height: 30px;
+  }
+}
+.kv-seg {
+  position: relative;
+  height: 2px;
+  background: rgb(17 17 17 / 0.16);
+  overflow: hidden;
+  transition: height 0.12s ease;
+}
+.kv-track:hover .kv-seg,
+.kv-track:focus-visible .kv-seg,
+.kv-track[data-scrub] .kv-seg {
+  height: 6px;
+}
+.kv-fill {
+  position: absolute;
+  inset: 0;
+  background: #111;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+.kv-fill[data-now] {
+  background: #e4321b;
+}
+.kv-icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  color: rgb(0 0 0 / 0.55);
+  cursor: pointer;
+}
+@media (pointer: coarse) {
+  .kv-icon {
+    width: 40px;
+    height: 40px;
+  }
+}
+.kv-icon:hover,
+.kv-icon:focus-visible,
+.kv-dl:hover,
+.kv-dl:focus-visible {
+  color: #111;
+}
+.kv-glyph {
+  width: 11px;
+  height: 11px;
+  fill: currentColor;
+}
+/* Previous and next on the video's edges: shown on hover and focus, and
+   always (lighter) on touch screens. */
+.kv-edge {
+  position: absolute;
+  top: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-top: -20px;
+  background: rgb(255 255 255 / 0.85);
+  color: #111;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  cursor: pointer;
+}
+.kv-edge-prev {
+  left: 8px;
+}
+.kv-edge-next {
+  right: 8px;
+}
+.kv-frame:hover .kv-edge,
+.kv-edge:focus-visible {
+  opacity: 1;
+}
+@media (pointer: coarse) {
+  .kv-edge {
+    opacity: 0.7;
+  }
+}
+.kv-frame:fullscreen .kv-edge {
+  display: none;
+}
+.kv-now {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1em;
+}
+.kv-now-right {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 1em;
+}
+.kv-mute {
+  color: rgb(0 0 0 / 0.5);
+}
+.kv-dl {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4em;
+  color: rgb(0 0 0 / 0.55);
+  white-space: nowrap;
+}
+.kv-dl .kv-glyph {
+  align-self: center;
+}
+
+/* Tiles that open: the corner mark on hover, as a hint. */
+.kv-tile {
+  display: block;
+  width: 100%;
+  cursor: pointer;
+  text-align: left;
+}
+.kv-tile-icon {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  display: inline-flex;
+  padding: 6px;
+  background: #fff;
+  color: #111;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.kv-tile:hover .kv-tile-icon,
+.kv-tile:focus-visible .kv-tile-icon {
+  opacity: 1;
+}
+.kv-tile:focus-visible {
+  outline: 2px solid #111;
+  outline-offset: 2px;
+}
+
+/* k1: over the page, the clip as large as fits. */
+.kv-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(12px, env(safe-area-inset-top)) var(--m, 16px)
+    max(12px, env(safe-area-inset-bottom));
+  background: #fff;
+  outline: none;
+}
+.kv-stage-big {
+  width: min(100%, calc((100svh - 10rem) * 16 / 9));
+}
+/* Close: black, with its name, at the top right (owner, 2026-10-08). */
+.kv-close {
+  position: fixed;
+  top: max(12px, env(safe-area-inset-top));
+  right: max(12px, env(safe-area-inset-right));
+  z-index: 81;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 16px;
+  background: #111;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+}
+.kv-close .kv-glyph {
+  width: 12px;
+  height: 12px;
+}
+.kv-close:hover,
+.kv-close:focus-visible {
+  background: #e4321b;
+}
+
+/* k2: the viewer and the list beside it (under it on phones, the viewer
+   pinned below the bar). */
+.kv-vl {
+  display: grid;
+  gap: 1.25rem var(--g);
+}
+.kv-vl-stage {
+  position: sticky;
+  top: var(--bar);
+  z-index: 5;
+  padding-top: 8px;
+  background: #fff;
+}
+@media (min-width: 1024px) {
+  .kv-vl {
+    grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+    align-items: start;
+  }
+  .kv-vl-stage {
+    padding-top: 0;
+    top: calc(var(--bar) + 1rem);
+  }
+  .kv-list {
+    max-height: calc(100svh - var(--bar) - 4rem);
+    overflow-y: auto;
+  }
+}
+.kv-list-group + .kv-list-group {
+  margin-top: 1rem;
+}
+.kv-list-head {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #111;
+  padding-bottom: 2px;
+}
+.kv-row {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  width: 100%;
+  min-height: 30px;
+  border-bottom: 1px solid rgb(0 0 0 / 0.12);
+  color: rgb(0 0 0 / 0.45);
+  text-align: left;
+  cursor: pointer;
+}
+@media (pointer: coarse) {
+  .kv-row {
+    min-height: 40px;
+  }
+}
+.kv-row:hover,
+.kv-row:focus-visible {
+  color: rgb(0 0 0 / 0.75);
+}
+.kv-row[aria-current="true"] {
+  color: #111;
+}
+.kv-row-n {
+  min-width: 1.6em;
+}
+.kv-row-dot {
+  width: 7px;
+  height: 7px;
+  background: #e4321b;
+}
+
+/* k3: the tile opens across the grid; later tiles fill in around it. */
+.kv-grid {
+  grid-auto-flow: dense;
+}
+.kv-expand {
+  grid-column: 1 / -1;
+}
+.kv-expand .kv-frame {
+  max-height: 78svh;
+}
+
+/* Continuous runs (RunPlayer.tsx): the run's name under the bar, the
+   download at its right. */
+.kv-video-cover {
+  object-fit: cover;
+}
+.kv-run-cap {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  margin-top: 0.35rem;
+}

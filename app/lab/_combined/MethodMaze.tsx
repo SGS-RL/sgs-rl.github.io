@@ -43,6 +43,7 @@ export default function MethodMaze() {
     <TrainFigure
       labels={["Success rate", "Task configuration being tried", "Robot"]}
       average={false}
+      counter={false}
       chance={{ mode: m, label: LABEL[m] }}
       kernel={{ ...TOY, eps: Number(f) }}
     />

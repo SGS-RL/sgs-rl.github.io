@@ -1,7 +1,9 @@
-import type { Metadata } from "next";
 import CombinedPage from "../_combined/CombinedPage";
+import { shareMetadata } from "../_combined/share";
 
-export const metadata: Metadata = { title: "Combined" };
+// The page as it will be shared: full title, summary and card
+// (../_combined/share.ts).
+export const metadata = shareMetadata("/lab/combined/");
 
 export default function Page() {
   return <CombinedPage />;

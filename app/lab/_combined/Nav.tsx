@@ -1,17 +1,23 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { LINKS } from "../content";
+import { CodeLink, PaperLink } from "./PaperCode";
 import { SECTIONS } from "./sections";
+import { SPEED_TEXT, useSpeedNote } from "./speedNote";
 
 // A copy of _site3/Nav. SECTIONS grows as sections are approved and added
 // to the page. Black bar as on the NOF website. Marks the section in view; on
 // phones the links move into a full-screen menu.
 export default function Nav({
   sections = SECTIONS,
+  speedNote = false,
 }: {
   sections?: [string, string][];
+  // Say that every video plays at 1× after "SGS", when the switch in
+  // ./speedNote.tsx is on S2.
+  speedNote?: boolean;
 }) {
+  const note = useSpeedNote();
   const [active, setActive] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
 
@@ -49,9 +55,12 @@ export default function Nav({
   return (
     <>
       <div className="pz-grid pz-small sticky top-0 z-50 h-[var(--bar)] items-center bg-black text-white">
-        <a href="#top" className="col-span-2 lg:col-span-3">
-          SGS
-        </a>
+        <div className="col-span-2 flex items-baseline gap-3 whitespace-nowrap lg:col-span-3">
+          <a href="#top">SGS</a>
+          {speedNote && note === "s2" && (
+            <span className="opacity-60">{SPEED_TEXT}</span>
+          )}
+        </div>
         <nav
           aria-label="Sections"
           className="hidden gap-4 md:col-span-8 md:flex lg:col-span-6 lg:gap-5"
@@ -72,12 +81,8 @@ export default function Nav({
           ))}
         </nav>
         <div className="col-span-4 flex justify-end gap-4 md:col-span-2 lg:col-span-3">
-          <a href={LINKS.paper} className="hidden md:inline">
-            Paper ↗
-          </a>
-          <a href={LINKS.code} className="hidden md:inline">
-            Code ↗
-          </a>
+          <PaperLink className="hidden md:inline" />
+          <CodeLink className="hidden md:inline" />
           <button
             type="button"
             className="md:hidden"
@@ -123,12 +128,8 @@ export default function Nav({
             ))}
           </nav>
           <div className="pz-grid pz-small gap-y-1 border-t border-white/40 py-3">
-            <a href={LINKS.paper} className="col-span-3">
-              Paper ↗
-            </a>
-            <a href={LINKS.code} className="col-span-3">
-              Code ↗
-            </a>
+            <PaperLink className="col-span-3" />
+            <CodeLink className="col-span-3" />
           </div>
         </div>
       )}

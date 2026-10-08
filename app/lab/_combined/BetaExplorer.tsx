@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { score, type Kernel } from "../_method/sgs";
 import { drawDot, drawMaze, fit, readTheme } from "../_nav/draw";
 import { snapshot, WORLD as w } from "../_nav/nav";
@@ -84,16 +84,19 @@ export function WeightingText() {
 
 // presetLabel: the name of the toy example's own setting, which depends on
 // where the explorer sits relative to the live maze. fromToy: start at that
-// setting instead of t 0.66, κ 5, ε 1e-4. withText: the paragraph beside the
+// setting instead of t 0.66, κ 5, ε 1e-4. lead: text at the top of the
+// side column, beside the maze. withText: the paragraph beside the
 // curve (WeightingText); off where the page sets it above the explorer.
 export default function BetaExplorer({
   presetLabel = PRESETS[0][0],
   fromToy = false,
   withText = true,
+  lead,
 }: {
   presetLabel?: string;
   fromToy?: boolean;
   withText?: boolean;
+  lead?: ReactNode;
 } = {}) {
   const [t, setT] = useState(fromToy ? PRESETS[0][1] : 0.66);
   const [kappa, setKappa] = useState(fromToy ? PRESETS[0][2] : 5);
@@ -169,6 +172,7 @@ export default function BetaExplorer({
       </figure>
 
       <div className="cb-beta-side">
+        {lead}
         {withText && (
           <p className="cb-reading-p">
             <WeightingText />

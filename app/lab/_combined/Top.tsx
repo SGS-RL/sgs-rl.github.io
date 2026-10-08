@@ -13,9 +13,12 @@ export type TopLayout = "s4" | "s6";
 export default function Top({
   layout = "s4",
   id = "top",
+  links = false,
 }: {
   layout?: TopLayout;
   id?: string;
+  // Link each author's name to their page (the combined page).
+  links?: boolean;
 }) {
   return (
     <header
@@ -27,7 +30,7 @@ export default function Top({
         <Mark measure="var(--hs-measure)" />
       </div>
       <Title className="hs-title st-lead" />
-      <Meta className="hs-meta" />
+      <Meta className="hs-meta" links={links} />
     </header>
   );
 }

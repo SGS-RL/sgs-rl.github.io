@@ -86,7 +86,7 @@ const PANES: {
       [" learn per-task ", ""],
       ["contact-rich assembly", "b"],
       [
-        " from the NIST task board, with zero demonstrations and the same reward function.",
+        " from the NIST task board, with zero demonstrations and the same reward function across all tasks.",
         "",
       ],
     ],

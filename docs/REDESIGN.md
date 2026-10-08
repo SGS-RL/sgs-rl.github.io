@@ -5,10 +5,372 @@ project site. Branch: `claude/website-redesign-brainstorm-hz3x4c`.
 
 ## Start here
 
+- **Update (2026-10-07, evening).** `/lab/combined/` is the approved
+  page with the new Method (`MethodFlow2`), ending after the Method, in
+  text style **W1** (the owner's pick after comparing W1, W2 and a
+  smaller W3 in place; W2 read too large). Parts 03–05 set their maze on
+  the left at one shared, smaller width (`--cb-maze-w`, about half the
+  page) with the explanation beside it; on phones the text comes first
+  (Step `beside` in `MethodFlow2.tsx`; part 03's text sits at the top of
+  the Beta explorer's side column, `lead`). Owner: the mazes were "too
+  large, and not uniform". The PPO block (part 01) read "a bit dull": six
+  styles at `/lab/ppo-styles/` (`_combined/AlgoStyles.tsx`, `algo.css`;
+  IBM Plex Mono and Geist Mono loaded in `algoFonts.ts`): A as now, B
+  typeset in the page's face with numbered lines, C JetBrains Mono with a
+  red bar, D one diff block, E Geist Mono on a panel, F the loop as steps.
+  Picked: **C** (JetBrains Mono), now on the combined page
+  (`MethodFlow2` `algo="c"`); the method-flow studies keep A. Copy edited
+  part by part with the owner (2026-10-07): part 02 "initial state",
+  "SGS samples"; part 03 "This navigation toy example ...", the
+  possessive "a task configuration's success rate"; parts 04 and 05
+  merged into "04 Sampling during training" beside the live maze, without
+  numbers (no draw counts in the text, no episode counter; `TrainFigure`
+  `counter={false}`). The separate sampling figure (`SamplingFigure.tsx`,
+  rounds of draws, SGS or uniform) is no longer on the page. Then (2026-10-08): parts 03 and 04 (the toy example)
+  are parked at `/lab/method-toy/` (`_combined/MethodToy.tsx`,
+  `MethodFlow2` `parts`), with their edited copy; the combined page's
+  Method ends at 02 Task configurations, whose "To come" box waits for
+  the owner's task-configuration visuals from the real robot setups.
+  Then: the Method gets a third part, "03 Sampling during training", a
+  placeholder ("To come") until visuals from real training exist
+  (`MethodFlow2` part `during`; the draft fills it with paper Figure 7,
+  `OverTrainingBody`). Under the Method, `/lab/combined/` now has a
+  Results section: the quilt divider (`QuiltDivider`, "Results" in its
+  big cell), with "Results" in the nav. The draft continues under it with
+  the scaling chart, Footage and Clips; its separate "Over training"
+  section is gone.
+  Results, part 01 Scaling (2026-10-08, `_combined/ResultsScaling.tsx`,
+  `ScalingChart.tsx`, data in `scalingData.ts`): kept minimal and without
+  per-checkpoint clips, at the owner's request. The owner supplied the
+  numbers: three seeds per point, mean ± 95% CI half-width (a t interval,
+  as the paper shades). Locomotion is ANYmal D's overall success rate,
+  manipulation Franka nut-and-bolt's hardest-spawn success rate; the UR5e
+  rod-in-hole plot (paper 5c) is left out. As in the paper: mean lines,
+  seed dots, CI bands; SGS in the page's red, baselines gray with the
+  paper's marker shapes (diamond PLR, square uniform, triangle linear);
+  end labels, a legend, a hover readout per scale and a screen-reader
+  table. The draft's older scaling chart with clips (`Results`,
+  `ScaleCompare`) is no longer on either page; `SCALING` in `content.ts`
+  still has the earlier read-off values for the older studies.
+  Results 02 Real world and 03 Continuous runs (2026-10-08,
+  `_combined/ResultsFootage.tsx`), a first layout for the owner to pick
+  clips into; everything at 1×, and nut-on-bolt, "the most impressive
+  task", always first. 02: one sentence, then a block per task (name, a
+  plain line, clips): nut on bolt two to a row with two empty frames for
+  two more runs the owner has, then rod in hole and gear mesh three to a
+  row; no numbers (no Table 2). 03: the one-take runs, each video on the
+  left (muted, 1×, browser controls) with its name, a sentence and
+  "m:ss, one take, real time" beside it: Franka nut-and-bolt in
+  simulation, ANYmal C on all terrains, UR5e gear mesh on hardware.
+  **Missing footage:** the one-minute Franka nut-and-bolt run (the drive
+  folder has a 30 s run, `franka_nut_continuous_run.mp4`) and the two
+  extra nut-on-bolt hardware runs. The draft no longer repeats the older
+  runs and hardware blocks.
+  Then, a copy rule for the whole site (owner, 2026-10-08): **no small
+  filler text**. No captions like "run 3" or "a fourth run", no
+  timestamps or durations, no small grey one-line notes under headings.
+  Removed from Results 02 and 03 (clip captions, task notes, "m:ss, one
+  take, real time", the Franka "To come" note) and the line under the
+  scaling charts. Empty frames for missing clips keep only "To come". Then: the
+  manipulation axis reads "Success rate"; 03 lost its opening line and
+  the sentences beside the runs, leaving only names, and three layouts
+  are switched on the page (`?runs=`): Large (one run per row, the name
+  above a video as wide as the screen height allows; the default), Row
+  (the three side by side from 1024 px, names underneath) and Side (the
+  earlier video left, name right). Picked: **Row** (the switch is gone). The
+  short gear-mesh clips were cut from the one-minute gear-mesh run, so
+  the Gear mesh block is gone from 02 Real world; gear mesh appears only
+  in 03. Then (2026-10-08): the header is S4 only on `/lab/combined/`
+  (the S4/S6 switch is gone there, `?header=` is ignored; the comparison
+  pages keep it). The page scrolled sideways on phones, showing a black
+  strip on the right: the scaling charts' screen-reader table had
+  `sr-only` on the `<table>` itself, and a table grows to fit its cells
+  rather than staying 1 px wide. The `sr-only` box is now a `<div>`
+  around the table; check new hidden tables the same way.
+  Then: a **Clips** section after the Results (`_combined/Clips.tsx`, in
+  the nav), every clip grouped in the owner's order: UR5e real world
+  (Nut on bolt with two "To come" frames for the two nut runs still to
+  come, Rod in hole, Gear mesh), UR5e simulation, ANYmal C (the 6 s
+  excerpt and three "To come" frames for the per-terrain clips), ANYmal
+  D (12 terrains and "Jump box" to come), Franka (Nut on bolt). Task names
+  only, two clips across on phones, three on tablets, four on laptops,
+  videos load near the screen and play only on screen. UR5e simulation
+  is one clip per task: the owner's two picked runs **one after the
+  other**, the more interesting first, then the nominal (static
+  close-up, hard cut, no labels; `ur5e-sim-{task}-seq`, `SIM_SEQ` in
+  `app/lab/library.ts`, `seq_jobs` in `encode_library.py`). Never side
+  by side, never labelled "Nominal" (the owner's correction: the old
+  pairs were). The real gear mesh, ANYmal C and Franka clips are
+  excerpts of their continuous runs (owner: "the franka short clips are
+  the same as the long clip but chopped up"); they are in Clips for now,
+  to be confirmed. Clips replaces the draft's Footage section and the
+  Poster 3 clip index, so `/lab/combined-draft/` differs from the
+  combined page only by paper Figure 7 under "Sampling during training".
+  Then, from labmates' feedback on the first sections: the reel leads
+  with the nut and shows it picked up (else it looks as if only the
+  screwing were solved), order nut, gear mesh, rod (the rod "kickflip" no
+  longer first). The owner: use the hardware clips whole at 1×, untrimmed.
+  New reel `reel4.mp4` (53.1 s; `REEL4` in `encode_library.py` and
+  `library.ts`, `COMBINED_REEL` in `_combined/reelSource.ts`), on the
+  combined page only; the reel studies keep `reel.mp4`. Also flagged: the
+  Summary's "a policy solves only some of the time" reads as if SGS spent
+  simulation only some of the time; rewrites offered to the owner.
+  Then: the Results divider leads with the real nut (nine clips), and its
+  robot labels no longer stack in one column ("the titles in that divider
+  all line up vertically, which kinda makes it lose a bit of touch"). A
+  switch at the bottom left (`?quilt=`, `_combined/QuiltChosen.tsx`):
+  Now (as reviewed), Q1 staggered (each cell 1 or 2 wide, chosen per
+  width by a seeded search in `_combined/quiltStagger.ts` so no label sits
+  under the one before it, few filler cells; the default), Q2 (Q1 with
+  one or two big 2 × 2 clips) and Q3 (Q2 with clip names and label text
+  at varying corners). Cell spans per container step are CSS variables
+  (`_combined/quilt.css`). Picked: **Q1**; the switch is gone
+  (`variant="q1"`).
+  Summary copy, picked by the owner (2026-10-08, the combined page only,
+  `SummaryPlain` `copy={2}`; the studies keep the first copy): "Success-Guided
+  Sampling (SGS) **trains on the task configurations that are neither too
+  easy nor too hard for the current policy**. With it, reinforcement
+  learning **scales much more effectively, to over a million simulated
+  robots at once**, in legged locomotion and contact-rich manipulation."
+  (Second sentence from the abstract's "much more effective scaling",
+  2026-10-08; "keeps improving up to over a million" read clumsily, and
+  the owner wants the order kept: "With it, reinforcement learning …".) Words to
+  avoid in the copy: "spends", "parallel environments", "parallel
+  simulation", "moderate success rate".
+  Author names in the combined page's header link to each author's page
+  (`AUTHOR_PAGES` in `_combined/content.ts`, `Top links`), with a faint
+  underline (`.cb-author`). Ignacio's link is his LinkedIn. His surname is
+  Dagnino (owner, 2026-10-08), corrected everywhere from "Dagnigo".
+  Method part 02 (2026-10-08): the "To come" box gave way to the three
+  reset strategies of the Franka nut on bolt, the paper's names (appendix
+  A.2) in its order, hardest first: **Reaching** (owner's `spawn0_wide`),
+  **Stable Grasp** (`spawn2_wide`), **Near-Goal** (`spawn1_wide`); checked
+  against the frames. Each video holds 20 task configurations for a second
+  each, cropped closer (2880 × 1620 of the 4K render), 1600 px, about
+  0.8 MB (`scripts/lab/encode_resets.py`, from the owner's
+  `franka_reset_tour_4k` folder; `reset_tour.mp4` is not used; files in
+  `public/lab/media/library/resets/`). `_combined/ResetStrategies.tsx`
+  and `resets.css`, a lead sentence ("For assembly, the task
+  configurations come in equal parts from three reset strategies") and a
+  one-sentence description per strategy, in three layouts on a switch
+  (`?resets=`): R1 the list beside the video as the Highlights chapter
+  list, the chosen strategy's description open under its name (the
+  default), R2 tabs above the video with the description under it, R3 all
+  three side by side. The lead and the descriptions are new copy for the
+  owner to review. Picked: **R1** (the switch is gone, `layout` prop). The
+  widget is passed in by the combined page
+  (`MethodFlow2` `configurations`); `/lab/method-flow-2/` keeps its "To
+  come" box.
+  Method part 03, Sampling during training (2026-10-08), from Patrick's
+  learning-progress bundle (`mateo_sgs_learning_progress_repro_20261007.zip`
+  and `INTERACTIVE_VIEWER_HANDOFF.md` in the owner's Downloads; the bundle
+  is read only). Per UR5e task, one fixed reset (a task configuration)
+  through training: 64 trials per checkpoint, 95% Wilson intervals, clips
+  of the policy at four or five checkpoints, and the SGS rule's weight for
+  each success count (manipulation preset: target 0.5, κ 1, T 2, ε 1e-4;
+  an illustration of the rule, not measured sampling frequency).
+  `scripts/lab/encode_learning.py <bundle>` cuts the ledger's frames from
+  each raw render in order (crop x 320–1600, 960 px, 30 fps, 1×, keyframe
+  every 10 frames; 0.9–1.6 MB each, `public/lab/media/library/learning/`),
+  asserts frame counts and the frame-to-checkpoint mapping, and writes
+  `_combined/learningData.ts`. `_combined/LearningProgress.tsx` and
+  `learning.css`: a W1 sentence, the six tasks as names (nut first), the
+  video with a bar split by checkpoint (drag, click, arrow keys one frame,
+  Page Up/Down one checkpoint), and the chart: success over training
+  (footage checkpoints black and clickable, others grey, Nut's early
+  separate-batch rows hollow, the current checkpoint red), and beside it
+  on the same success axis the SGS weight curve in red with the current
+  weight marked, joined by a dashed guide (Rail). The owner did not love
+  the sideways curve; views tried (`LearningProgress` `view`): Rail, Both
+  (Rail plus Patrick's band where the weight is at least 0.9× peak), Band
+  (the band alone), Time (the weight at each checkpoint in a panel under
+  the chart), Curve (the weight curve upright, success rate across).
+  Picked: the band and the curve together, **bandcurve** (the curve beside
+  the chart on laptops, under it on phones, the same band across its
+  success axis); no switch. The 95% interval bars are off the chart
+  (owner: not sure they are needed; `ci` prop), still in the hover details
+  and the screen-reader table. Bundle caveats kept: exact counts ("57 of 64" for waterproof),
+  64 trials per checkpoint stated in the text, clips at 1×.
+  Clips, ways to watch a clip large (2026-10-08; owner: Clips had no way
+  to open a video full screen, and videos should be downloadable "at high
+  resolution"). `_combined/ClipsViews.tsx` (+ `clipsViews.css`, the
+  groups as data in `clipsData.ts`, which must stay in step with
+  `Clips.tsx`), on a switch (`?clips=`, `_combined/ClipsChosen.tsx`): Now
+  (`Clips.tsx` as reviewed), K1 (the grid; a tile opens a player over the
+  page, previous and next, arrow keys, Esc, playing on through the
+  collection; the default), K2 (one viewer and the whole collection as a
+  numbered list beside it, under it on phones with the viewer pinned), K3
+  (the grid; a tile opens in place across the grid). Each player has full
+  screen (the iPhone's own player on iOS) and Download. Downloads:
+  `scripts/lab/encode_downloads.py <SGS> --limits <trimmed limits>` reuses
+  `encode_library.py`'s sources and cuts read-only (it swaps in its own
+  encoders) and writes 1080p files, 30 fps, CRF 20 with a bitrate cap
+  (runs CRF 23), each under Cloudflare's 25 MiB per-file limit, to
+  `public/lab/media/library/download/` (55 files, 216 MB; pass `--premiere`
+  as for `encode_library.py` for the clips added 2026-10-08), and the list
+  the page offers to `_combined/downloads.ts`. On the final site the
+  `download` attribute only works same-origin, so a media host on another
+  origin must send `Content-Disposition: attachment` for these files.
+  Then: the owner is torn between K1 and K2, and asked for the Highlights
+  reel's controls and status bar. Every player now has the reel's bar: one
+  2 px segment per clip of the current group (widths by length), earlier
+  ones full, the current one filling in red as it plays; drag in it to
+  scrub, click another segment to jump to that clip, arrow keys seek a
+  second, Page Up/Down change clip; play/pause and full screen at its end
+  (and close, in K1). Previous and next sit on the video's edges (on hover,
+  always on touch screens). Under it: the name, the setting, Download.
+  Hosting (owner, 2026-10-08: "always free and hassle-free", on GitHub):
+  the plan is the site and the streaming videos on GitHub Pages, with the
+  videos kept out of git history as assets of a GitHub Release that the
+  deploy workflow downloads into the build; the 1080p downloads linked
+  straight to the release's asset URLs (no limit on a release's total size
+  or bandwidth, up to 1,000 files of up to 2 GiB each; they do not count
+  toward Pages' 1 GB site and 100 GB/month soft bandwidth). Not set up
+  yet: needs the owner's go-ahead to create the release and change
+  `.github/workflows/deploy.yml`.
+  Picked: **K1** (the switch and `ClipsChosen.tsx` are gone; the page
+  renders `ClipsViews view="k1"` from `clipsData.ts`, now the list the page
+  uses; `Clips.tsx` is the earlier grid, unused). Franka in Clips is only
+  the whole one-minute continuous run (`franka-sim-nut-1m-full`, from
+  `franka_nut_1m.mp4` in the owner's Premiere folder, ADDED in
+  `encode_library.py`; 1.4 MB on the page, 7.1 MB download): the shorter
+  Franka clips are cut from it. Downloads longer than 30 s get the runs'
+  settings in `encode_downloads.py`. 03 Continuous runs still shows the
+  earlier 30 s Franka run (`run-franka-sim-nut`).
+  03 Continuous runs now shows the whole one-minute Franka run
+  (`franka-sim-nut-1m-full`) in place of the 30 s one. Paper and Code: no
+  links until the paper is on arXiv and the code is out; both show as
+  plain text, Code as "Code (coming soon)", in the header, the bar and the
+  phone menu (`_combined/PaperCode.tsx`; set `PAPER_URL` and `CODE_URL` in
+  `_combined/content.ts` to turn them into links). GitHub hosting: wanted,
+  but not until the design is done (owner).
+  Link previews (2026-10-08): the page shared with the starter template's
+  triangle icon and no image. `/lab/og/` (`_combined/OgCards.tsx`,
+  `og.css`) sets four 1200 × 630 cards from the page's own wordmark and
+  type: O1 the header (mark and title), O2 the first frame of the first
+  highlight (nut run 4) beside the mark and title, O3 that frame across
+  with the mark and title on a white band, O4 one frame per robot around
+  the mark; and three icons: I1 a black S, I2 "SGS" on black, I3 a black S
+  with a red square. `scripts/lab/og_cards.mjs` screenshots them; the
+  cards are `public/og/sgs-o1…o4.jpg` (53–102 KB, under WhatsApp's
+  ~300 KB). The combined page's metadata (`_combined/share.ts`,
+  `shareMetadata`): the full title, the summary as description, Open
+  Graph and Twitter large-image cards with `CARD` (O2 for now), absolute
+  URLs from `SITE_URL` (default https://sgs-rl.github.io; build the
+  Cloudflare preview with `SITE_URL=https://sgs-rl-lab.mateogc.workers.dev`).
+  Icons: `app/icon.png`, `app/apple-icon.png`, `app/favicon.ico`: I4,
+  "SGS" white on black as in the bar (owner: "can we make the little icon
+  that appears on the tab say SGS?"), the favicon's 16, 32 and 48 px
+  images each set as text at that size on `/lab/og/` rather than shrunk
+  (the ICO's images must be RGBA or Next fails). The stills for the
+  cards are in `public/lab/media/library/og/` (git-ignored, fetched with
+  the library). When the site moves to the root, use `shareMetadata("/")`.
+  Owner's text edits (2026-10-08): Overview, Manipulation ends "with zero
+  demonstrations and the same reward function across all tasks"; Method 01
+  drops "The PPO policy update stays the same"; Method 02 ends "SGS
+  samples a large, **fixed** set of task configurations before training"
+  (no counts); Method 03 reads "We follow **one fixed task configuration**
+  of each UR5e task through the course of training. SGS gives it **small
+  weight while the policy never solves it**, **large weight when it's
+  getting better but not perfect**, and **small weight again once the
+  policy has mastered it**." (the 64 trials are left to the chart).
+  The 1× note (owner: "very early on, maybe even before the highlights ...
+  in a very clean way"): three placements on a switch (`?speed=`,
+  `_combined/speedNote.tsx`, opt-in props so the reel studies are
+  unchanged): S1 "All videos at 1×" at the right end of the Highlights
+  title band (the default), S2 the same after "SGS" in the black bar, S3
+  "1×" in the Highlights and Clips players' controls.
+  Picked: **S1** for the 1× note (the switch is gone; `useSpeedNote`
+  returns "s1", S2 and S3 stay in the code). The Clips viewer's close is
+  a black "Close ×" at the top right (owner: on a phone it was not clear
+  how to close); a tap outside the clip and Esc close too. Continuous
+  runs use the page's own player (`_combined/RunPlayer.tsx`: the bar,
+  play/pause, full screen, the name and Download under it), not the
+  browser's controls, which lay over the video on phones; the icons and
+  full screen are shared in `_combined/playerKit.tsx`.
+  The end of the page (owner, 2026-10-08): a **BibTeX** section (in the
+  nav), the paper's entry under the key `zhang2026balanced` in the PPO
+  block's mono face, with Copy; then the mark across a full black screen,
+  white with the words in red, as the header inverted
+  (`_combined/Closing.tsx`, `.cb-bib`, `.cb-end`).
+  Before Clips, `/lab/combined-draft/` was the whole-site mock-up: the same
+  page, then Over training (paper Figure 7), the quilt divider, Results,
+  Footage and Clips; the parked "Just PPO" and "Task configurations"
+  are gone, since Method parts 01 and 02 cover them. The quilt divider
+  is a small "Results" band (`_combined/QuiltDivider.tsx`, a copy of the
+  Poster 3 quilt): eight clips, one per task, nothing to click, cells in
+  order (row flow with flat cells filling row ends, so each robot's label
+  stays before its clips; Poster 3's dense packing had moved labels away
+  from their robots). It stands in for the Results heading band and
+  carries the `#results` anchor. The preview moved from Netlify to
+  Cloudflare: https://sgs-rl-lab.mateogc.workers.dev/lab/ (see "Sharing a
+  preview").
+  ANYmal C and D per terrain in Clips (2026-10-08). The owner's limit
+  renders (`~/Downloads/anymal_limits`, read only: per robot, terrain,
+  setting and seed, `videos/course_chase_3q.mp4`, and a
+  `limits_summary.txt`) were cut by `scripts/lab/trim_anymal_limits.py`
+  into `~/Downloads/anymal_limits_trimmed/`, with a picking page
+  (`index.html`) and `trims.csv`. Each run walks to a yellow marker that
+  jumps ahead when reached; a clip runs from the first jump (about 2 s in)
+  to the second (obstacle crossed). Runs that start at the bottom (configs
+  named `inside`: stairs, pit, inverted slope) keep their start and are cut
+  at the one jump (owner: "no need to trim the beginning, just the end").
+  The summary's "Course complete" is not trusted alone (ANYmal D
+  `gap_d1.0_b0` seed5 says complete but falls); a run needs the robot in
+  view at the end. When the second jump happens out of view, its time is
+  the end of the video minus the walk to the final marker, the same on
+  every run (99 frames on C at 25 fps, 69 on D at 20 fps). The owner
+  picked one run per terrain (`LIMITS` in `encode_library.py`, encoded
+  with `--limits`; `LIMITS` in `library.ts`, ids `anymal-{c,d}-limit-*`,
+  at the source frame rate) and asked to "replace all radiating beams with
+  the rotated ones": radiating beam is the `radiating_beam_offset` layout
+  on both robots. In Clips, both ANYmals list the terrains in one order
+  (climbing box, stepping stones, gap, then by name); ANYmal C keeps the
+  "All terrains" excerpt first, ANYmal D keeps the earlier maze clip (no
+  new maze render), and the "Jump box" frame is filled. The round 3 pages,
+  the Overview and the quilt keep the earlier ANYmal D clips.
+  Then a new Highlights reel, `reel5.mp4` (124 s, 13 chapters; `REEL5` in
+  `encode_library.py` and `library.ts`, `COMBINED_REEL` in
+  `_combined/reelSource.ts`, which falls back to `reel4.mp4`, then the
+  stand-in). The owner's order: UR5e hardware, the two new nut runs
+  (`sgs_nut_real_cleanaf.novoice.mp4`, then
+  `sgs_nutreal_gentle_place_bettercolors.mp4`), the gear spin
+  (`gear_spin.novoice.mp4`, which opens with a hand placing the gear), gear
+  mesh clip 1 and rod clip 5, all whole; UR5e simulation rod and BNC as
+  before plus waterproof (clip 1, the interesting run of the pair, whole);
+  Franka nut, 0–16 s of `franka_nut_1m.mp4` (the one-minute run, which
+  cuts to a close-up and back); ANYmal C, 28–50 s of its one-minute run
+  ("Several terrains", as in the Overview); ANYmal D climbing box,
+  floating island and stepping stones, the picked crossings from Clips,
+  whole. The owner's message said "the first rod video" for the first nut
+  run, read as the first video. Sources: paths in the drive folder "SGS"
+  (the owner uploaded the new files there, byte for byte the same:
+  `UR5e Real/nut/clip4/sgs_nut_real_cleanaf.novoice.mp4`,
+  `UR5e Real/nut/clip5/sgs_nutreal_gentle_place_bettercolors.mp4`,
+  `UR5e Real/gear_mesh/spin_gear/gear_spin.novoice.mp4`,
+  `Franka Sim/one_min_continuous_run/franka_nut_1m.mp4`), or with
+  `--premiere` the same files by name from the owner's flat Premiere Pro
+  folder (`~/Documents/Adobe/Premiere Pro/25.0`, used on the owner's Mac,
+  where no unzipped SGS folder has the new files); the ANYmal D crossings
+  from `--limits`. `encode_library.py` prints each chapter's start frame
+  at 30 fps (`reel_jobs(..., frames=True)`); `REEL5_CHAPTERS` holds them.
+  `reel4.mp4` and `REEL4` stay as they were.
+  Then the reel's new footage as single clips (`ADDED` in
+  `encode_library.py` and `library.ts`: `ur5e-real-nut-4` and `-5` for
+  drive clip4 and clip5, `ur5e-real-gear-spin`, `franka-sim-nut-1m` for
+  0–16 s of the one-minute run). Results 02 Real world: Nut on bolt shows
+  the two new runs first, then the earlier two (nut 3, nut 1), in place of
+  the two "To come" frames. Clips (`Clips.tsx` and `clipsData.ts` alike):
+  the same four nut runs, the gear spin first under Gear mesh, the 16 s
+  Franka clip first under Franka. Not added: the ANYmal C 28–50 s excerpt
+  (owner: "don't add the ANymal C expert, it's already there", the "All
+  terrains" excerpt stands for it). The one-minute Franka run now exists,
+  so Results 03 could show it instead of the 30 s run (not done; owner to
+  say).
 - **Where we're at (end of 2026-10-07, for picking up remotely).**
   `/lab/combined/` is the site being assembled; it is live at
-  https://sgs-rl-lab.netlify.app/lab/combined/. Approved so far: header
-  (H4 colours, S4 layout, S6 switchable), Highlights (R1), Summary (F1,
+  https://sgs-rl-lab.mateogc.workers.dev/lab/combined/. Approved so far: header
+  (H4 colours, S4 layout; S6 no longer offered on this page), Highlights (R1), Summary (F1,
   full width, thin + bold), Overview (O1, one sentence and one row of
   clips per band), Method (version B of `/lab/method-nav` plus the Beta
   explorer; the owner is still choosing how the live maze shows sampling
@@ -90,19 +452,30 @@ project site. Branch: `claude/website-redesign-brainstorm-hz3x4c`.
   were W1). Next the owner edits the copy section by section: the text of
   each is printed in the chat, one at a time, for them to edit and paste
   back.
-- **Netlify from a cloud session (checked 2026-10-07).** Not possible yet:
-  no `NETLIFY_AUTH_TOKEN` in the environment, and the network policy
-  blocks `api.netlify.com`, `app.netlify.com` and
-  `sgs-rl-lab.netlify.app`. A deploy publishes the whole `out/` folder,
-  so it must also carry the footage: fetch it first with
-  `scripts/lab/fetch_library.sh` (needs `sgs-rl-lab.netlify.app`), or the
-  live site loses its videos.
+- **Netlify (gone).** The Netlify preview was deleted on 2026-10-07
+  after its free credits ran out; the preview is on Cloudflare now. A
+  cloud session found Netlify blocked by its network policy; check the
+  same for `*.workers.dev` and `api.cloudflare.com` before relying on it.
 - **Footage on a new machine.** The encoded videos are git-ignored. Run
-  `scripts/lab/fetch_library.sh` to download them from the Netlify
+  `scripts/lab/fetch_library.sh` to download them from the Cloudflare
   preview (list in `scripts/lab/library-files.txt`), or encode them from
   the owner's Google Drive folder "SGS" with
-  `scripts/lab/encode_library.py`. Deploying to Netlify from a cloud
-  session needs a `NETLIFY_AUTH_TOKEN` in the environment.
+  `scripts/lab/encode_library.py`. The ANYmal per-terrain clips
+  (`anymal-{c,d}-limit-*`) come from the owner's limit renders in two
+  steps, trim (about 3 minutes; a re-run re-encodes only clips whose cut
+  changed, and `--pad 0.5` keeps half a second each side) and encode,
+  then the file list is rewritten:
+
+  ```sh
+  python3 scripts/lab/trim_anymal_limits.py ~/Downloads/anymal_limits
+  python3 scripts/lab/encode_library.py <SGS folder> \
+    --limits ~/Downloads/anymal_limits_trimmed
+  (cd public/lab/media/library && find . -type f -not -name .DS_Store |
+    sed 's|^\./||' | LC_ALL=C sort) > scripts/lab/library-files.txt
+  ```
+
+  Deploying the preview from a cloud session needs a
+  `CLOUDFLARE_API_TOKEN` in the environment.
 
 - **Where things stand (2026-10-06).** The owner is assembling one site
   from the parts they like, at `/lab/combined/` (`app/lab/_combined/`),
@@ -591,7 +964,7 @@ folder>` turns it into `public/lab/media/library/` (27 MB); the
        is dropped from the copy (Chrome turns it back into a plain space
        on copy). "Mega-Scale" never breaks at its hyphen. A "Copy title"
        button (`CopyTitle.tsx`) sits next to Paper and Code.
-     - Ignacio Dagnigo's affiliation is the University of Washington, so
+     - Ignacio Dagnino's affiliation is the University of Washington, so
        "Independent Researcher" is gone (`AUTHORS`, `AFFILIATIONS` in
        `_combined/content.ts`; the shared `content.ts` still has the old
        one).
@@ -701,9 +1074,9 @@ folder>` turns it into `public/lab/media/library/` (27 MB); the
 
 Inputs only the owner can give:
 
-- [ ] **Remaining clips.** Delivered 2026-10-05 (see Decisions). Still
-      to come: ANYmal D "random jump box" (empty folder) and ANYmal C
-      per-terrain clips; the scaling clips. Also check: real-time speed of
+- [ ] **Remaining clips.** Delivered 2026-10-05 (see Decisions); ANYmal
+      C per terrain and ANYmal D jump box on 2026-10-08 (see Start
+      here). Still to come: the scaling clips. Also check: real-time speed of
       the hardware clips, task and terrain names (from folder names), the
       reel cut. Where new footage goes: add it to
       `scripts/lab/encode_library.py` and `app/lab/library.ts` and rerun
@@ -737,7 +1110,7 @@ Inputs only the owner can give:
       round 2 method, or a link to the explainer.
 - [x] **Affiliations** (2026-10-07, every page): University of
       Washington is 1, NVIDIA 2; Octi Zhang is at both ("1,2\*"); Ignacio
-      Dagnigo is at UW.
+      Dagnino is at UW.
 - [ ] **Paper and code links** (`LINKS` in `app/lab/content.ts`, still `#`).
 - [ ] **Facts to check** (in `app/lab/content.ts` unless noted):
   - ~~The paper's softmax temperature T, N for each task, and κ and t for
@@ -851,7 +1224,9 @@ app/
 public/lab/media/                intro, highlights, clips, clips-sm, covers
   library/                       the owner's footage, encoded (round 3)
 scripts/lab/                     review tooling (below);
-                                 encode_library.py builds media/library
+                                 encode_library.py builds media/library;
+                                 trim_anymal_limits.py cuts the ANYmal
+                                 limit renders for it
 ```
 
 ## Set up a development environment
@@ -974,24 +1349,33 @@ Node 20, which reached end of life in April 2026; moving
 `node-version` to `"22"` in `.github/workflows/deploy.yml` would match
 `.nvmrc`.
 
-### Sharing a preview (Netlify)
+### Sharing a preview (Cloudflare)
 
 The lab pages, with the encoded footage, are published from this Mac to
-https://sgs-rl-lab.netlify.app/lab/ for the owner's teammates (site
-`sgs-rl-lab`, team `mateogc`, created 2026-10-06). Anyone with the link
-can open it; it is not linked anywhere and the pages are `noindex`.
-Netlify turned on team-login protection for the new site by default;
-it was turned off so teammates need no account. To publish the current
-state after logging in once with `npx netlify-cli login`:
+https://sgs-rl-lab.mateogc.workers.dev/lab/ for the owner's teammates: a
+Cloudflare Worker with static assets (account of the owner's Gmail,
+workers.dev subdomain `mateogc`, set up 2026-10-07). Anyone with the link
+can open it; it is not linked anywhere and the pages are `noindex`. To
+publish the current state, after `npx wrangler login` once:
 
 ```sh
 npm run build
-npx netlify-cli deploy --dir out --prod --site 1349f500-54b9-4215-bd8d-5aa51f7978af
+cd scripts/lab/cloudflare && npx wrangler deploy
 ```
 
-Pass the site ID, not the name: by name the CLI reports the site as not
-found. The CLI keeps its link state in `.netlify/` (git-ignored). The footage is
-not in git, so deploy from a machine that has `public/lab/media/library/`.
+Run Wrangler from `scripts/lab/cloudflare/`, never the repo root: at the
+root it detects the Next.js app, tries to convert it into a Cloudflare app
+and edits `package.json`. `worker.js` there answers byte-range requests
+for the videos: static assets alone return whole files, and Safari on
+iPhone will not play a video without ranges. The footage is not in git,
+so deploy from a machine that has `public/lab/media/library/` (or run
+`scripts/lab/fetch_library.sh` first). A cloud session deploying needs a
+Cloudflare API token in `CLOUDFLARE_API_TOKEN`.
+
+The preview was on Netlify (sgs-rl-lab.netlify.app) until 2026-10-07,
+when the free plan's monthly credits ran out after about 20 deploys and
+deploys were blocked; the owner had the Netlify site deleted. Cloudflare
+Pages was tried first and dropped: it also ignores byte ranges.
 
 ### Screenshots (how designs get reviewed)
 

@@ -51,3 +51,6 @@ next-env.d.ts
 
 # Netlify CLI link state (lab previews deployed from this machine).
 .netlify
+
+# Wrangler state (Cloudflare preview deploys, scripts/lab/cloudflare).
+.wrangler
