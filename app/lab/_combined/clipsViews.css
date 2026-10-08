@@ -315,3 +315,7 @@
   gap: 1rem;
   margin-top: 0.35rem;
 }
+/* A run on the page opens large on a tap. */
+.kv-frame-open {
+  cursor: zoom-in;
+}

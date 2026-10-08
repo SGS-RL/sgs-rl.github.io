@@ -996,7 +996,9 @@
 }
 .cb-scale-tip {
   position: absolute;
-  transform: translateX(-50%);
+  z-index: 2;
+  width: max-content;
+  white-space: nowrap;
   pointer-events: none;
   background: #fff;
   border: 1px solid #111;

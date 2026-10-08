@@ -1,8 +1,15 @@
 "use client";
 
-import { Fragment, useEffect, useRef, useState, type ReactNode } from "react";
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import TileVideo from "../_gallery/TileVideo";
-import { holdMedia, prefersReducedMotion } from "../_gallery/media";
+import { prefersReducedMotion } from "../_gallery/media";
 import {
   CLIP_GROUPS,
   PLAYABLE,
@@ -11,7 +18,13 @@ import {
   type Playable,
 } from "./clipsData";
 import { DOWNLOADS } from "./downloads";
-import { DOWNLOAD_BASE, fullscreen, Glyph, type FsVideo } from "./playerKit";
+import {
+  DOWNLOAD_BASE,
+  fullscreen,
+  Glyph,
+  ViewerShell,
+  type FsVideo,
+} from "./playerKit";
 import { SpeedMark, useSpeedNote } from "./speedNote";
 import "./clipsViews.css";
 
@@ -424,47 +437,22 @@ function Overlay({
   onMove: (n: number) => void;
   onClose: () => void;
 }) {
-  const root = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    holdMedia(true);
-    const overflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    root.current?.focus();
-    return () => {
-      holdMedia(false);
-      document.body.style.overflow = overflow;
-    };
-  }, []);
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-      else if (e.key === "ArrowRight") onMove((n + 1) % total);
-      else if (e.key === "ArrowLeft") onMove((n - 1 + total) % total);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [n, onMove, onClose]);
   const p = PLAYABLE[n];
+  const onKey = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight") onMove((n + 1) % total);
+      else if (e.key === "ArrowLeft") onMove((n - 1 + total) % total);
+    },
+    [n, onMove],
+  );
   return (
-    <div
-      ref={root}
-      className="kv-overlay"
-      role="dialog"
-      aria-modal="true"
-      aria-label={`${p.group.robot}, ${p.name}`}
-      tabIndex={-1}
-      data-gal-player=""
-      onClick={(e) => {
-        // A tap outside the clip and its controls closes.
-        if (e.target === e.currentTarget) onClose();
-      }}
+    <ViewerShell
+      label={`${p.group.robot}, ${p.name}`}
+      onClose={onClose}
+      onKey={onKey}
     >
-      <button type="button" className="kv-close" onClick={onClose}>
-        Close
-        <Glyph k="close" />
-      </button>
       <Stage p={p} onMove={onMove} advance className="kv-stage-big" />
-    </div>
+    </ViewerShell>
   );
 }
 

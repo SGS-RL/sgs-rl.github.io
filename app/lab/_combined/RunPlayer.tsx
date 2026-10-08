@@ -1,20 +1,47 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { prefersReducedMotion } from "../_gallery/media";
 import type { Item } from "../library";
 import { DOWNLOADS } from "./downloads";
-import { DOWNLOAD_BASE, fullscreen, Glyph, type FsVideo } from "./playerKit";
+import {
+  DOWNLOAD_BASE,
+  fullscreen,
+  Glyph,
+  ViewerShell,
+  type FsVideo,
+} from "./playerKit";
 import "./clipsViews.css";
 
-// A continuous run with the page's own controls, as the Clips player
-// (owner, 2026-10-08: the browser's controls lay over the video on phones
-// at first glance): the video, a bar (drag or click to scrub, arrow keys a
-// second), play/pause and full screen at its end, and under it the run's
-// name and its download. Loads near the screen, plays while on screen
-// unless paused by hand, loops, at 1×.
+// A continuous run with the page's own controls (owner, 2026-10-08: the
+// browser's controls lay over the video on phones). On the page: the
+// video, a bar (drag or click to scrub, arrow keys a second), play/pause
+// and full screen, the run's name under it. Full screen, or a tap on the
+// video, opens it large in the Clips viewer (owner, 2026-10-09: "the same
+// full screen behavior as the ones in Clips"), from the same moment, with
+// true full screen and the download there (not on the page); closing it
+// carries on from where the viewer was. Loads near the screen, plays while
+// on screen unless paused by hand, loops, at 1×.
 
-export default function RunPlayer({ c, title }: { c: Item; title: string }) {
+function Player({
+  c,
+  title,
+  big = false,
+  start = 0,
+  onTime,
+  onOpen,
+  onVideo,
+}: {
+  c: Item;
+  title: string;
+  // In the viewer: from `start`, true full screen, the download.
+  big?: boolean;
+  start?: number;
+  onTime?: (t: number) => void;
+  // On the page: open the viewer, with the time and whether it played.
+  onOpen?: (t: number, playing: boolean) => void;
+  onVideo?: (v: HTMLVideoElement | null) => void;
+}) {
   const box = useRef<HTMLDivElement>(null);
   const ref = useRef<FsVideo>(null);
   const fill = useRef<HTMLSpanElement>(null);
@@ -27,6 +54,7 @@ export default function RunPlayer({ c, title }: { c: Item; title: string }) {
 
   useEffect(() => {
     const v = ref.current;
+    onVideo?.(v);
     if (!v) return;
     const sync = () => {
       if (near.current && !v.getAttribute("src")) {
@@ -58,20 +86,27 @@ export default function RunPlayer({ c, title }: { c: Item; title: string }) {
     );
     a.observe(v);
     b.observe(v);
-    // The bar, every frame while on screen.
+    // Start where the page's player was, once the length is known.
+    const onMeta = () => {
+      if (start) v.currentTime = start;
+    };
+    v.addEventListener("loadedmetadata", onMeta, { once: true });
+    // The bar every frame while on screen, and the time for the page.
     let raf = 0;
     const paint = () => {
       if (seen.current && fill.current && v.duration)
         fill.current.style.transform = `scaleX(${Math.min(1, v.currentTime / v.duration)})`;
+      onTime?.(v.currentTime);
       raf = requestAnimationFrame(paint);
     };
     raf = requestAnimationFrame(paint);
     return () => {
       a.disconnect();
       b.disconnect();
+      v.removeEventListener("loadedmetadata", onMeta);
       cancelAnimationFrame(raf);
     };
-  }, [c.src]);
+  }, [c.src, start, onTime, onVideo]);
 
   const toggle = () => {
     const v = ref.current;
@@ -85,6 +120,15 @@ export default function RunPlayer({ c, title }: { c: Item; title: string }) {
       v.pause();
     }
   };
+  const full = () => {
+    const v = ref.current;
+    if (big || !onOpen) fullscreen(box.current, v);
+    else if (v) {
+      const playing = !v.paused;
+      v.pause();
+      onOpen(v.currentTime, playing);
+    }
+  };
   const seekAt = (x: number) => {
     const v = ref.current;
     const r = seg.current?.getBoundingClientRect();
@@ -92,14 +136,15 @@ export default function RunPlayer({ c, title }: { c: Item; title: string }) {
     v.currentTime =
       Math.max(0, Math.min(1, (x - r.left) / r.width)) * v.duration;
   };
-  const dl = DOWNLOADS[c.id];
+  const dl = big ? DOWNLOADS[c.id] : undefined;
 
   return (
-    <div className="kv-stage">
+    <div className={`kv-stage ${big ? "kv-stage-big" : ""}`}>
       <div
         ref={box}
-        className="kv-frame"
-        onDoubleClick={() => fullscreen(box.current, ref.current)}
+        className={`kv-frame ${big ? "" : "kv-frame-open"}`}
+        onClick={big ? undefined : full}
+        onDoubleClick={big ? full : undefined}
       >
         <video
           ref={ref}
@@ -108,7 +153,7 @@ export default function RunPlayer({ c, title }: { c: Item; title: string }) {
           playsInline
           preload="none"
           poster={c.poster}
-          className="kv-video kv-video-cover"
+          className={`kv-video ${big ? "" : "kv-video-cover"}`}
           aria-label={`${title}, one take`}
           onPlay={() => setPaused(false)}
           onPause={() => setPaused(true)}
@@ -146,6 +191,7 @@ export default function RunPlayer({ c, title }: { c: Item; title: string }) {
             const v = ref.current;
             if (!v || (e.key !== "ArrowRight" && e.key !== "ArrowLeft")) return;
             e.preventDefault();
+            e.stopPropagation();
             v.currentTime = Math.max(
               0,
               v.currentTime + (e.key === "ArrowRight" ? 1 : -1),
@@ -167,8 +213,8 @@ export default function RunPlayer({ c, title }: { c: Item; title: string }) {
         <button
           type="button"
           className="kv-icon"
-          aria-label="Full screen"
-          onClick={() => fullscreen(box.current, ref.current)}
+          aria-label={big ? "Full screen" : "Open large"}
+          onClick={full}
         >
           <Glyph k="full" />
         </button>
@@ -188,5 +234,45 @@ export default function RunPlayer({ c, title }: { c: Item; title: string }) {
         )}
       </div>
     </div>
+  );
+}
+
+export default function RunPlayer({ c, title }: { c: Item; title: string }) {
+  const [open, setOpen] = useState<{ t: number; playing: boolean } | null>(
+    null,
+  );
+  const page = useRef<HTMLVideoElement | null>(null);
+  const last = useRef(0);
+  const onTime = useCallback((t: number) => {
+    last.current = t;
+  }, []);
+  const onVideo = useCallback((v: HTMLVideoElement | null) => {
+    page.current = v;
+  }, []);
+  const close = useCallback(() => {
+    const v = page.current;
+    if (v && open) {
+      v.currentTime = last.current;
+      if (open.playing) v.play().catch(() => {});
+    }
+    setOpen(null);
+  }, [open]);
+  return (
+    <>
+      <Player
+        c={c}
+        title={title}
+        onVideo={onVideo}
+        onOpen={(t, playing) => {
+          last.current = t;
+          setOpen({ t, playing });
+        }}
+      />
+      {open && (
+        <ViewerShell label={title} onClose={close}>
+          <Player c={c} title={title} big start={open.t} onTime={onTime} />
+        </ViewerShell>
+      )}
+    </>
   );
 }

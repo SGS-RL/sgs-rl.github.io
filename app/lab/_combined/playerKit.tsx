@@ -1,3 +1,8 @@
+"use client";
+
+import { useEffect, useRef, type ReactNode } from "react";
+import { holdMedia } from "../_gallery/media";
+
 // Pieces shared by the page's own video players (ClipsViews.tsx,
 // RunPlayer.tsx): the icons, full screen, and where the 1080p downloads
 // are. Locally and on the Cloudflare preview they are files of the site;
@@ -39,4 +44,61 @@ export function fullscreen(box: HTMLElement | null, v: FsVideo | null) {
   if (box?.requestFullscreen)
     box.requestFullscreen().catch(() => v?.webkitEnterFullscreen?.());
   else v?.webkitEnterFullscreen?.();
+}
+
+// The viewer over the page (the Clips player, and a continuous run opened
+// large): Close at the top right, a tap outside its content and Esc close
+// it; other videos on the page are held while it is open. onKey gets the
+// other keys (the Clips player: arrows for previous and next).
+export function ViewerShell({
+  label,
+  onClose,
+  onKey,
+  children,
+}: {
+  label: string;
+  onClose: () => void;
+  onKey?: (e: KeyboardEvent) => void;
+  children: ReactNode;
+}) {
+  const root = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    holdMedia(true);
+    const overflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    root.current?.focus();
+    return () => {
+      holdMedia(false);
+      document.body.style.overflow = overflow;
+    };
+  }, []);
+  useEffect(() => {
+    const h = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+      else onKey?.(e);
+    };
+    window.addEventListener("keydown", h);
+    return () => window.removeEventListener("keydown", h);
+  }, [onClose, onKey]);
+  return (
+    <div
+      ref={root}
+      className="kv-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-label={label}
+      tabIndex={-1}
+      data-gal-player=""
+      onClick={(e) => {
+        // A tap outside the content closes.
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <button type="button" className="kv-close" onClick={onClose}>
+        Close
+        <Glyph k="close" />
+      </button>
+      {children}
+    </div>
+  );
 }

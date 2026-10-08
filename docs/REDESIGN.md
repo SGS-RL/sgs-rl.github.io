@@ -312,6 +312,14 @@ project site. Branch: `claude/website-redesign-brainstorm-hz3x4c`.
   workflow retries the build (flaky Google Fonts fetch). Its actions run on
   Node 20, which GitHub has deprecated: move them to newer majors when it
   becomes an error.
+  Then (2026-10-09): continuous runs open large like Clips (owner: "the
+  same full screen behavior as the ones in Clips"): on the page the bar,
+  pause and full screen, no download; full screen or a tap on the video
+  opens the Clips viewer (`ViewerShell` in `_combined/playerKit.tsx`, now
+  shared by both) from the same moment, with true full screen and
+  Download; closing carries on from the viewer's time. The scaling
+  charts' tooltip opens beside the hovered scale on the side with room,
+  rows unwrapped (at 1M, "Uniform" wrapped against the chart's edge).
   Before Clips, `/lab/combined-draft/` was the whole-site mock-up: the same
   page, then Over training (paper Figure 7), the quilt divider, Results,
   Footage and Clips; the parked "Just PPO" and "Task configurations"

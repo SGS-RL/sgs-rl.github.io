@@ -318,10 +318,13 @@ function Chart({ panel }: { panel: Panel }) {
         {hover !== null && (
           <div
             className="cb-scale-tip pz-small"
-            style={{
-              left: Math.min(Math.max(tipLeft, 70), w - 70),
-              top: T,
-            }}
+            // Beside the hovered scale, on the side with room (owner,
+            // 2026-10-09: at 1M the rows wrapped against the chart's edge).
+            style={
+              tipLeft > w / 2
+                ? { left: tipLeft - 12, top: T, transform: "translateX(-100%)" }
+                : { left: tipLeft + 12, top: T, transform: "none" }
+            }
           >
             <p className="cb-scale-tip-h">{ENV_LABELS[hover]} environments</p>
             {[...panel.series]
