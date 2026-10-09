@@ -11,7 +11,7 @@ import { holdMedia } from "../_gallery/media";
 // (scripts/lab/release_media.sh).
 
 export const DOWNLOAD_BASE =
-  process.env.NEXT_PUBLIC_DOWNLOAD_BASE ?? "/lab/media/library/download";
+  process.env.NEXT_PUBLIC_DOWNLOAD_BASE ?? "/media/library/download";
 
 export type Kind =
   "play" | "pause" | "full" | "prev" | "next" | "close" | "down";

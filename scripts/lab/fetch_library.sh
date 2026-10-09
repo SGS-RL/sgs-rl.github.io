@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
-# Download the encoded footage (public/lab/media/library/, git-ignored)
+# Download the encoded footage (public/media/library/, git-ignored)
 # from the Cloudflare preview, for machines without the owner's drive folder
 # (e.g. a cloud session). The file list is scripts/lab/library-files.txt,
 # written on the machine that ran encode_library.py. Usage:
 #   scripts/lab/fetch_library.sh [base-url]
 set -euo pipefail
-BASE="${1:-https://sgs-rl-lab.mateogc.workers.dev}/lab/media/library"
+BASE="${1:-https://sgs-rl-lab.mateogc.workers.dev}/media/library"
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
-OUT="$ROOT/public/lab/media/library"
+OUT="$ROOT/public/media/library"
 while read -r f; do
   [ -z "$f" ] && continue
   [ -s "$OUT/$f" ] && continue

@@ -216,6 +216,12 @@ const rand = (i: number) => {
   return x - Math.floor(x);
 };
 const clamp01 = (n: number) => Math.min(1, Math.max(0, n));
+
+// Rendering the quilt as a video, frame by frame (/lab/thread/quilt/): the
+// caller gives each clip cell's reveal (0 raster .. 1 real, cells in page
+// order) and seeks the videos itself; the cells neither follow the scroll
+// nor play.
+export type QuiltDrive = { reveal: (n: number) => number };
 const INK: [number, number, number] = [17 / 255, 17 / 255, 17 / 255];
 
 // A quilt of flat inks after the NOF posters: an Index cell two squares
@@ -234,6 +240,7 @@ export default function QuiltDivider({
   inks = P.quilt,
   className = "",
   variant = "now",
+  drive,
 }: {
   clips: Item[];
   direction?: "toReal" | "toRaster";
@@ -242,6 +249,7 @@ export default function QuiltDivider({
   inks?: readonly string[];
   className?: string;
   variant?: QuiltVariant;
+  drive?: QuiltDrive;
 }) {
   const key = clips.map((c) => c.id).join();
   const cells = useMemo(() => {
@@ -281,9 +289,13 @@ export default function QuiltDivider({
         img: null as HTMLImageElement | null,
       }),
     );
-    const cleanups = cells.map((c) =>
-      registerVideo(c.video, c.el.dataset.src ?? "", c.poster),
-    );
+    const cleanups = cells.map((c) => {
+      if (!drive)
+        return registerVideo(c.video, c.el.dataset.src ?? "", c.poster);
+      c.video.preload = "auto";
+      c.video.src = c.el.dataset.src ?? "";
+      return () => {};
+    });
     const onData = (e: Event) => {
       const c = cells.find((x) => x.video === e.target);
       if (c) c.dirty = true;
@@ -351,10 +363,11 @@ export default function QuiltDivider({
       // One layout read per frame; cell offsets are cached by measure().
       const r = band.getBoundingClientRect();
       const vh = window.innerHeight;
-      for (const c of cells) {
+      for (const [n, c] of cells.entries()) {
         const top = r.top + c.top;
         let reveal = 1;
-        if (!reduce) {
+        if (drive) reveal = clamp01(drive.reveal(n));
+        else if (!reduce) {
           const t = (vh * 0.92 - (top + c.h / 2)) / (vh * 0.5);
           const p = clamp01(t * (1 + S) - S * c.jitter);
           reveal = direction === "toReal" ? p : 1 - p;
@@ -402,7 +415,7 @@ export default function QuiltDivider({
       cleanups.forEach((f) => f());
       cells.forEach((c) => c.video.removeEventListener("loadeddata", onData));
     };
-  }, [direction, ids]);
+  }, [direction, ids, drive]);
 
   return (
     <div className={`gal gal-skin-pz gal-quilt ${className}`}>

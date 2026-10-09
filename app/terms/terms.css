@@ -1,0 +1,53 @@
+/* Terms of Use (page.tsx): the site's bar, band and grid; a small label
+   over (on phones) or beside (from 768 px) each part's text. */
+
+.tu {
+  min-height: 100svh;
+}
+.tu-part {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  column-gap: var(--g);
+  row-gap: 0.75rem;
+  padding: 1.5rem var(--m) 3rem;
+}
+.tu-part + .tu-part {
+  border-top: 1px solid #111;
+}
+.tu-label,
+.tu-text {
+  grid-column: 1 / -1;
+}
+.tu-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9em;
+  max-width: 40em;
+  font-size: clamp(1.05rem, 1.5vw, 1.3rem);
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+}
+.tu-list {
+  padding-left: 1.2em;
+  list-style: disc;
+}
+.tu-link {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+  overflow-wrap: anywhere;
+}
+
+@media (min-width: 768px) {
+  .tu-part {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    padding-top: 2rem;
+  }
+  .tu-label {
+    grid-column: 1 / 4;
+    padding-top: 0.35em;
+  }
+  .tu-text {
+    grid-column: 4 / 13;
+  }
+}

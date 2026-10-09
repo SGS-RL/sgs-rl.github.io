@@ -9,7 +9,7 @@ the Franka nut-and-bolt task, each 20 task configurations held for one
 second: spawn0 is Reaching, spawn2 Stable Grasp, spawn1 Near-Goal (the
 paper's names, appendix A.2). reset_tour.mp4 is not used.
 
-Writes public/lab/media/library/resets/{reaching,stable-grasp,near-goal}.mp4
+Writes public/media/library/resets/{reaching,stable-grasp,near-goal}.mp4
 and .jpg posters: cropped closer (2880 x 1620 of 3840 x 2160, the robot,
 nut and board stay in frame for every configuration), 1600 px wide, H.264,
 25 fps as rendered, real time, no audio. Requires ffmpeg.
@@ -19,7 +19,7 @@ import argparse
 import os
 import subprocess
 
-OUT = os.path.join(os.path.dirname(__file__), "..", "..", "public", "lab", "media", "library", "resets")
+OUT = os.path.join(os.path.dirname(__file__), "..", "..", "public", "media", "library", "resets")
 SOURCES = [
     ("spawn0_wide.mp4", "reaching"),
     ("spawn2_wide.mp4", "stable-grasp"),

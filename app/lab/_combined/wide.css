@@ -1,0 +1,50 @@
+/* Wide screens (owner, 2026-10-09, on an ultrawide monitor: "the Clips
+   show up huge at the bottom, to the point where it's super overwhelming";
+   Method 03's renders "are not super high resolution, so it looks a bit
+   ass if the video is larger. Maybe we make the video in this section
+   slightly smaller?"). Two versions, /lab/wide-1/ and -2/ (CombinedPage
+   `wide`); both use Method 03's footage at its full 1280 px.
+
+   W1  Method 03: the video at most 640 px wide (one file pixel per screen
+       pixel on a 2x screen), the chart takes the rest, the two together
+       at most 1720 px (wider, the chart only got flatter). Clips: a column
+       more at 1920, 2400 and 3000 px, so tiles stay under about 500 px.
+   W2  Method 03: the video a third of the row, at most 560 px, the row
+       at most 1720 px. Clips:
+       as many columns as fit tiles of at least 20rem, so tiles stay about
+       320 to 400 px and short groups leave the rest of the row empty. */
+
+@media (min-width: 1024px) {
+  .cb-wide-w1 .lp-main,
+  .cb-wide-w2 .lp-main {
+    max-width: 1720px;
+  }
+  .cb-wide-w1 .lp-main {
+    grid-template-columns: min(41.667%, 640px) minmax(0, 1fr);
+  }
+  .cb-wide-w2 .lp-main {
+    grid-template-columns: min(33.333%, 560px) minmax(0, 1fr);
+  }
+}
+
+@media (min-width: 1920px) {
+  .cb-wide-w1 .cb-clips-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+@media (min-width: 2400px) {
+  .cb-wide-w1 .cb-clips-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+@media (min-width: 3000px) {
+  .cb-wide-w1 .cb-clips-grid {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .cb-wide-w2 .cb-clips-grid {
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  }
+}

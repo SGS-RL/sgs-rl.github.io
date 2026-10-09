@@ -98,6 +98,10 @@ function endLabel(g: { ms: Method[]; v: number[] }, small: boolean) {
 
 function Chart({ panel }: { panel: Panel }) {
   const box = useRef<HTMLDivElement>(null);
+  // 560 until measured: the server's guess. The SVG may not be wider than
+  // its box meanwhile (h-auto max-w-full): on phones the page was 572 px
+  // wide until it measured, and a phone opened on a section link (#clips)
+  // landed hundreds of pixels short (2026-10-09).
   const [w, setW] = useState(560);
   const [hover, setHover] = useState<number | null>(null);
   useEffect(() => {
@@ -156,7 +160,7 @@ function Chart({ panel }: { panel: Panel }) {
           aria-label={`${panel.title}: ${panel.metric.toLowerCase()} against parallel environments. ${panel.series
             .map((s) => `${s.method} ${s.mean.map(fmt).join(", ")}`)
             .join(". ")}.`}
-          className="block"
+          className="block h-auto max-w-full"
         >
           {/* Grid and axes: hairlines, recessive. */}
           {[0, 0.5, 1].map((v) => (

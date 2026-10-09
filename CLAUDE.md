@@ -4,8 +4,10 @@ Next.js app exported as a static site to GitHub Pages. `main` deploys on
 push (`.github/workflows/deploy.yml`); nothing else deploys. The homepage
 is the redesigned page (`app/page.tsx` renders `app/lab/_combined/`). Its
 videos are not in git: the workflow unpacks them from the `media-v1`
-GitHub release, and the Download buttons link to that release
-(`scripts/lab/release_media.sh` uploads them).
+GitHub release into `public/media/library/`, and the Download buttons link
+to that release (`scripts/lab/release_media.sh` uploads them). The live
+site is the homepage and `/terms/`: the workflow leaves out `/lab/` (the
+design studies), which stay on the Cloudflare preview and local builds.
 
 A redesign is in progress. Read `docs/REDESIGN.md` before changing anything
 under `app/lab/`: it has the design direction, decisions, open questions

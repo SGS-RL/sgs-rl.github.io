@@ -96,6 +96,10 @@ function Chart({
   ci?: boolean;
 }) {
   const box = useRef<HTMLDivElement>(null);
+  // 560 until measured: the server's guess. The SVG may not be wider than
+  // its box meanwhile (h-auto max-w-full): on phones the page was 572 px
+  // wide until it measured, and a phone opened on a section link (#clips)
+  // landed hundreds of pixels short (2026-10-09).
   const [w, setW] = useState(560);
   const [hover, setHover] = useState<number | null>(null);
   useEffect(() => {
@@ -213,7 +217,7 @@ function Chart({
           aria-label={`${task.title}: success rate of one task configuration over training, ${task.rows
             .map((r) => `iteration ${fmt(r.it)} ${r.s} of ${n}`)
             .join(", ")}, and the SGS weight for each success rate.`}
-          className="block"
+          className="block h-auto max-w-full"
         >
           {/* Where the SGS weight is highest (band, both). */}
           {band && (
@@ -601,11 +605,36 @@ function Glyph({ kind }: { kind: "play" | "pause" }) {
 
 export default function LearningProgress({
   view = "bandcurve",
+  capture,
+  hd = false,
 }: {
   view?: DuringView;
+  // For rendering a video of one task (/lab/thread/sampling/): that task
+  // alone, its footage from `src`, without the paragraph, the task buttons
+  // or the play button, and no autoplay; the renderer seeks the video.
+  capture?: { task: string; src: string };
+  // The footage at the render's full size, 1280 x 1080, instead of 960 px
+  // wide (encode_learning.py --hd; /lab/wide-1/, -2/, 2026-10-09).
+  hd?: boolean;
 }) {
-  const [ti, setTi] = useState(0);
-  const task = TASKS[ti];
+  const list = useMemo(
+    () =>
+      hd
+        ? TASKS.map((t) => ({
+            ...t,
+            src: t.src.replace("/learning/", "/learning-hd/"),
+            poster: t.poster.replace("/learning/", "/learning-hd/"),
+          }))
+        : TASKS,
+    [hd],
+  );
+  const [ti, setTi] = useState(() =>
+    capture ? list.findIndex((t) => t.key === capture.task) : 0,
+  );
+  const task = useMemo(
+    () => (capture ? { ...list[ti], src: capture.src } : list[ti]),
+    [list, ti, capture],
+  );
   const [clip, setClip] = useState(0);
   const [playing, setPlaying] = useState(false);
   const video = useRef<HTMLVideoElement>(null);
@@ -690,6 +719,7 @@ export default function LearningProgress({
     const seen = new IntersectionObserver(
       ([e]) => {
         visible.current = e.isIntersecting;
+        if (capture) return;
         if (e.isIntersecting && !userPaused.current && !prefersReducedMotion())
           v.play().catch(() => {});
         else if (!e.isIntersecting) v.pause();
@@ -702,7 +732,7 @@ export default function LearningProgress({
       near.disconnect();
       seen.disconnect();
     };
-  }, [task.src]);
+  }, [task.src, capture]);
 
   const seekFrame = (f: number) => {
     const v = video.current;
@@ -734,8 +764,8 @@ export default function LearningProgress({
     setClip(0);
     frameRef.current = 0;
     if (v) {
-      v.src = TASKS[i].src;
-      v.poster = TASKS[i].poster;
+      v.src = list[i].src;
+      v.poster = list[i].poster;
       v.load();
       if (visible.current && !userPaused.current && !prefersReducedMotion())
         v.play().catch(() => {});
@@ -754,29 +784,38 @@ export default function LearningProgress({
 
   return (
     <div className="lp">
-      <div className="cb-flow-text cb-flow-w1">
-        <p>
-          We follow <strong>one fixed task configuration</strong> of each UR5e
-          task through the course of training. SGS gives it{" "}
-          <strong>small weight while the policy never solves it</strong>,{" "}
-          <strong>large weight when it’s getting better but not perfect</strong>
-          , and{" "}
-          <strong>small weight again once the policy has mastered it</strong>.
-        </p>
-      </div>
-      <div className="lp-tasks" role="group" aria-label="Task">
-        {TASKS.map((t, i) => (
-          <button
-            key={t.key}
-            type="button"
-            aria-pressed={i === ti}
-            className="lp-task"
-            onClick={() => choose(i)}
-          >
-            {t.title}
-          </button>
-        ))}
-      </div>
+      {!capture && (
+        <>
+          <div className="cb-flow-text cb-flow-w1">
+            <p>
+              We follow <strong>one fixed task configuration</strong> of each
+              UR5e task through the course of training. SGS gives it{" "}
+              <strong>small weight while the policy never solves it</strong>,{" "}
+              <strong>
+                large weight when it’s getting better but not perfect
+              </strong>
+              , and{" "}
+              <strong>
+                small weight again once the policy has mastered it
+              </strong>
+              .
+            </p>
+          </div>
+          <div className="lp-tasks" role="group" aria-label="Task">
+            {list.map((t, i) => (
+              <button
+                key={t.key}
+                type="button"
+                aria-pressed={i === ti}
+                className="lp-task"
+                onClick={() => choose(i)}
+              >
+                {t.title}
+              </button>
+            ))}
+          </div>
+        </>
+      )}
       <div className="lp-main">
         <div className="lp-left">
           <div className="lp-frame">
@@ -849,14 +888,16 @@ export default function LearningProgress({
                 </span>
               ))}
             </div>
-            <button
-              type="button"
-              className="lp-icon"
-              aria-label={playing ? "Pause" : "Play"}
-              onClick={toggle}
-            >
-              <Glyph kind={playing ? "pause" : "play"} />
-            </button>
+            {!capture && (
+              <button
+                type="button"
+                className="lp-icon"
+                aria-label={playing ? "Pause" : "Play"}
+                onClick={toggle}
+              >
+                <Glyph kind={playing ? "pause" : "play"} />
+              </button>
+            )}
           </div>
           <p className="lp-now pz-small">
             <span>Iteration {fmt(cur.it)}</span>

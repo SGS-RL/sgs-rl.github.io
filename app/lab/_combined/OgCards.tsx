@@ -18,7 +18,7 @@ import "./og.css";
 // the tab say SGS?"), white on black as the bar's "SGS", and is also set at
 // 48, 32 and 16 px for the favicon.
 
-const IMG = "/lab/media/library/og";
+const IMG = "/media/library/og";
 
 function Title({ size }: { size: number }) {
   return (

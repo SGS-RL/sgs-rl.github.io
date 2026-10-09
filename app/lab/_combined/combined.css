@@ -1228,10 +1228,24 @@
 
 /* The end: the mark across a black screen. */
 .cb-end {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: calc(100svh - var(--bar));
   padding: 0 var(--m);
   background: #000;
+}
+/* The Terms of Use line, at the foot of the black screen. */
+.cb-end-terms {
+  position: absolute;
+  left: var(--m);
+  right: var(--m);
+  bottom: max(var(--m), env(safe-area-inset-bottom));
+  color: rgb(255 255 255 / 0.6);
+}
+.cb-end-terms a {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
 }

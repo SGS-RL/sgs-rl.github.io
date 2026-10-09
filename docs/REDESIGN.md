@@ -149,7 +149,7 @@ project site. Branch: `claude/website-redesign-brainstorm-hz3x4c`.
   each, cropped closer (2880 × 1620 of the 4K render), 1600 px, about
   0.8 MB (`scripts/lab/encode_resets.py`, from the owner's
   `franka_reset_tour_4k` folder; `reset_tour.mp4` is not used; files in
-  `public/lab/media/library/resets/`). `_combined/ResetStrategies.tsx`
+  `public/media/library/resets/`). `_combined/ResetStrategies.tsx`
   and `resets.css`, a lead sentence ("For assembly, the task
   configurations come in equal parts from three reset strategies") and a
   one-sentence description per strategy, in three layouts on a switch
@@ -171,7 +171,7 @@ project site. Branch: `claude/website-redesign-brainstorm-hz3x4c`.
   an illustration of the rule, not measured sampling frequency).
   `scripts/lab/encode_learning.py <bundle>` cuts the ledger's frames from
   each raw render in order (crop x 320–1600, 960 px, 30 fps, 1×, keyframe
-  every 10 frames; 0.9–1.6 MB each, `public/lab/media/library/learning/`),
+  every 10 frames; 0.9–1.6 MB each, `public/media/library/learning/`),
   asserts frame counts and the frame-to-checkpoint mapping, and writes
   `_combined/learningData.ts`. `_combined/LearningProgress.tsx` and
   `learning.css`: a W1 sentence, the six tasks as names (nut first), the
@@ -206,7 +206,7 @@ project site. Branch: `claude/website-redesign-brainstorm-hz3x4c`.
   `encode_library.py`'s sources and cuts read-only (it swaps in its own
   encoders) and writes 1080p files, 30 fps, CRF 20 with a bitrate cap
   (runs CRF 23), each under Cloudflare's 25 MiB per-file limit, to
-  `public/lab/media/library/download/` (55 files, 216 MB; pass `--premiere`
+  `public/media/library/download/` (55 files, 216 MB; pass `--premiere`
   as for `encode_library.py` for the clips added 2026-10-08), and the list
   the page offers to `_combined/downloads.ts`. On the final site the
   `download` attribute only works same-origin, so a media host on another
@@ -263,7 +263,7 @@ project site. Branch: `claude/website-redesign-brainstorm-hz3x4c`.
   that appears on the tab say SGS?"), the favicon's 16, 32 and 48 px
   images each set as text at that size on `/lab/og/` rather than shrunk
   (the ICO's images must be RGBA or Next fails). The stills for the
-  cards are in `public/lab/media/library/og/` (git-ignored, fetched with
+  cards are in `public/media/library/og/` (git-ignored, fetched with
   the library). When the site moves to the root, use `shareMetadata("/")`.
   Owner's text edits (2026-10-08): Overview, Manipulation ends "with zero
   demonstrations and the same reward function across all tasks"; Method 01
@@ -349,6 +349,52 @@ project site. Branch: `claude/website-redesign-brainstorm-hz3x4c`.
   foot while there is more below. The owner picked L3, and deployed it
   with the rest of this round: the site and `/lab/combined/` render
   `CombinedPage fold="f2" fit="runin"`.
+  Then wide screens (2026-10-09, owner on an ultrawide monitor: the Clips
+  "show up huge at the bottom, to the point where it's super
+  overwhelming"; Method 03's renders "are not super high resolution, so it
+  looks a bit ass if the video is larger"): at 3440 px Clips tiles were
+  838 px wide (the section 9,200 px tall) and the Method 03 video 1410 x
+  1190 px from a 960 px file. Two versions on the Cloudflare preview,
+  `/lab/wide-1/` and `-2/` (`CombinedPage wide`, `_combined/wide.css`),
+  both with Method 03's footage at the render's full 1280 px
+  (`encode_learning.py --hd`, `public/media/library/learning-hd/`, not
+  yet in the `media-v1` release): W1 the video at most 640 px, Clips a
+  column more at 1920, 2400 and 3000 px (tiles under about 500 px); W2
+  the video a third of the row, at most 560 px, Clips as many columns as
+  fit 20rem tiles. In both the video and chart row stops at 1720 px.
+  Cloudflare refuses files over 25 MiB: the thread videos' sources in
+  `public/media/library/thread/` are left out of the preview with
+  `out/.assetsignore` (`media/library/thread/`, written after each build).
+  The owner picked W1 ("for now let's do W1"): the site and
+  `/lab/combined/` pass `wide="w1"`; the viewers (Clips, runs) and true
+  full screen are unchanged by it, checked at 390, 1512, 1920 and 3440 px.
+  Section links on phones (found by the visitor-stats session): opening
+  the site on `/#clips` at 390 x 844 landed 400-650 px short. Method 03's
+  and the scaling charts' SVGs start at a guessed 560 px until they
+  measure their box, so before scripts ran the page was 572 px wide, and a
+  phone browser jumps to the section in that wider layout. The SVGs now
+  shrink to their box until measured (`h-auto max-w-full`), and
+  `_combined/HashLanding.tsx` keeps the linked section at the top while
+  the page settles (Method 03's chart still grows 336 px on phones once
+  measured, above Results), until the visitor scrolls, taps or types, or
+  3 s pass. Every section lands under the bar at 390, 1440 and 3440 px.
+  Terms of Use (owner: "if people scrape it, they link to mine"; his note
+  kept word for word): `app/terms/` at `/terms/`, the note, then the
+  license (the design and code under CC BY 4.0: name him, link to the
+  site; the paper, figures and videos stay with the authors). Linked from
+  the foot of the closing black screen ("If you want to adapt this
+  website or use its videos, see the Terms of Use", `EndMark terms`),
+  which also sets the page's `rel="license"`. The owner added the videos
+  ("the videos are also all ours and if people use them they should
+  mention where they came from"): they belong to the authors, and may be
+  used with credit to the paper and a link to the site.
+  Off the live site (2026-10-09, asked by the visitor-stats session; the
+  owner: studies on the preview and locally): the homepage's footage moved
+  from `public/lab/media/library/` to `public/media/library/` (URLs
+  `/media/library/...`; the `media-v1` tar holds `library/`, so it unpacks
+  into `public/media/` unchanged), and the Pages workflow deletes
+  `out/lab` after building. The earlier studies' own media stays in
+  `public/lab/media/` (in git), on the preview only.
   Before Clips, `/lab/combined-draft/` was the whole-site mock-up: the same
   page, then Over training (paper Figure 7), the quilt divider, Results,
   Footage and Clips; the parked "Just PPO" and "Task configurations"
@@ -526,7 +572,7 @@ project site. Branch: `claude/website-redesign-brainstorm-hz3x4c`.
   python3 scripts/lab/trim_anymal_limits.py ~/Downloads/anymal_limits
   python3 scripts/lab/encode_library.py <SGS folder> \
     --limits ~/Downloads/anymal_limits_trimmed
-  (cd public/lab/media/library && find . -type f -not -name .DS_Store |
+  (cd public/media/library && find . -type f -not -name .DS_Store |
     sed 's|^\./||' | LC_ALL=C sort) > scripts/lab/library-files.txt
   ```
 
@@ -788,7 +834,7 @@ For reference, round 1's `/lab/site/` contains, top to bottom:
   folder "SGS" (Anymal-C, Anymal-D PACE, Franka Sim, UR5e Real, UR5e Sim),
   2.1 GB, plus a spreadsheet ("SGS Clip Selector") rating each UR5e sim
   clip. Neither is in the repo. `scripts/lab/encode_library.py <SGS
-folder>` turns it into `public/lab/media/library/` (27 MB); the
+folder>` turns it into `public/media/library/` (27 MB); the
   manifest is `app/lab/library.ts` (`LIBRARY`, `RUNS`, `REEL3`). Add new
   footage by adding entries to both. The encoded media is git-ignored (the
   owner's call, 2026-10-05): on a fresh checkout, get the drive folder and
@@ -1104,7 +1150,7 @@ folder>` turns it into `public/lab/media/library/` (27 MB); the
        `standin-reel.mp4` from `STANDIN` in `encode_library.py`): five
        UR5e simulation close-ups and four ANYmal D terrains, the only
        footage a cloud session could fetch. The page switches to `REEL3`
-       by itself when `public/lab/media/library/reel.mp4` exists at build
+       by itself when `public/media/library/reel.mp4` exists at build
        time.
 - **Footage through the Google Drive connector (2026-10-06).** The owner's
   drive folder is "Research Media/SGS"; it also has a `highlights` folder
@@ -1424,7 +1470,7 @@ root it detects the Next.js app, tries to convert it into a Cloudflare app
 and edits `package.json`. `worker.js` there answers byte-range requests
 for the videos: static assets alone return whole files, and Safari on
 iPhone will not play a video without ranges. The footage is not in git,
-so deploy from a machine that has `public/lab/media/library/` (or run
+so deploy from a machine that has `public/media/library/` (or run
 `scripts/lab/fetch_library.sh` first). A cloud session deploying needs a
 Cloudflare API token in `CLOUDFLARE_API_TOKEN`.
 

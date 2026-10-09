@@ -49,7 +49,10 @@ export function Bibtex() {
   );
 }
 
-export function EndMark() {
+// `terms`: a line at the foot pointing to the Terms of Use, and the page's
+// license link for machines (owner, 2026-10-09: "If you want to adapt this
+// website, see Terms of Use").
+export function EndMark({ terms = false }: { terms?: boolean }) {
   return (
     <section aria-label="SGS, Success-Guided Sampling" className="cb-end">
       <Mark
@@ -57,6 +60,15 @@ export function EndMark() {
         measure="calc(100vw - 2 * var(--m))"
         cap="80svh"
       />
+      {terms && (
+        <>
+          <link rel="license" href="/terms/" />
+          <p className="cb-end-terms pz-small">
+            If you want to adapt this website or use its videos, see the{" "}
+            <a href="/terms/">Terms of Use</a>.
+          </p>
+        </>
+      )}
     </section>
   );
 }

@@ -1,0 +1,150 @@
+/* SamplingOverlay.tsx: the render full-bleed, the plots over it. Sizes in
+   CSS px of a 1200 x 675 screen, rendered at 1.6x (1920 x 1080). */
+.ov {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: #fff;
+  color: #111;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.ov-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ov-panel {
+  position: absolute;
+  padding: 14px 16px 10px;
+}
+.ov-o2 .ov-panel,
+.ov-o3 .ov-panel {
+  background: rgb(255 255 255 / 0.78);
+  backdrop-filter: blur(8px);
+}
+.ov-tl {
+  top: 20px;
+  left: 20px;
+}
+.ov-tr {
+  top: 20px;
+  right: 20px;
+}
+.ov-left {
+  top: 50%;
+  left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  transform: translateY(-50%);
+}
+.ov-plot {
+  display: block;
+  overflow: visible;
+}
+.ov-name {
+  font-size: 15px;
+  fill: #111;
+}
+.ov-value {
+  font-size: 21px;
+  font-weight: 500;
+  fill: #111;
+}
+.ov-tick {
+  font-size: 13px;
+  fill: #444;
+  font-variant-numeric: tabular-nums;
+}
+.ov-axis {
+  font-size: 14px;
+  fill: #111;
+}
+/* No panel: tick labels as dark as the rest. */
+.ov-bare .ov-tick {
+  fill: #111;
+}
+nextjs-portal {
+  display: none;
+}
+
+/* o6, telemetry (Telemetry.tsx): the site's mono face, uppercase labels,
+   fixed-width readouts. */
+.tm {
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  width: 340px;
+  padding: 0 16px;
+  transform: translateY(-50%);
+  font-family: var(--font-mono-display), ui-monospace, Menlo, monospace;
+  font-variant-numeric: tabular-nums;
+  color: #111;
+}
+.tm-status {
+  margin-bottom: 18px;
+}
+.tm-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+}
+.tm-bar {
+  display: grid;
+  column-gap: 3px;
+  margin-top: 6px;
+}
+.tm-seg {
+  position: relative;
+  height: 3px;
+  background: rgb(17 17 17 / 0.22);
+  overflow: hidden;
+}
+.tm-fill {
+  position: absolute;
+  inset: 0;
+  transform-origin: 0 50%;
+}
+.tm-head {
+  margin-bottom: 4px;
+}
+.tm-value {
+  margin-top: 2px;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+.tm-unit {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+}
+.tm-plot {
+  display: block;
+  overflow: visible;
+}
+.tm-plot + .tm-head {
+  margin-top: 14px;
+}
+.tm-tick {
+  font-family: var(--font-mono-display), ui-monospace, Menlo, monospace;
+  font-size: 10px;
+  fill: #111;
+}
+.tm-axis {
+  font-family: var(--font-mono-display), ui-monospace, Menlo, monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.12em;
+  fill: #111;
+}
+.tm-band {
+  font-family: var(--font-mono-display), ui-monospace, Menlo, monospace;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  fill: #e4321b;
+}

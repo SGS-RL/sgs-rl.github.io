@@ -1,0 +1,14 @@
+/* Frames for the Twitter thread videos (/lab/thread/...): the content
+   centred on a white 16:9 screen, nothing else. */
+.th-frame {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  padding: 0 40px;
+  overflow: hidden;
+}
+nextjs-portal {
+  display: none;
+}

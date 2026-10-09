@@ -10,7 +10,7 @@ import QuietReel, { type Controls } from "./Reel";
 
 // The mock reel (REEL3) when its video was built, else the stand-in.
 export const REEL = fs.existsSync(
-  path.join(process.cwd(), "public/lab/media/library/reel.mp4"),
+  path.join(process.cwd(), "public/media/library/reel.mp4"),
 )
   ? REEL3
   : STANDIN_REEL;

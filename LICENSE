@@ -1,0 +1,26 @@
+SGS project website: design and code
+Copyright (c) 2026 Mateo Guaman Castro
+
+The design and code of this website (https://sgs-rl.github.io/) are
+licensed under the Creative Commons Attribution 4.0 International License
+(CC BY 4.0): https://creativecommons.org/licenses/by/4.0/legalcode
+
+You may copy, adapt and build on them, for any purpose, as long as you give
+credit:
+  - name Mateo Guaman Castro as the designer,
+  - link to https://sgs-rl.github.io/ on the site you make (in its footer,
+    for example) and in its source code,
+  - and say whether you changed it.
+
+Not covered by this license:
+  - The videos. They are (c) 2026 the authors of "A Balanced Data Diet:
+    Addressing the Exploration Bottleneck in Mega-Scale RL for Robot
+    Control" (Zhang, Guaman Castro, Yin et al., CoRL 2026). You may use
+    them, as long as you say where they came from: credit the paper and
+    link to https://sgs-rl.github.io/.
+  - The paper itself, its text, figures and results, which also belongs to
+    its authors. To use it, cite it.
+  - Typefaces and third-party code, which keep their own licenses.
+
+The Terms of Use, with a note from the designer:
+https://sgs-rl.github.io/terms/

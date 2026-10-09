@@ -1,0 +1,38 @@
+/* /lab/thread/quilt/: the quilt alone on a 16:9 screen. Rendered at
+   1024 x 576 CSS px and 1.875x (1920 x 1080), where it has six columns and
+   four rows; the rows stretch to fill the height, so the cells are a
+   little wider than tall. */
+.thq {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #111;
+}
+.thq .gal-quilt-grid {
+  grid-auto-rows: calc((100vh - 5 * var(--gq-gap)) / 4);
+}
+nextjs-portal {
+  display: none;
+}
+
+/* /lab/thread/quilt-b/ to -d/ (ThreadQuilt.tsx): a fixed grid filling the
+   frame; label type sized to the row height (--thq-name, --thq-sub). */
+.thq-more .gal-quilt-grid {
+  height: 100vh;
+}
+.thq-more .gq-text {
+  padding: var(--thq-pad);
+}
+.thq-name {
+  font-size: var(--thq-name);
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+.thq-sub {
+  font-size: var(--thq-sub);
+  line-height: 1.2;
+}
+.thq-chip {
+  font-size: max(12.5px, calc(var(--thq-sub) * 0.85));
+  line-height: 1.2;
+}

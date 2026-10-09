@@ -1,5 +1,6 @@
 import "../_poster/poster.css";
 import "../_site/site.css";
+import HashLanding from "./HashLanding";
 import Highlights from "./Highlights";
 import type { ListFit } from "./HighlightsLayouts";
 import Nav from "./Nav";
@@ -20,6 +21,7 @@ import SummarySized, { SummarySizeSwitch } from "./SummarySized";
 import Top from "./Top";
 import "./combined.css";
 import "./fold.css";
+import "./wide.css";
 import "./reels.css";
 
 // /lab/combined: the site the owner is assembling from the studies, one
@@ -60,12 +62,13 @@ import "./reels.css";
 // Nine clips, the real nut first, in layout Q1 (owner's pick, 2026-10-08:
 // labels staggered, see ./QuiltDivider.tsx).
 export type Fold = "f1" | "f2" | "f3";
+export type Wide = "w1" | "w2";
 
 const one = (id: string, title?: string) => {
   const c = [...LIBRARY, ...EXTRA, ...STANDIN_CLIPS].find((k) => k.id === id)!;
   return title ? { ...c, title } : c;
 };
-const QUILT = [
+export const QUILT = [
   // The nut first (owner, 2026-10-08).
   one("ur5e-real-nut-3", "Nut"),
   one("ur5e-real-rod-5", "Rod"),
@@ -84,6 +87,7 @@ export default function CombinedPage({
   draft = false,
   fold,
   fit,
+  wide,
 }: {
   summary?: SummaryVariant;
   sizes?: boolean;
@@ -95,10 +99,16 @@ export default function CombinedPage({
   // With F2 or F3: the chapter list no taller than the video (/lab/list-1/
   // to -3/, 2026-10-09).
   fit?: ListFit;
+  // Wide screens (/lab/wide-1/, -2/, 2026-10-09; ./wide.css): Clips tiles
+  // that stop growing, and Method 03's video smaller, from full-size files.
+  wide?: Wide;
 }) {
   return (
-    <div className={`pz st cb ${fold ? `cb-fold cb-fold-${fold}` : ""}`}>
+    <div
+      className={`pz st cb ${fold ? `cb-fold cb-fold-${fold}` : ""} ${wide ? `cb-wide-${wide}` : ""}`}
+    >
       <Nav sections={SECTIONS} speedNote />
+      <HashLanding />
       <Top layout="s4" links />
       <Highlights
         layout={fold === "f2" || fold === "f3" ? "r6" : "r1"}
@@ -126,7 +136,7 @@ export default function CombinedPage({
               draft ? (
                 <OverTrainingBody />
               ) : (
-                <LearningProgress view="bandcurve" />
+                <LearningProgress view="bandcurve" hd={!!wide} />
               )
             }
           />
@@ -148,7 +158,7 @@ export default function CombinedPage({
           <ClipsViews view="k1" />
           {/* The citation, then the mark on black to close (2026-10-08). */}
           <Bibtex />
-          <EndMark />
+          <EndMark terms />
         </>
       )}
       {sizes && <SummarySizeSwitch />}

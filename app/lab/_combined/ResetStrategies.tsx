@@ -15,7 +15,7 @@ import "./resets.css";
 //   r2  the strategies as tabs above a wide video, the description under it
 //   r3  all three at once, side by side, each with its description
 
-const BASE = "/lab/media/library/resets";
+const BASE = "/media/library/resets";
 
 type Strategy = { id: string; name: string; text: [string, string, string] };
 

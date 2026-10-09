@@ -13,7 +13,7 @@ Pro folder instead of the drive folder (same files).
 
 /path/to/SGS is the unzipped folder from the owner's drive (Anymal-C,
 Anymal-D PACE, Franka Sim, UR5e Real, UR5e Sim). Output goes to
-public/lab/media/library/; existing outputs are skipped unless --force.
+public/media/library/; existing outputs are skipped unless --force.
 
 What it makes (manifest in app/lab/library.ts must match the ids):
     clips/{id}.mp4      960 px wide, 30 fps max, H.264, no audio
@@ -44,7 +44,7 @@ import os
 import subprocess
 import sys
 
-OUT = os.path.join(os.path.dirname(__file__), "..", "..", "public", "lab", "media", "library")
+OUT = os.path.join(os.path.dirname(__file__), "..", "..", "public", "media", "library")
 X264 = ["-c:v", "libx264", "-preset", "slow", "-pix_fmt", "yuv420p", "-movflags", "+faststart", "-an"]
 
 D = "Anymal-D PACE"

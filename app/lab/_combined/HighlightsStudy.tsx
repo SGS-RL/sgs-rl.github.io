@@ -16,7 +16,7 @@ import "./combined.css";
 // not fetch; without it the page uses the stand-in reel, cut from UR5e
 // simulation and ANYmal D clips only.
 const REAL = fs.existsSync(
-  path.join(process.cwd(), "public/lab/media/library/reel.mp4"),
+  path.join(process.cwd(), "public/media/library/reel.mp4"),
 );
 const REEL = REAL ? REEL3 : STANDIN_REEL;
 

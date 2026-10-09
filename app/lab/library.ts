@@ -1,5 +1,5 @@
 // The owner's footage (drive folder "SGS", 2026-10-05), encoded by
-// scripts/lab/encode_library.py into public/lab/media/library/. The round 3
+// scripts/lab/encode_library.py into public/media/library/. The round 3
 // pages use this; the earlier studies keep the placeholder CLIPS and
 // HIGHLIGHTS in content.ts, so they look as they did when reviewed.
 //
@@ -11,7 +11,7 @@
 import type { Clip } from "./content";
 import type { ReelData } from "./_reel/reel";
 
-const BASE = "/lab/media/library";
+const BASE = "/media/library";
 
 export type Item = Clip & {
   /** "clip": one run. "pair": two runs side by side (32:9).

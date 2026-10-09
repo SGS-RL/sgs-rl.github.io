@@ -330,3 +330,15 @@ runs/run-ur5e-real-gear-mesh.jpg
 runs/run-ur5e-real-gear-mesh.mp4
 standin-reel.jpg
 standin-reel.mp4
+learning-hd/bnc.jpg
+learning-hd/bnc.mp4
+learning-hd/gear-mesh.jpg
+learning-hd/gear-mesh.mp4
+learning-hd/nut.jpg
+learning-hd/nut.mp4
+learning-hd/rectangular-peg.jpg
+learning-hd/rectangular-peg.mp4
+learning-hd/rod.jpg
+learning-hd/rod.mp4
+learning-hd/waterproof.jpg
+learning-hd/waterproof.mp4

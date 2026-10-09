@@ -9,7 +9,7 @@ cd "$(dirname "$0")/../.."
 
 cache=node_modules/.cache/lab-webm
 mkdir -p "$cache" out/__webm
-find public/lab/media -name '*.mp4' | while read -r f; do
+find public/lab/media public/media -name '*.mp4' | while read -r f; do
   rel=${f#public/}
   name="${rel//\//_}.webm"
   if [ ! -s "$cache/$name" ]; then
