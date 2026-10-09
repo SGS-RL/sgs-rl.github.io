@@ -1,4 +1,5 @@
 import { Inter_Tight } from "next/font/google";
+import Analytics from "./_analytics/Analytics";
 import CombinedPage from "./lab/_combined/CombinedPage";
 import { shareMetadata } from "./lab/_combined/share";
 import "./lab/lab.css";
@@ -20,6 +21,8 @@ export default function Home() {
   return (
     <div className={interTight.variable}>
       <CombinedPage fold="f2" fit="runin" />
+      {/* Visitor stats, on the site only (./_analytics/Analytics.tsx). */}
+      <Analytics />
     </div>
   );
 }
