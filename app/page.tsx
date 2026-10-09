@@ -6,7 +6,8 @@ import "./lab/lab.css";
 // The site (owner, 2026-10-09): the combined page, built and reviewed at
 // /lab/combined/, now at the root. As under the lab layout, it needs Inter
 // Tight (the page's face) and the lab styles. The earlier site's
-// components stay in ./components, unused.
+// components stay in ./components, unused. The first screen is F2 with the
+// run-in chapter list, L3 (owner, 2026-10-09; /lab/fold-2/, /lab/list-3/).
 const interTight = Inter_Tight({
   variable: "--font-swiss-display",
   subsets: ["latin"],
@@ -18,7 +19,7 @@ export const metadata = shareMetadata("/");
 export default function Home() {
   return (
     <div className={interTight.variable}>
-      <CombinedPage />
+      <CombinedPage fold="f2" fit="runin" />
     </div>
   );
 }

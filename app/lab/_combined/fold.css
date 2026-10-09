@@ -1,0 +1,137 @@
+/* A smaller header, so the Highlights video is on the first screen (owner,
+   2026-10-09: "make the SGS and the title, and maybe the text everywhere
+   else if needed, slightly smaller so that the highlight videos show on
+   the first page without the need to scroll"; laptops first). Three
+   versions, on /lab/fold-1/ to -3/ (CombinedPage `fold`):
+
+   F1  The mark on 4 of 12 columns (5 below 1200 px, where 4 are too
+       narrow for the words in it), a smaller title, section titles at
+       4rem; the video under the Highlights band.
+   F2  The mark on 4 columns; "Highlights" over the chapter list beside
+       the video (layout r6 of ./HighlightsLayouts.tsx), so the video is
+       larger. Section titles as they were.
+   F3  F2 with the mark on 5 columns.
+
+   From 1024 px the video is as tall as what is left of the first screen
+   under the header (and the band), its controls included, but at least
+   18rem. Below 768 px every version is the same:
+   the mark still spans the page (the words in it need the width), the
+   spacing is tighter and the title and section titles smaller. */
+
+.cb-fold {
+  --fold-n: 5;
+  /* The mark's height at most, for short wide screens. */
+  --fold-cap: 30svh;
+}
+@media (min-width: 1200px) {
+  .cb-fold-f1,
+  .cb-fold-f2 {
+    --fold-n: 4;
+  }
+}
+
+/* Phones. */
+@media (max-width: 767px) {
+  .cb-fold .hs {
+    padding-bottom: 1.25rem;
+  }
+  .cb-fold .hs-title {
+    margin-top: 1rem;
+    font-size: clamp(1.1rem, 4.7vw, 1.6rem);
+  }
+  .cb-fold .hs-meta {
+    margin-top: 0.9rem;
+    gap: 0.5rem;
+  }
+  .cb-fold h2.pz-head {
+    font-size: clamp(2rem, 8.8vw, 3.6rem);
+  }
+  .cb-fold .cb-hl-note {
+    font-size: clamp(1.2rem, 5vw, 2rem);
+  }
+  .cb-fold .cb-hl-body {
+    padding-top: 0.75rem;
+  }
+}
+
+/* F1's section titles, at every width. */
+.cb-fold-f1 h2.pz-head {
+  font-size: clamp(2rem, 8.8vw, 4rem);
+}
+@media (min-width: 768px) {
+  .cb-fold-f1 .cb-hl-note {
+    font-size: 2rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .cb-fold .hs {
+    padding-bottom: 1.5rem;
+  }
+  .cb-fold .hs-title {
+    font-size: clamp(1.6rem, 2.35vw, 2.6rem);
+    text-wrap: pretty;
+  }
+  .cb-fold-f3 .hs-title {
+    font-size: clamp(1.7rem, 2.5vw, 2.75rem);
+  }
+  .cb-fold .hs-s4 .hs-meta {
+    margin-top: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  /* The title and the authors at the mark's foot, where the text is
+     shorter than the mark (wide screens). */
+  .cb-fold .hs-s4 {
+    grid-template-rows: 1fr auto;
+  }
+  .cb-fold .hs-s4 .hs-mark {
+    --n: var(--fold-n);
+    --hs-cap: calc(var(--fold-cap) / 0.7275);
+    grid-column: 1 / span var(--fold-n);
+  }
+  .cb-fold .hs-s4 .hs-title,
+  .cb-fold .hs-s4 .hs-meta {
+    grid-column: 6 / 13;
+  }
+}
+@media (min-width: 1200px) {
+  .cb-fold-f1 .hs-s4 .hs-title,
+  .cb-fold-f1 .hs-s4 .hs-meta,
+  .cb-fold-f2 .hs-s4 .hs-title,
+  .cb-fold-f2 .hs-s4 .hs-meta {
+    grid-column: 5 / 13;
+  }
+}
+@media (min-width: 1024px) {
+  /* The video's height. The mark is 0.4327 of its width tall (1.6815em
+     wide, 0.7275em tall), at most --fold-cap; the header adds 8 px above
+     and 1.5rem below. Under the video: its controls (46 px) and 10 px. */
+  .cb-fold {
+    --fold-c: calc((100vw - 2 * var(--m) - 11 * var(--g)) / 12);
+    --fold-mark: min(
+      calc(
+        (var(--fold-c) * var(--fold-n) + (var(--fold-n) - 1) * var(--g)) *
+          0.4327
+      ),
+      var(--fold-cap)
+    );
+    --fold-top: calc(var(--bar) + 8px + var(--fold-mark) + 1.5rem);
+  }
+  /* F1: the band (4rem title, its padding and rules) and 1.25rem. */
+  .cb-fold-f1 {
+    --cb-hl-max: max(
+      18rem,
+      calc(100svh - var(--fold-top) - 4.48rem - 2px - 1.25rem - 56px)
+    );
+  }
+  /* F2, F3: a rule and 1.25rem. */
+  .cb-fold-f2,
+  .cb-fold-f3 {
+    --cb-hl-max: max(
+      18rem,
+      calc(100svh - var(--fold-top) - 1px - 1.25rem - 56px)
+    );
+  }
+}

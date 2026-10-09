@@ -33,8 +33,8 @@ export const AUTHOR_PAGES: Record<string, string> = {
   "Byron Boots": "https://homes.cs.washington.edu/~bboots/",
 };
 
-// Paper and Code (owner, 2026-10-08): nothing to link to yet. Set the URLs
-// when the paper is on arXiv and the code is out; until then both show as
-// plain text, Code with "(coming soon)" (./PaperCode.tsx).
-export const PAPER_URL: string | null = null;
+// Paper and Code (owner, 2026-10-08): plain text until their URLs are set,
+// Code with "(coming soon)" (./PaperCode.tsx). The paper is on arXiv
+// (owner, 2026-10-09); set CODE_URL when the code is out.
+export const PAPER_URL: string | null = "https://arxiv.org/abs/2610.12465";
 export const CODE_URL: string | null = null;

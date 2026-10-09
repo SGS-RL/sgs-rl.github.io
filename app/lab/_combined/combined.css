@@ -1160,6 +1160,11 @@
 .cb-soon {
   opacity: 0.55;
 }
+@media (max-width: 1023px) {
+  .cb-bar-links .cb-soon {
+    display: none;
+  }
+}
 
 /* The 1× note (speedNote.tsx). s1: at the right end of the Highlights
    band, on the title's baseline (under it on narrow phones). s3: "1×" in a

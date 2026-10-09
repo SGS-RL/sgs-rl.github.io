@@ -1,6 +1,13 @@
 "use client";
 
-import { useMemo, type CSSProperties, type ReactNode } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  type CSSProperties,
+  type ReactNode,
+} from "react";
+import { prefersReducedMotion } from "../_gallery/media";
 import { Reel, useReel } from "../_reel/engine";
 import { ReelPlayer } from "../_reel/parts";
 import { mss, pad2, type Chapter, type ReelData } from "../_reel/reel";
@@ -20,8 +27,11 @@ import { SPEED_TEXT, useSpeedNote } from "./speedNote";
 //   r4  Centred, with each title under its segment of the bar.
 //   r5  No heading band: the video, and beside it the big title over the
 //       chapter list.
+//   r6  r1 with the title (and the 1× note) over the chapter list beside
+//       the video from 1024 px, so the video sits higher on the first
+//       screen (/lab/fold-2/, -3/, 2026-10-09); the band below 1024 px.
 
-export type ReelLayout = "r1" | "r2" | "r3" | "r4" | "r5";
+export type ReelLayout = "r1" | "r2" | "r3" | "r4" | "r5" | "r6";
 
 const where = (c: Chapter) => (c.domain === "Real" ? "Hardware" : "Simulation");
 const fast = (c: Chapter) => (c.speed && c.speed !== "1×" ? c.speed : "");
@@ -43,42 +53,135 @@ function Heading({ children, note }: { children: ReactNode; note?: string }) {
   );
 }
 
+// How layout r6 fits the chapter list to the height of the video and its
+// controls (/lab/list-1/ to -3/, owner, 2026-10-09: the list should not be
+// taller than the video). From 1024 px; reels.css.
+//   columns  The groups in two columns, at the foot of the side column.
+//   scroll   One column that scrolls, the current chapter kept in view.
+//   runin    Each group's chapters on wrapping lines, without times.
+export type ListFit = "columns" | "scroll" | "runin";
+
 // The chapters grouped by robot and domain, numbered, with start times. A
 // row jumps the reel to its chapter; the current one is in full ink with a
 // red mark.
-function ChapterList() {
+function ChapterList({ fit }: { fit?: ListFit }) {
   const { chapters, idx, goTo } = useReel();
   const groups = useMemo(() => runs(chapters), [chapters]);
+  const box = useRef<HTMLDivElement>(null);
+
+  // When the list scrolls (scroll, or the others on short screens): keep
+  // the current chapter in view, a third of the way down, unless the
+  // pointer is over the list. Scrolls the list, not the page.
+  useEffect(() => {
+    const el = box.current;
+    if (!fit || !el || el.scrollHeight <= el.clientHeight) return;
+    if (el.matches(":hover")) return;
+    const row = el.querySelector<HTMLElement>("[aria-current]");
+    if (!row) return;
+    const top =
+      row.getBoundingClientRect().top -
+      el.getBoundingClientRect().top +
+      el.scrollTop;
+    el.scrollTo({
+      top: Math.max(0, top - el.clientHeight / 3),
+      behavior: prefersReducedMotion() ? "auto" : "smooth",
+    });
+  }, [fit, idx]);
+
+  // A fade at the foot while there is more to scroll to (short screens).
+  useEffect(() => {
+    const el = box.current;
+    if (!fit || !el) return;
+    const check = () =>
+      el.toggleAttribute(
+        "data-more",
+        el.scrollTop + el.clientHeight < el.scrollHeight - 1,
+      );
+    check();
+    const ro = new ResizeObserver(check);
+    ro.observe(el);
+    el.addEventListener("scroll", check, { passive: true });
+    return () => {
+      ro.disconnect();
+      el.removeEventListener("scroll", check);
+    };
+  }, [fit]);
+
+  const group = (g: (typeof groups)[number]) => {
+    const first = chapters[g.from];
+    const clips = chapters.slice(g.from, g.to + 1);
+    return (
+      <div key={g.key}>
+        <p className="cb-list-head">
+          <span>{first.robot}</span>
+          <span>{where(first)}</span>
+        </p>
+        {fit === "runin" ? (
+          <ol className="cb-list-runin">
+            {clips.map((c) => (
+              <li key={c.i}>
+                <button
+                  type="button"
+                  className="cb-list-chip"
+                  aria-current={c.i === idx ? "true" : undefined}
+                  onClick={() => goTo(c.i)}
+                >
+                  <span className="pz-num">{pad2(c.i + 1)}</span>
+                  <span>
+                    {c.title}
+                    {fast(c) && `, ${fast(c)}`}
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <ol>
+            {clips.map((c) => (
+              <li key={c.i}>
+                <button
+                  type="button"
+                  className="cb-list-row"
+                  aria-current={c.i === idx ? "true" : undefined}
+                  onClick={() => goTo(c.i)}
+                >
+                  <span className="pz-num">{pad2(c.i + 1)}</span>
+                  <span className="min-w-0">{c.title}</span>
+                  <span className="pz-num">{fast(c)}</span>
+                  <span className="cb-list-time pz-num">{mss(c.start)}</span>
+                </button>
+              </li>
+            ))}
+          </ol>
+        )}
+      </div>
+    );
+  };
+
+  if (fit === "columns") {
+    // Split between groups where the two columns come out closest in
+    // height (a group's rows and its heading).
+    const size = groups.map((g) => g.to - g.from + 2);
+    const total = size.reduce((a, b) => a + b, 0);
+    let split = 1;
+    let best = Infinity;
+    for (let k = 1, acc = 0; k < groups.length; k++) {
+      acc += size[k - 1];
+      if (Math.abs(total - 2 * acc) < best) {
+        best = Math.abs(total - 2 * acc);
+        split = k;
+      }
+    }
+    return (
+      <div ref={box} className="cb-list cb-list-cols">
+        <div className="cb-list-col">{groups.slice(0, split).map(group)}</div>
+        <div className="cb-list-col">{groups.slice(split).map(group)}</div>
+      </div>
+    );
+  }
   return (
-    <div className="cb-list">
-      {groups.map((g) => {
-        const first = chapters[g.from];
-        return (
-          <div key={g.key}>
-            <p className="cb-list-head">
-              <span>{first.robot}</span>
-              <span>{where(first)}</span>
-            </p>
-            <ol>
-              {chapters.slice(g.from, g.to + 1).map((c) => (
-                <li key={c.i}>
-                  <button
-                    type="button"
-                    className="cb-list-row"
-                    aria-current={c.i === idx ? "true" : undefined}
-                    onClick={() => goTo(c.i)}
-                  >
-                    <span className="pz-num">{pad2(c.i + 1)}</span>
-                    <span className="min-w-0">{c.title}</span>
-                    <span className="pz-num">{fast(c)}</span>
-                    <span className="cb-list-time pz-num">{mss(c.start)}</span>
-                  </button>
-                </li>
-              ))}
-            </ol>
-          </div>
-        );
-      })}
+    <div ref={box} className={`cb-list ${fit ? `cb-list-fit-${fit}` : ""}`}>
+      {groups.map(group)}
     </div>
   );
 }
@@ -140,6 +243,7 @@ const MAX: Record<ReelLayout, string> = {
   r3: "calc(100svh - var(--bar) - 11rem)",
   r4: "calc(100svh - var(--bar) - 14rem)",
   r5: "calc(100svh - var(--bar) - 6rem)",
+  r6: "calc(100svh - var(--bar) - 6rem)",
 };
 
 export default function HighlightsLayout({
@@ -147,10 +251,13 @@ export default function HighlightsLayout({
   layout,
   id = "highlights",
   speedNote = false,
+  fit,
 }: {
   reel: ReelData;
   layout: ReelLayout;
   id?: string;
+  // r6: fit the chapter list to the video's height (see ListFit).
+  fit?: ListFit;
   // The combined page: say that every video plays at 1×, where the switch
   // in ./speedNote.tsx puts it (R1 only). The studies leave it off.
   speedNote?: boolean;
@@ -189,12 +296,27 @@ export default function HighlightsLayout({
         </div>
       </div>
     ),
+    r6: (
+      <div className="cb-hl-row">
+        <Player />
+        <div className="cb-hl-aside">
+          <div className="cb-hl-aside-head" aria-hidden="true">
+            <p className="pz-head">Highlights</p>
+            {speedNote && note === "s1" && (
+              <p className="cb-hl-aside-note">{SPEED_TEXT}</p>
+            )}
+          </div>
+          <ChapterList fit={fit} />
+        </div>
+      </div>
+    ),
   }[layout];
   return (
     <section
       id={id}
       aria-label="Highlights"
       className={`cb-hl cb-hl-${layout}`}
+      data-fit={layout === "r6" ? fit : undefined}
     >
       {layout !== "r5" && (
         <Heading note={speedNote && note === "s1" ? SPEED_TEXT : undefined}>
@@ -205,7 +327,12 @@ export default function HighlightsLayout({
         reel={reel}
         skin="pz"
         className="cb-reel cb-hl-body"
-        style={{ "--rl-max-h": MAX[layout] } as CSSProperties}
+        // A page can set the height with --cb-hl-max (../fold.css).
+        style={
+          {
+            "--rl-max-h": `var(--cb-hl-max, ${MAX[layout]})`,
+          } as CSSProperties
+        }
       >
         {body}
       </Reel>

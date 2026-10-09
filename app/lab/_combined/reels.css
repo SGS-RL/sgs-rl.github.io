@@ -47,7 +47,8 @@
   }
   .cb-hl-row > .cb-list,
   .cb-hl-row > .cb-index,
-  .cb-hl-row > .cb-hl-side {
+  .cb-hl-row > .cb-hl-side,
+  .cb-hl-row > .cb-hl-aside {
     flex: 1 1 0;
     min-width: 15rem;
   }
@@ -65,6 +66,120 @@
   .cb-hl-side > .pz-head {
     order: 0;
   }
+}
+
+/* R6: R1's band below 1024 px; from 1024 px a rule, and the title and
+   the 1× note over the list beside the video. The band stays for screen
+   readers (the title beside the video is hidden from them). */
+.cb-hl-aside-head {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .cb-hl-r6 {
+    border-top: 1px solid #111;
+  }
+  .cb-hl-r6 > .cb-hl-band {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .cb-hl-aside {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+  .cb-hl-aside-head {
+    display: block;
+  }
+  .cb-hl-aside-head .pz-head {
+    margin-top: -0.12em;
+  }
+  .cb-hl-aside-note {
+    margin-top: 0.4rem;
+    font-size: clamp(1.3rem, 2vw, 2.25rem);
+    line-height: 1;
+    letter-spacing: -0.035em;
+  }
+}
+
+/* R6 with the list fitted to the video (HighlightsLayouts.tsx, ListFit;
+   /lab/list-1/ to -3/). From 1024 px the side column is exactly as tall as
+   the video and its controls: it stretches to the row, and contain: size
+   keeps the list from making the row taller. The list scrolls if it still
+   does not fit (columns and run-in on short screens). */
+@media (min-width: 1024px) {
+  .cb-hl-r6[data-fit] .cb-hl-row {
+    align-items: stretch;
+  }
+  .cb-hl-r6[data-fit] .cb-hl-aside {
+    contain: size;
+  }
+  .cb-hl-r6[data-fit] .cb-list {
+    min-height: 0;
+    overflow-y: auto;
+  }
+  /* Columns and run-in sit at the foot, level with the controls. */
+  .cb-hl-r6[data-fit="columns"] .cb-list,
+  .cb-hl-r6[data-fit="runin"] .cb-list {
+    margin-top: auto;
+  }
+  .cb-list.cb-list-cols {
+    flex-direction: row;
+    gap: calc(var(--g) * 1.5);
+  }
+  .cb-list-col {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    gap: 1.25rem;
+    min-width: 0;
+  }
+  /* A fade at the foot while there is more below. */
+  .cb-hl-r6[data-fit] .cb-list[data-more] {
+    mask-image: linear-gradient(to bottom, #000 calc(100% - 3rem), transparent);
+  }
+  /* Scroll: the list fills the column under the title; each group's
+     heading stays at the top while its rows scroll. */
+  .cb-hl-r6[data-fit="scroll"] .cb-list {
+    flex: 1 1 0;
+  }
+  .cb-list-fit-scroll .cb-list-head {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: #fff;
+  }
+}
+/* Run-in: the group's chapters as one paragraph of buttons. */
+.cb-list-runin {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 1.1em;
+  row-gap: 0.15em;
+  padding-top: 0.4em;
+}
+.cb-list-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4em;
+  padding: 0.15em 0;
+  color: rgb(0 0 0 / 0.5);
+  text-align: left;
+  cursor: pointer;
+}
+.cb-list-chip:hover,
+.cb-list-chip[aria-current] {
+  color: inherit;
+}
+.cb-list-chip[aria-current]::before {
+  content: "";
+  align-self: center;
+  width: 0.5em;
+  height: 0.5em;
+  background: #e4321b;
 }
 
 /* Chapter list (R1, R2, R5). */

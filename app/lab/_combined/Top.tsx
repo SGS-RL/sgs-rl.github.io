@@ -1,3 +1,4 @@
+import { HEADER_CAP } from "../_cover/SiteHeader";
 import { Mark, Meta, Title } from "./Header";
 import { HEADER_INKS as inks } from "./inks";
 import "./sizes.css";
@@ -8,6 +9,7 @@ import "./sizes.css";
 // authors under the title. S6: the mark on 8 columns on the right, the
 // authors on the left at its foot, the title below. On phones the mark
 // spans the page, then the title and the authors. Layouts in ./sizes.css.
+// A page can cap the mark's size with --hs-cap (./fold.css).
 export type TopLayout = "s4" | "s6";
 
 export default function Top({
@@ -27,7 +29,10 @@ export default function Top({
       style={{ background: inks.ground, color: inks.type }}
     >
       <div className="hs-mark">
-        <Mark measure="var(--hs-measure)" />
+        <Mark
+          measure="var(--hs-measure)"
+          cap={`var(--hs-cap, ${HEADER_CAP})`}
+        />
       </div>
       <Title className="hs-title st-lead" />
       <Meta className="hs-meta" links={links} />

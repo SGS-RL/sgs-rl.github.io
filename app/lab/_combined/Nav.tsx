@@ -80,7 +80,9 @@ export default function Nav({
             </a>
           ))}
         </nav>
-        <div className="col-span-4 flex justify-end gap-4 md:col-span-2 lg:col-span-3">
+        {/* Below 1024 px two columns hold Paper and Code without "(coming
+            soon)", which the header still shows (combined.css). */}
+        <div className="cb-bar-links col-span-4 flex justify-end gap-4 whitespace-nowrap md:col-span-2 lg:col-span-3">
           <PaperLink className="hidden md:inline" />
           <CodeLink className="hidden md:inline" />
           <button

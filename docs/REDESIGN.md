@@ -320,6 +320,35 @@ project site. Branch: `claude/website-redesign-brainstorm-hz3x4c`.
   Download; closing carries on from the viewer's time. The scaling
   charts' tooltip opens beside the hovered scale on the side with room,
   rows unwrapped (at 1M, "Uniform" wrapped against the chart's edge).
+  Then (2026-10-09, tried on the Cloudflare preview first; owner: "don't
+  make these changes on the released website, for now let's test locally
+  or on cloudfare"): Paper links to https://arxiv.org/abs/2610.12465
+  (`PAPER_URL`). Below 1024 px the bar drops "(coming soon)" after Code,
+  which had wrapped and been cut off on tablets. And the first screen
+  (owner: "make the SGS and the title, and maybe the text everywhere else
+  if needed, slightly smaller so that the highlight videos show on the
+  first page without the need to scroll", laptops first), three versions
+  of the whole page at `/lab/fold-1/` to `-3/` (`CombinedPage fold`,
+  `_combined/fold.css`): F1 the mark on 4 of 12 columns, a smaller title
+  and 4rem section titles; F2 the mark on 4 columns, "Highlights" and the
+  1× note over the chapter list beside the video (Highlights layout r6,
+  the band kept below 1024 px); F3 F2 with the mark on 5 columns. From
+  1024 px the video is as tall as what is left of the first screen,
+  controls included (at least 18rem). Phones are the same in all three:
+  tighter spacing, a smaller title and section titles, the video's bottom
+  edge on the first screen at 390 × 664.
+  The owner liked F2 most, but not that the chapter list ran longer than
+  the video. Three fits of the list to the height of the video and its
+  controls, on F2 at `/lab/list-1/` to `-3/` (`ListFit` in
+  `_combined/HighlightsLayouts.tsx`, from 1024 px): L1 the groups in two
+  columns (UR5e on the left, Franka and the ANYmals on the right), at the
+  foot, level with the controls; L2 one column that scrolls, each group's
+  heading pinned while its rows pass, the current chapter kept in view;
+  L3 run-in, each group's chapters on wrapping lines without times. On
+  short screens (1280 × 650) L1 and L3 scroll too, with a fade at the
+  foot while there is more below. The owner picked L3, and deployed it
+  with the rest of this round: the site and `/lab/combined/` render
+  `CombinedPage fold="f2" fit="runin"`.
   Before Clips, `/lab/combined-draft/` was the whole-site mock-up: the same
   page, then Over training (paper Figure 7), the quilt divider, Results,
   Footage and Clips; the parked "Just PPO" and "Task configurations"
